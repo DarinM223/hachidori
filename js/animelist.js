@@ -26,5 +26,5 @@ var HummingbirdAnimeList = (function($, HBAccessToken) {
     });
   };
 
-  return AnimeList;
+  return Animelist;
 }) (jQuery, HummingbirdAccessToken);

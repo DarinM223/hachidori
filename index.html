@@ -2,7 +2,7 @@
     <head>
         <title>Anime checker</title>
         <!-- Latest compiled and minified CSS -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+        <link rel="stylesheet" href="./bower_components/bootstrap/dist/css/bootstrap.css">
         <link type="text/css" href="css/styles.css"/>
     </head>
     <body>
@@ -31,15 +31,15 @@
             <!-- Tabs, add/remove buttons, .etc -->
             <section id="tool-bar">
                 <ul class="nav nav-tabs">
-                    <li class="active"><a href="#all" data-toggle="tab">All</a></li>
-                    <li class=""><a href="#current" data-toggle="tab">Currently Watching</a></li>
-                    <li class=""><a href="#plan" data-toggle="tab">Plan to Watch</a></li>
-                    <li class=""><a href="#completed" data-toggle="tab">Completed</a></li>
-                    <li class=""><a href="#hold" data-toggle="tab">On Hold</a></li>
-                    <li class=""><a href="#dropped" data-toggle="tab">Dropped</a></li>
-                    <a href="#" class="btn btn-success btn-sm">+</a>
-                    <a href="#" class="btn btn-danger btn-sm">-</a>
+                    <li class="active tabbar-item"><a id="all" href="#" data-toggle="tab">All</a></li>
+                    <li class="tabbar-item"><a id="currently-watching" href="#" data-toggle="tab">Currently Watching</a></li>
+                    <li class="tabbar-item"><a id="plan-to-watch" href="#" data-toggle="tab">Plan to Watch</a></li>
+                    <li class="tabbar-item"><a id="completed" href="#" data-toggle="tab">Completed</a></li>
+                    <li class="tabbar-item"><a id="on-hold" href="#" data-toggle="tab">On Hold</a></li>
+                    <li class="tabbar-item"><a id="dropped" href="#" data-toggle="tab">Dropped</a></li>
                 </ul>
+                <a href="#" id="add-anime" class="btn btn-success btn-sm">+</a>
+                <a href="#" id="remove-anime" class="btn btn-danger btn-sm">-</a>
             </section>
 
             <!-- Where the main anime list portion is -->
@@ -61,7 +61,12 @@
         <footer id="footer">
 
         </footer>
-        <!-- Latest compiled and minified JavaScript -->
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script></script>
+        <script src="./bower_components/jquery/dist/jquery.js"></script>
+        <script src="./bower_components/bootstrap/dist/js/bootstrap.js"></script>
+
+        <!-- My scripts -->
+        <script src="./js/index.js"></script>
+        <script src="./js/access_token.js"></script>
+        <script src="./js/animelist.js"></script>
     </body>
 </html>

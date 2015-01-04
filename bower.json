@@ -1,0 +1,19 @@
+{
+  "name": "animelist-checker",
+  "version": "0.0.0",
+  "authors": [
+    "Darin Minamoto <darinm223@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.3.1",
+    "jquery": "~2.1.3"
+  }
+}
