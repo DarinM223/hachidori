@@ -1,0 +1,67 @@
+<html>
+    <head>
+        <title>Anime checker</title>
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+        <link type="text/css" href="css/styles.css"/>
+    </head>
+    <body>
+        <header id="header">
+            <div class="navbar navbar-default">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a href="#" class="navbar-brand">Anime checker</a>
+                </div>
+                <div class="navbar-collapse collapse navbar-responsive-collapse">
+                    <ul class="nav navbar-nav">
+                        <li><a href="#logout">Logout</a></li>
+                    </ul>
+                </div>
+                <ul class="nav navbar-nav navbar-right">
+                    <!-- Profile stuff -->
+                </ul>
+            </div>
+        </header>
+        
+        <div class="container">
+            <!-- Tabs, add/remove buttons, .etc -->
+            <section id="tool-bar">
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="#all" data-toggle="tab">All</a></li>
+                    <li class=""><a href="#current" data-toggle="tab">Currently Watching</a></li>
+                    <li class=""><a href="#plan" data-toggle="tab">Plan to Watch</a></li>
+                    <li class=""><a href="#completed" data-toggle="tab">Completed</a></li>
+                    <li class=""><a href="#hold" data-toggle="tab">On Hold</a></li>
+                    <li class=""><a href="#dropped" data-toggle="tab">Dropped</a></li>
+                    <a href="#" class="btn btn-success btn-sm">+</a>
+                    <a href="#" class="btn btn-danger btn-sm">-</a>
+                </ul>
+            </section>
+
+            <!-- Where the main anime list portion is -->
+            <section id="main">
+                <input type="text" class="form-control" placeholder="Search your anime list"/>
+                <ul id="anime-list" class="list-group">
+                    <li class="list-group-item">
+                        <a href="#" class="btn btn-warning btn-lg" style="">^</a>
+                        &nbsp;
+                        &nbsp;
+                        <h1 style="display: inline; vertical-align: middle;">
+                            Akatsuki no Yona
+                        </h1>
+                    </li>
+                </ul>
+            </section>
+        </div>
+        
+        <footer id="footer">
+
+        </footer>
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script></script>
+    </body>
+</html>
