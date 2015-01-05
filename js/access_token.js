@@ -57,3 +57,5 @@ var HummingbirdAccessToken = (function($) {
   };
   return AccessToken;
 }) (jQuery);
+
+var GLOBAL_ACCESS_TOKEN = new HummingbirdAccessToken();
