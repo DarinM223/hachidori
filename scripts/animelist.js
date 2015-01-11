@@ -7,20 +7,25 @@ var HummingbirdAnimeList = (function($, _) {
    * @class Animelist
    * @param {string} username the username of the anime list
    */
-  function Animelist(username) {
+  function Animelist(username, callback) {
     this.username = username;
     this.access_token = null;
     this.anime_list = null;
     this.favorite_anime = null;
-    this.getList(function() {}); // asynchronously retrive anime list
-    this.getFavoriteAnime(function() {}); // asynchronously retrive user's favorite anime
+    var _this = this;
+    this._loadList(function(err) { // asynchronously retrive anime list
+      if (err) {
+        return callback(err);
+      }
+      _this._loadFavoriteAnime(callback); // asynchronously retrive user's favorite anime
+    }); 
   }
   
   /**
    * Retrieves the anime list data from hummingbird
    * @param {function(err)} callback called once finished getting the list
    */
-  Animelist.prototype.getList = function getList(callback) {
+  Animelist.prototype._loadList = function(callback) {
     var _callback = callback;
     $.ajax({
       type: 'GET',
@@ -45,7 +50,7 @@ var HummingbirdAnimeList = (function($, _) {
    * Retrives the user's favorite anime from hummingbird
    * @param {function(err)} callback called once finished
    */
-  Animelist.prototype.getFavoriteAnime = function getFavoriteAnime(callback) {
+  Animelist.prototype._loadFavoriteAnime = function(callback) {
     var _callback = callback;
     $.ajax({
       type: 'GET',
@@ -66,24 +71,12 @@ var HummingbirdAnimeList = (function($, _) {
     });
   };
 
-  Animelist.prototype.getCurrentlyWatching = function getCurrentlyWatching() {
-    return _.where(this.anime_list, { status: 'currently-watching' });
+  Animelist.prototype.getList = function getList(status) {
+    return _.where(this.anime_list, { status: status });
   };
 
-  Animelist.prototype.getCompleted = function getCompleted() {
-    return _.where(this.anime_list, { status: 'completed' });
-  };
-
-  Animelist.prototype.getPlanToWatch = function getPlanToWatch() {
-    return _.where(this.anime_list, { status: 'plan-to-watch' });
-  };
-
-  Animelist.prototype.getOnHold = function getOnHold() {
-    return _.where(this.anime_list, { status: 'on-hold' });
-  };
-
-  Animelist.prototype.getDropped = function getDropped() {
-    return _.where(this.anime_list, { status: 'dropped' });
+  Animelist.prototype.getAll = function getAll() {
+    return this.anime_list;
   };
 
   /**

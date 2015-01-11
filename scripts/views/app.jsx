@@ -18,7 +18,7 @@ var App = React.createClass({
       <div>
         <AnimeTabBarComponent onTabChanged={this.onTabChanged}/>
         <AnimeSearchComponent onTextChanged={this.onTextChanged}/>
-        <AnimeListComponent data={fixture_data} filterText={this.state.filterText} tab={this.state.tab}/>
+        <AnimeListComponent username={"darin_minamoto"} filterText={this.state.filterText} tab={this.state.tab}/>
       </div>
     );
   }
