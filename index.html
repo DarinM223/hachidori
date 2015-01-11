@@ -3,71 +3,30 @@
         <title>Anime checker</title>
         <!-- Latest compiled and minified CSS -->
         <link rel="stylesheet" href="./bower_components/bootstrap/dist/css/bootstrap.css">
-        <link type="text/css" href="css/styles.css"/>
+        <link rel="stylesheet" href="css/styles.css"/>
     </head>
     <body>
-        <header id="header">
-            <div class="navbar navbar-default">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a href="#" class="navbar-brand">Anime checker</a>
-                </div>
-                <div class="navbar-collapse collapse navbar-responsive-collapse">
-                    <ul class="nav navbar-nav">
-                        <li><a href="#logout">Logout</a></li>
-                    </ul>
-                </div>
-                <ul class="nav navbar-nav navbar-right">
-                    <!-- Profile stuff -->
-                </ul>
-            </div>
-        </header>
-        
-        <div class="container">
-            <!-- Tabs, add/remove buttons, .etc -->
-            <section id="tool-bar">
-                <ul class="nav nav-tabs">
-                    <li class="active tabbar-item"><a id="all" href="#" data-toggle="tab">All</a></li>
-                    <li class="tabbar-item"><a id="currently-watching" href="#" data-toggle="tab">Currently Watching</a></li>
-                    <li class="tabbar-item"><a id="plan-to-watch" href="#" data-toggle="tab">Plan to Watch</a></li>
-                    <li class="tabbar-item"><a id="completed" href="#" data-toggle="tab">Completed</a></li>
-                    <li class="tabbar-item"><a id="on-hold" href="#" data-toggle="tab">On Hold</a></li>
-                    <li class="tabbar-item"><a id="dropped" href="#" data-toggle="tab">Dropped</a></li>
-                </ul>
-                <a href="#" id="add-anime" class="btn btn-success btn-sm">+</a>
-                <a href="#" id="remove-anime" class="btn btn-danger btn-sm">-</a>
-            </section>
+        <div id="app" class="container"></div>
 
-            <!-- Where the main anime list portion is -->
-            <section id="main">
-                <input type="text" class="form-control" placeholder="Search your anime list"/>
-                <ul id="anime-list" class="list-group">
-                    <li class="list-group-item">
-                        <a href="#" class="btn btn-warning btn-lg" style="">^</a>
-                        &nbsp;
-                        &nbsp;
-                        <h1 style="display: inline; vertical-align: middle;">
-                            Akatsuki no Yona
-                        </h1>
-                    </li>
-                </ul>
-            </section>
-        </div>
-        
-        <footer id="footer">
-
-        </footer>
         <script src="./bower_components/underscore/underscore.js"></script>
         <script src="./bower_components/jquery/dist/jquery.js"></script>
         <script src="./bower_components/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="./bower_components/react/react.js"></script>
+        <script src="./bower_components/react/JSXTransformer.js"></script>
 
         <!-- My scripts -->
-        <script src="./js/index.js"></script>
-        <script src="./js/access_token.js"></script>
-        <script src="./js/animelist.js"></script>
+        <script src="./scripts/access_token.js"></script>
+        <script src="./scripts/animelist.js"></script>
+        <script src="./scripts/fixture_data.js"></script>
+        <script src="./scripts/views/LibraryItem.jsx" type="text/jsx"></script>
+        <script src="./scripts/views/AnimeList.jsx" type="text/jsx"></script>
+        <script src="./scripts/views/app.jsx" type="text/jsx"></script>
+
+        <script type="text/jsx">
+          React.render(
+            <App/>,
+            document.getElementById('app')
+          );
+        </script>
     </body>
 </html>

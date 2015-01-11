@@ -50,7 +50,6 @@ var HummingbirdAccessToken = (function($) {
    */
   AccessToken.prototype.removeAccessToken = function removeAccessToken() {
     this.access_token = null;
-    // TODO: remove from localstorage
     if (typeof(Storage) !== 'undefined') { 
       localStorage.removeItem('access_token');
     }
