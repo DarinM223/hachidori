@@ -3,18 +3,22 @@
 var App = React.createClass({
   getInitialState: function() {
     return {
-      filterText: ''
+      filterText: '',
+      tab: 'currently-watching'
     };
   },
   onTextChanged: function(filterText) {
-    var _this = this;
     this.setState({ filterText: filterText });
+  },
+  onTabChanged: function(newTab) {
+    this.setState({ tab: newTab });
   },
   render: function() {
     return (
       <div>
+        <AnimeTabBarComponent onTabChanged={this.onTabChanged}/>
         <AnimeSearchComponent onTextChanged={this.onTextChanged}/>
-        <AnimeListComponent data={fixture_data} filterText={this.state.filterText}/>
+        <AnimeListComponent data={fixture_data} filterText={this.state.filterText} tab={this.state.tab}/>
       </div>
     );
   }
