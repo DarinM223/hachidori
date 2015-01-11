@@ -79,11 +79,7 @@ var HummingbirdAnimeList = (function($, _) {
     });
   };
 
-  Animelist.prototype.getList = function getList(status) {
-    return _.where(this.anime_list, { status: status });
-  };
-
-  Animelist.prototype.getAll = function getAll() {
+  Animelist.prototype.getList = function getAll() {
     return this.anime_list;
   };
 
@@ -133,7 +129,7 @@ var HummingbirdAnimeList = (function($, _) {
    * @property {string?} updateparams.notes updated notes
    * @property {integer?} updateparams.episodes_watched updated watched episodes
    * @property {boolean?} updateparams.increment_episodes if true, increment the episodes
-   * @param {function(err)} callback called after finishing
+   * @param {function(err, LibraryItem)} callback called after finishing
    */
   Animelist.prototype.update = function update(animeid, updateparams, callback) {
     var access_token = GLOBAL_ACCESS_TOKEN.getAccessToken();
@@ -151,19 +147,7 @@ var HummingbirdAnimeList = (function($, _) {
       url: 'http://hummingbird.me/api/v1/libraries/' + animeid,
       data: params,
       success: function(data, textStatus, jqXHR) {
-        var libraryIndex = -1;
-        for (var i = 0; i < this.anime_list.length; i++) {
-          if (this.anime_list[i].id === data.id) {
-            libraryIndex = i;
-            break;
-          }
-        }
-        if (libraryIndex > -1) {
-          this.anime_list[libraryIndex] = data; // update existing item
-        } else {
-          this.anime_list.push(data); // if new anime, add to library
-        }
-        return callback(null);
+        return callback(null, data);
       }.bind(this),
       statusCode: {
         401: function() {
