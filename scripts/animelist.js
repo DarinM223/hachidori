@@ -35,13 +35,17 @@ var HummingbirdAnimeList = (function($, _) {
         if (typeof(Storage) !== 'undefined') { // save anime list into local storage
           localStorage.setItem(this.username, JSON.stringify(this.anime_list)); // TODO: call this in webworker
         }
-        _callback(null);
+        if (_callback) {
+          _callback(null);
+        }
       }.bind(this),
       error: function(jqXHR, textStatus, error) {
         if (typeof(Storage) !== 'undefined') { // load anime list from local storage
           this.anime_list = JSON.parse(localStorage.getItem(this.username)); // TODO: call this in webworker
         }
-        _callback(error);
+        if (_callback) {
+          _callback(error);
+        }
       }.bind(this)
     });
   };
@@ -60,13 +64,17 @@ var HummingbirdAnimeList = (function($, _) {
         if (typeof(Storage) !== 'undefined') {
           localStorage.setItem(this.username+':favorite', JSON.stringify(this.favorite_anime));
         }
-        _callback(null);
+        if (_callback) {
+          _callback(null);
+        }
       }.bind(this),
       error: function(jqXHR, textStatus, error) {
         if (typeof(Storage) !== 'undefined') {
           this.favorite_anime = JSON.parse(localStorage.getItem(this.username + ':favorite'));
         }
-        _callback(error);
+        if (_callback) {
+          _callback(error);
+        }
       }
     });
   };
@@ -127,10 +135,10 @@ var HummingbirdAnimeList = (function($, _) {
    * @property {boolean?} updateparams.increment_episodes if true, increment the episodes
    * @param {function(err)} callback called after finishing
    */
-  Animelist.prototype.update = function update(animeid, updateparams,callback) {
+  Animelist.prototype.update = function update(animeid, updateparams, callback) {
     var access_token = GLOBAL_ACCESS_TOKEN.getAccessToken();
     if (access_token === null) {
-      return callback('You are not authorized to perform this action');
+      return callback(new Error('You are not authorized to perform this action'));
     }
 
     var params = _.pick(updateparams, 'status', 'privacy', 'rating', 'rewatching', 
@@ -142,11 +150,22 @@ var HummingbirdAnimeList = (function($, _) {
       type: 'POST',
       url: 'http://hummingbird.me/api/v1/libraries/' + animeid,
       data: params,
+      success: function(data, textStatus, jqXHR) {
+        var libraryIndex = -1;
+        for (var i = 0; i < this.anime_list.length; i++) {
+          if (this.anime_list[i].id === data.id) {
+            libraryIndex = i;
+            break;
+          }
+        }
+        if (libraryIndex > -1) {
+          this.anime_list[libraryIndex] = data; // update existing item
+        } else {
+          this.anime_list.push(data); // if new anime, add to library
+        }
+        return callback(null);
+      }.bind(this),
       statusCode: {
-        200: function(data, textStatus, jqXHR) {
-          // TODO: update specific library anime id with the updated anime data from data
-          return callback(null);
-        },
         401: function() {
           return callback(new Error('You are not authorized to perform this action'));
         },
