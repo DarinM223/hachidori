@@ -5,11 +5,6 @@
  * @property {LibraryItem} libraryItem
  */
 var LibraryItemComponent = React.createClass({
-  getInitialState: function() {
-    return {
-      popover: false
-    };
-  },
   titleStyle: {
     display: 'inline-block',
     verticalAlign: 'middle',
@@ -26,6 +21,16 @@ var LibraryItemComponent = React.createClass({
     width: '0px',
     float: 'right'
   },
+  inputStyle: {
+    textAlign: 'right'
+  },
+
+  getInitialState: function() {
+    return {
+      popover: false,
+      episodesText: this.props.libraryItem.episodes_watched
+    };
+  },
   onIncrement: function(event) {
     if (this.props.libraryItem.episodes_watched !== null && 
          (this.props.libraryItem.episodes_watched < this.props.libraryItem.anime.episode_count || 
@@ -39,6 +44,25 @@ var LibraryItemComponent = React.createClass({
   onChangeStatus: function(statusString) {
     if (statusString !== this.props.libraryItem.status) {
       this.props.update(this, { status: statusString });
+    }
+  },
+  onChangeEpisodes: function(event) {
+    var isnum = /^\d+$/.test(event.target.value);
+    var num = parseInt(event.target.value, 10);
+    if ((isnum && !isNaN(num) && num <= this.props.libraryItem.anime.episode_count) || event.target.value === '') {
+      this.setState({ episodesText: event.target.value });
+    } else {
+    }
+  },
+  saveChangeEpisodes: function(event) {
+    if (event.target.value === '') {
+      this.setState({ episodesText: this.props.libraryItem.episodes_watched });
+    } else {
+      // save new episodes in Hummingbird
+      var num = parseInt(event.target.value, 10);
+      if (!isNaN(num)) {
+        this.props.update(this, { episodes_watched: num });
+      }
     }
   },
   render: function() {
@@ -103,7 +127,14 @@ var LibraryItemComponent = React.createClass({
           &nbsp;
           &nbsp;
           <div style={this.spacerStyle} className="spacer"></div>
-          <h1 style={this.episodeStyle}>{episodesWatchedText}/{totalEpisodesText}</h1>
+          <h1 style={this.episodeStyle}>
+            <input type="text" size="2" style={this.inputStyle} 
+              value={this.state.episodesText} 
+              onChange={this.onChangeEpisodes}
+              onBlur={this.saveChangeEpisodes}
+              />
+            /{totalEpisodesText}
+          </h1>
         	<h1 style={this.titleStyle} onClick={this.onClick}>{this.props.libraryItem.anime.title}</h1>
           {popoverElement}
         </li>
