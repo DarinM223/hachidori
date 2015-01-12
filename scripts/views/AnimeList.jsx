@@ -16,11 +16,10 @@ var AnimeListComponent = React.createClass({
       animelist: null
     };
   },
-  update: function(childComponent, updateparams) {
+  update: function(childComponent, updateparams, callback) {
     var _this = this;
     this.HummingbirdApi.update(childComponent.props.libraryItem.anime.id, updateparams, function(err, libraryItem) {
       var changeOptions = { };
-      console.log(_this.findChildIndex);
       var libraryIndex = -1;
       for (var i = 0; i < _this.state.animelist.length; i++) {
         if (childComponent.props.libraryItem.id === _this.state.animelist[i].id) {
@@ -34,8 +33,9 @@ var AnimeListComponent = React.createClass({
         };
         var newlist = React.addons.update(_this.state.animelist, changeOptions);
 
-        _this.setState({ animelist: newlist });
+        _this.setState({ animelist: newlist }, callback);
       } else { // add new anime
+        console.log('Not implemented yet!');
       }
     });
   },

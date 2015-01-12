@@ -32,10 +32,14 @@ var LibraryItemComponent = React.createClass({
     };
   },
   onIncrement: function(event) {
+    var _this = this;
     if (this.props.libraryItem.episodes_watched !== null && 
          (this.props.libraryItem.episodes_watched < this.props.libraryItem.anime.episode_count || 
           this.props.libraryItem.anime.episode_count === null)) {
-      this.props.update(this, { increment_episodes: true });
+      this.props.update(this, { episodes_watched: this.props.libraryItem.episodes_watched+1 }, function(err) {
+        // set the state's episode watched back to the properties episode watched
+        _this.setState({ episodesText: _this.props.libraryItem.episodes_watched }); 
+      });
     } 
   },
   onClick: function(event) {
