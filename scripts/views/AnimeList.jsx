@@ -16,9 +16,11 @@ var AnimeListComponent = React.createClass({
       animelist: null
     };
   },
-  incrementAnime: function(childComponent) {
+  update: function(childComponent, updateparams) {
     var _this = this;
-    this.HummingbirdApi.update(childComponent.props.libraryItem.anime.id, { increment_episodes: true }, function(err, libraryItem) {
+    this.HummingbirdApi.update(childComponent.props.libraryItem.anime.id, updateparams, function(err, libraryItem) {
+      var changeOptions = { };
+      console.log(_this.findChildIndex);
       var libraryIndex = -1;
       for (var i = 0; i < _this.state.animelist.length; i++) {
         if (childComponent.props.libraryItem.id === _this.state.animelist[i].id) {
@@ -26,13 +28,15 @@ var AnimeListComponent = React.createClass({
           break;
         }
       }
-      var incrementOptions = { };
-      incrementOptions[libraryIndex] = {
-        $set: libraryItem
-      };
-      var newlist = React.addons.update(_this.state.animelist, incrementOptions);
+      if (libraryIndex !== -1) {
+        changeOptions[libraryIndex] = {
+          $set: libraryItem
+        };
+        var newlist = React.addons.update(_this.state.animelist, changeOptions);
 
-      _this.setState({ animelist: newlist });
+        _this.setState({ animelist: newlist });
+      } else { // add new anime
+      }
     });
   },
   render: function() {
@@ -56,7 +60,7 @@ var AnimeListComponent = React.createClass({
       }).map(function(libraryIndex) {
         return <LibraryItemComponent key={_this.state.animelist[libraryIndex].anime.id} 
                                      libraryItem={_this.state.animelist[libraryIndex]} 
-                                     onIncrement={_this.incrementAnime}/>
+                                     update={_this.update}/>
       });
 
       return (
