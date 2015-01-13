@@ -75,7 +75,7 @@ var HummingbirdAnimeList = (function($, _) {
         if (_callback) {
           _callback(error);
         }
-      }
+      }.bind(this)
     });
   };
 

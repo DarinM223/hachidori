@@ -13,17 +13,17 @@ var LoginPageComponent = React.createClass({
   render: function() {
     return (
       <div className="container">
-      	<form className="form-horizontal">
+        <form className="form-horizontal">
           <legend><h1>Login page</h1></legend>
-      		<fieldset>
-      			<div className="form-group">
+          <fieldset>
+            <div className="form-group">
               <label htmlFor="inputUsername" className="col-lg-1 control-label">Username: </label>
               <div className="col-lg-11">
                 <input type="text" className="form-control" id="inputUsername" 
                        ref="username" placeholder="username"/>
               </div>
             </div>
-      			<div className="form-group">
+            <div className="form-group">
               <label htmlFor="inputPassword" className="col-lg-1 control-label">Password: </label>
               <div className="col-lg-11">
                 <input type="password" id="inputUsername" className="form-control" 
@@ -35,8 +35,8 @@ var LoginPageComponent = React.createClass({
                 Submit
               </a>
             </div>
-      		</fieldset>
-      	</form>
+          </fieldset>
+        </form>
       </div>
     );
   }

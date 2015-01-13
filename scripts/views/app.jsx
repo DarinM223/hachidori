@@ -21,14 +21,13 @@ var App = React.createClass({
     this.setState({ tab: newTab });
   },
   onLogin: function(username, password) {
-    var _this = this;
     access_token.authenticate(username, password, function(err) {
       if (!err) {
-        _this.setState({ loggedIn: true });
+        this.setState({ loggedIn: true });
       } else {
         alert('Error logging in');
       }
-    });
+    }.bind(this));
   },
   render: function() {
     var answer = null;
