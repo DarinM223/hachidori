@@ -1,6 +1,7 @@
 var HummingbirdAccessToken = (function($) {
   function AccessToken() {
     this.access_token = null;
+    this.username = null;
   }
   /**
    * @return {string} the access token for the user
@@ -10,6 +11,16 @@ var HummingbirdAccessToken = (function($) {
       this.access_token = localStorage.getItem('access_token');
     }
     return this.access_token;
+  };
+
+  /**
+   * @return {string} the username for the user
+   */
+  AccessToken.prototype.getUsername = function getUsername() {
+    if (typeof(Storage) !== 'undefined' && this.access_token === null) {
+      this.username = localStorage.getItem('username');
+    }
+    return this.username;
   };
 
   /**
@@ -32,10 +43,22 @@ var HummingbirdAccessToken = (function($) {
           // set access_token in localstorage and in a member
           if (typeof(Storage) !== 'undefined') { 
             localStorage.setItem('access_token', data);
+            localStorage.setItem('username', username);
           }
           this.access_token = data;
+          this.username = username;
           return callback(null);
         }.bind(this), 
+        statusCode: {
+          401: function() {
+            console.log('You entered the wrong username or password');
+            return callback(new Error('You entered the wrong username or password'));
+          }, 
+          500: function() {
+            console.log('Internal server error');
+            return callback(new Error('Internal server error'));
+          }
+        },
         error: function(jqXHR, textStatus, error) {
           return callback(error);
         }
@@ -52,6 +75,7 @@ var HummingbirdAccessToken = (function($) {
     this.access_token = null;
     if (typeof(Storage) !== 'undefined') { 
       localStorage.removeItem('access_token');
+      localStorage.removeItem('username');
     }
   };
   return AccessToken;
