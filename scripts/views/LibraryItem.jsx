@@ -48,6 +48,15 @@ var LibraryItemComponent = React.createClass({
   removeFromLibrary: function() {
     this.props.remove(this.props.libraryItem.anime.id);
   },
+  onRatingChanged: function(newRating) {
+    this.props.update(this.props.libraryItem.anime.id, {
+      sane_rating_update: parseFloat(newRating)
+    }, function(err) {
+      if (err) {
+        console.log(err);
+      }
+    });
+  },
   render: function() {
     var episodesWatchedText = this.props.libraryItem.episodes_watched;
     var totalEpisodesText = this.props.libraryItem.anime.episode_count;
@@ -77,6 +86,7 @@ var LibraryItemComponent = React.createClass({
           <LibraryItemStatusComponent libraryItem={this.props.libraryItem} 
             onChangeStatus={this.onChangeStatus}
             removeFromLibrary={this.removeFromLibrary}/>
+          <LibraryItemRatingComponent libraryItem={this.props.libraryItem} onChangeRating={this.onRatingChanged}/>
         </li>
       </div>
     );

@@ -135,7 +135,7 @@ var HummingbirdAnimeList = (function($, _) {
     }
 
     var params = _.pick(updateparams, 'status', 'privacy', 'rating', 'rewatching', 
-                        'rewatched_times', 'notes', 'episodes_watched', 'increment_episodes');
+                        'rewatched_times', 'notes', 'episodes_watched', 'increment_episodes', 'sane_rating_update');
 
     _.extend(params, { id: animeid, auth_token: access_token });
 
