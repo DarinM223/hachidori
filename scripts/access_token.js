@@ -8,7 +8,7 @@ var HummingbirdAccessToken = (function($) {
    */
   AccessToken.prototype.getAccessToken = function getAccessToken() {
     if (typeof(Storage) !== 'undefined' && this.access_token === null) {
-      this.access_token = localStorage.getItem('access_token');
+      this.access_token = localStorage.getItem('hummingbird_access_token');
     }
     return this.access_token;
   };
@@ -18,7 +18,7 @@ var HummingbirdAccessToken = (function($) {
    */
   AccessToken.prototype.getUsername = function getUsername() {
     if (typeof(Storage) !== 'undefined' && this.access_token === null) {
-      this.username = localStorage.getItem('username');
+      this.username = localStorage.getItem('hummingbird_username');
     }
     return this.username;
   };
@@ -42,8 +42,8 @@ var HummingbirdAccessToken = (function($) {
         success: function(data, textStatus, jqXHR) {
           // set access_token in localstorage and in a member
           if (typeof(Storage) !== 'undefined') { 
-            localStorage.setItem('access_token', data);
-            localStorage.setItem('username', username);
+            localStorage.setItem('hummingbird_access_token', data);
+            localStorage.setItem('hummingbird_username', username);
           }
           this.access_token = data;
           this.username = username;
@@ -74,8 +74,8 @@ var HummingbirdAccessToken = (function($) {
   AccessToken.prototype.removeAccessToken = function removeAccessToken() {
     this.access_token = null;
     if (typeof(Storage) !== 'undefined') { 
-      localStorage.removeItem('access_token');
-      localStorage.removeItem('username');
+      localStorage.removeItem('hummingbird_access_token');
+      localStorage.removeItem('hummingbird_username');
     }
   };
   return AccessToken;

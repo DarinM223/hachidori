@@ -51,6 +51,13 @@ var App = React.createClass({
       }
     }.bind(this));
   },
+  onLogout: function() {
+    access_token.removeAccessToken();
+    this.setState({ loggedIn: false });
+  },
+  signoutStyle: {
+    float: 'right'
+  },
   render: function() {
     var answer = null;
     if (!this.state.loggedIn) {
@@ -60,6 +67,7 @@ var App = React.createClass({
     } else {
       return (
         <div>
+          <a className="btn btn-default" style={this.signoutStyle} onClick={this.onLogout}>Sign out</a>
           <AnimeTabBarComponent onTabChanged={this.onTabChanged}/>
           <AnimeSearchComponent onTextChanged={this.onTextChanged}/>
           <AnimeListComponent username={access_token.getUsername()} 
