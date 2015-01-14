@@ -5,33 +5,15 @@
  * @property {LibraryItem} libraryItem
  */
 var LibraryItemComponent = React.createClass({
-  titleStyle: {
-    display: 'inline-block',
-    verticalAlign: 'middle',
-    overflow: 'hidden'
-  },
-  episodeStyle: {
-    display: 'inline-block',
-    verticalAlign: 'middle',
-    float: 'right',
-    clear: 'right',
-    overflow: 'hidden'
-  },
-  spacerStyle: {
-    width: '0px',
-    float: 'right'
-  },
-  inputStyle: {
-    textAlign: 'right'
-  },
-
   getInitialState: function() {
     return {
       episodesText: this.props.libraryItem.episodes_watched
     };
   },
   onIncrement: function(event) {
-    this.props.update(this, { episodes_watched: this.props.libraryItem.episodes_watched+1 }, function(err) {
+    this.props.update(this.props.libraryItem.anime.id, { 
+      episodes_watched: this.props.libraryItem.episodes_watched+1 
+    }, function(err) {
       // set the state's episode watched back to the properties episode watched
       if (this.isMounted()) {
         this.setState({ episodesText: this.props.libraryItem.episodes_watched }); 
@@ -40,7 +22,7 @@ var LibraryItemComponent = React.createClass({
   },
   onChangeStatus: function(statusString) {
     if (statusString !== this.props.libraryItem.status) {
-      this.props.update(this, { status: statusString });
+      this.props.update(this.props.libraryItem.anime.id, { status: statusString });
     }
   },
   onChangeEpisodes: function(event) {
@@ -58,7 +40,7 @@ var LibraryItemComponent = React.createClass({
       // save new episodes in Hummingbird
       var num = parseInt(event.target.value, 10);
       if (!isNaN(num)) {
-        this.props.update(this, { episodes_watched: num });
+        this.props.update(this.props.libraryItem.anime.id, { episodes_watched: num });
       }
     }
   },
@@ -78,16 +60,16 @@ var LibraryItemComponent = React.createClass({
           <LibraryItemIncrementComponent libraryItem={this.props.libraryItem} onClicked={this.onIncrement}/>
           &nbsp;
           &nbsp;
-          <div style={this.spacerStyle} className="spacer"></div>
-          <h1 style={this.episodeStyle}>
-            <input type="text" size="2" style={this.inputStyle} 
+          <div className="spacer"></div>
+          <h1 className="episode">
+            <input type="text" size="2"  
               value={this.state.episodesText} 
               onChange={this.onChangeEpisodes}
               onBlur={this.saveChangeEpisodes}
               />
             /{totalEpisodesText}
           </h1>
-        	<h1 style={this.titleStyle}>{this.props.libraryItem.anime.title}</h1>
+        	<h1 className="anime-title">{this.props.libraryItem.anime.title}</h1>
           <LibraryItemStatusComponent libraryItem={this.props.libraryItem} onChangeStatus={this.onChangeStatus}/>
         </li>
       </div>

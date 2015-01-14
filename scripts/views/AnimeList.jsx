@@ -7,41 +7,42 @@
  */
 var AnimeListComponent = React.createClass({
   getInitialState: function() {
-    var _this = this;
     this.HummingbirdApi = new HummingbirdAnimeList(this.props.username, function(err) {
-      _this.setState({ loading: false, animelist: _this.HummingbirdApi.getList() });
-    });
+      this.setState({ loading: false, animelist: this.HummingbirdApi.getList() });
+    }.bind(this));
     return {
       loading: true,
       animelist: null
     };
   },
-  update: function(childComponent, updateparams, callback) {
-    var _this = this;
-    this.HummingbirdApi.update(childComponent.props.libraryItem.anime.id, updateparams, function(err, libraryItem) {
+  update: function(animeid, updateparams, callback) {
+    this.HummingbirdApi.update(animeid, updateparams, function(err, libraryItem) {
       var changeOptions = { };
       var libraryIndex = -1;
-      for (var i = 0; i < _this.state.animelist.length; i++) {
-        if (childComponent.props.libraryItem.id === _this.state.animelist[i].id) {
+      for (var i = 0; i < this.state.animelist.length; i++) {
+        if (animeid === this.state.animelist[i].anime.id) {
           libraryIndex = i;
           break;
         }
       }
-      if (libraryIndex !== -1) {
+      if (libraryIndex !== -1) { // edit existing anime
         changeOptions[libraryIndex] = {
           $set: libraryItem
         };
-        var newlist = React.addons.update(_this.state.animelist, changeOptions);
+        var newlist = React.addons.update(this.state.animelist, changeOptions);
 
-        _this.setState({ animelist: newlist }, callback);
+        this.setState({ animelist: newlist }, callback);
       } else { // add new anime
-        console.log('Not implemented yet!');
+        changeOptions = {
+          $push: [libraryItem]
+        };
+        var newlist = React.addons.update(this.state.animelist, changeOptions);
+
+        this.setState({  animelist: newlist }, callback);
       }
-    });
+    }.bind(this));
   },
   render: function() {
-    var _this = this;
-
     if (this.state.loading) {
       return <h1>Loading data....</h1>
     } else {
@@ -56,12 +57,12 @@ var AnimeListComponent = React.createClass({
       }
 
       var filteredLibrary = libraryIndexes.filter(function(libraryIndex) {
-        return _this.state.animelist[libraryIndex].anime.title.search(new RegExp(_this.props.filterText, 'i')) > -1;
-      }).map(function(libraryIndex) {
-        return <LibraryItemComponent key={_this.state.animelist[libraryIndex].anime.id} 
-                                     libraryItem={_this.state.animelist[libraryIndex]} 
-                                     update={_this.update}/>
-      });
+        return this.state.animelist[libraryIndex].anime.title.search(new RegExp(this.props.filterText, 'i')) > -1;
+      }.bind(this)).map(function(libraryIndex) {
+        return <LibraryItemComponent key={this.state.animelist[libraryIndex].anime.id} 
+                                     libraryItem={this.state.animelist[libraryIndex]} 
+                                     update={this.update}/>
+      }.bind(this));
 
       return (
         <ul id="anime-list" className="list-group">

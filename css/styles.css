@@ -5,3 +5,26 @@
 #animelist a {
     display: inline-block;
 }
+
+.anime-title {
+  display: inline-block;
+  vertical-align: middle;
+  overflow: hidden;
+}
+
+.episode {
+  display: inline-block;
+  vertical-align: middle;
+  float: right;
+  clear: right;
+  overflow: hidden;
+}
+
+.spacer {
+  width: 0px;
+  float: right;
+}
+
+.episode input {
+  text-align: right;
+}
