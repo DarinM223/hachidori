@@ -160,5 +160,15 @@ var HummingbirdAnimeList = (function($, _) {
     });
   };
 
+  Animelist.search = function search(query, callback) {
+    $.ajax({
+      type: 'GET',
+      url: 'http://hummingbird.me/api/v1/search/anime?query=' + query.split(' ').join('+'),
+      success: function(data, textStatus, jqXHR) {
+        return callback(null, data);
+      }.bind(this)
+    });
+  };
+
   return Animelist;
 }) (jQuery, _);

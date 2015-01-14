@@ -4,10 +4,16 @@
  * @property {string} username
  * @property {string} tab
  * @property {string} filterText
+ * @property {Array.<Anime>} searchList
  */
 var AnimeListComponent = React.createClass({
+  inLibrary: {},
   getInitialState: function() {
     this.HummingbirdApi = new HummingbirdAnimeList(this.props.username, function(err) {
+      var library = this.HummingbirdApi.getList();
+      for (var i = 0; i < library.length; i++) {
+        AnimeCache.addAnime(library[i].anime.id);
+      }
       this.setState({ loading: false, animelist: this.HummingbirdApi.getList() });
     }.bind(this));
     return {
@@ -64,10 +70,17 @@ var AnimeListComponent = React.createClass({
                                      update={this.update}/>
       }.bind(this));
 
+      var searchLibrary = this.props.searchList.map(function(anime) {
+        return <AnimeItemComponent anime={anime} update={this.update}/>
+      }.bind(this));
+
       return (
-        <ul id="anime-list" className="list-group">
-          {filteredLibrary}
-        </ul>
+        <div>
+          <ul id="anime-list" className="list-group">
+            {filteredLibrary}
+            {searchLibrary}
+          </ul>
+        </div>
       );
     }
   }

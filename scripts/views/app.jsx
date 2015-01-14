@@ -1,6 +1,7 @@
 'use strict';
 
 var access_token = new HummingbirdAccessToken();
+var searchTimeoutID = null;
 
 var App = React.createClass({
   getInitialState: function() {
@@ -11,11 +12,32 @@ var App = React.createClass({
     return {
       filterText: '',
       tab: 'currently-watching',
-      loggedIn: loggedIn
+      loggedIn: loggedIn, 
+      searchAnime: []
     };
   },
+  searchAnime: function() {
+    var newAnimeList = [];
+    HummingbirdAnimeList.search(this.state.filterText, function(err, data) {
+      for (var i = 0; i < data.length; i++) {
+        if (!AnimeCache.inCache(data[i].id)) {
+          newAnimeList.push(data[i]);
+        }
+      }
+      this.setState({ searchAnime: newAnimeList });
+    }.bind(this));
+  },
   onTextChanged: function(filterText) {
-    this.setState({ filterText: filterText });
+    this.setState({ filterText: filterText }, function() {
+      if (searchTimeoutID === null) {
+        searchTimeoutID = window.setTimeout(this.searchAnime, 500);
+      } else {
+        if (typeof searchTimeoutID == "number") {
+          window.clearTimeout(searchTimeoutID);
+          searchTimeoutID = window.setTimeout(this.searchAnime, 500);
+        }
+      }
+    });
   },
   onTabChanged: function(newTab) {
     this.setState({ tab: newTab });
@@ -40,7 +62,10 @@ var App = React.createClass({
         <div>
           <AnimeTabBarComponent onTabChanged={this.onTabChanged}/>
           <AnimeSearchComponent onTextChanged={this.onTextChanged}/>
-          <AnimeListComponent username={access_token.getUsername()} filterText={this.state.filterText} tab={this.state.tab}/>
+          <AnimeListComponent username={access_token.getUsername()} 
+            filterText={this.state.filterText} 
+            tab={this.state.tab}
+            searchList={this.state.searchAnime}/>
         </div>
       );
     }

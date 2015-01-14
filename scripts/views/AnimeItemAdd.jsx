@@ -10,7 +10,7 @@ var AnimeItemAddComponent = React.createClass({
   },
   render: function() {
     return (
-      <input type="button" className="btn btn-warning btn-lg" onClick={this.onClicked.bind(null)} value="+"/>
+      <input type="button" className="btn btn-danger btn-lg" onClick={this.onClicked} value="+"/>
     );
   }
 });

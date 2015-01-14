@@ -1,7 +1,7 @@
 'use strict';
 
 /**
- * @property {function(this, updateparams)} update
+ * @property {function(integer, updateparams)} update
  * @property {LibraryItem} libraryItem
  */
 var LibraryItemComponent = React.createClass({

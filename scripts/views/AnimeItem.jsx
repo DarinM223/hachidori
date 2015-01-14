@@ -2,7 +2,7 @@
 
 /**
  * @property {Anime} anime
- * @property {this,updateparams} update
+ * @property {integer,updateparams} update
  */
 var AnimeItemComponent = React.createClass({
   onAdd: function() {
@@ -20,12 +20,7 @@ var AnimeItemComponent = React.createClass({
           &nbsp;
           <div className="spacer"></div>
           <h1 className="episode">
-            <input type="text" size="2" 
-              value={this.state.episodesText} 
-              onChange={this.onChangeEpisodes}
-              onBlur={this.saveChangeEpisodes}
-              />
-            /{totalEpisodesText}
+            _/{this.props.anime.episode_count}
           </h1>
         	<h1 className="anime-title">{this.props.anime.title}</h1>
         </li>
