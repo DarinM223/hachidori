@@ -44,6 +44,7 @@ var AnimeListComponent = React.createClass({
         };
         var newlist = React.addons.update(this.state.animelist, changeOptions);
 
+        AnimeCache.addAnime(libraryItem.anime.id);
         this.setState({  animelist: newlist }, callback);
       }
     }.bind(this));
@@ -71,7 +72,9 @@ var AnimeListComponent = React.createClass({
       }.bind(this));
 
       var searchLibrary = this.props.searchList.map(function(anime) {
-        return <AnimeItemComponent anime={anime} update={this.update}/>
+        if (!AnimeCache.inCache(anime.id)) {
+          return <AnimeItemComponent key={anime.id} anime={anime} update={this.update}/>
+        }
       }.bind(this));
 
       return (
