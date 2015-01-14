@@ -2,6 +2,7 @@
 
 /**
  * @property {function(integer, updateparams)} update
+ * @property {function(integer)} remove
  * @property {LibraryItem} libraryItem
  */
 var LibraryItemComponent = React.createClass({
@@ -44,6 +45,9 @@ var LibraryItemComponent = React.createClass({
       }
     }
   },
+  removeFromLibrary: function() {
+    this.props.remove(this.props.libraryItem.anime.id);
+  },
   render: function() {
     var episodesWatchedText = this.props.libraryItem.episodes_watched;
     var totalEpisodesText = this.props.libraryItem.anime.episode_count;
@@ -70,7 +74,9 @@ var LibraryItemComponent = React.createClass({
             /{totalEpisodesText}
           </h1>
         	<h1 className="anime-title">{this.props.libraryItem.anime.title}</h1>
-          <LibraryItemStatusComponent libraryItem={this.props.libraryItem} onChangeStatus={this.onChangeStatus}/>
+          <LibraryItemStatusComponent libraryItem={this.props.libraryItem} 
+            onChangeStatus={this.onChangeStatus}
+            removeFromLibrary={this.removeFromLibrary}/>
         </li>
       </div>
     );

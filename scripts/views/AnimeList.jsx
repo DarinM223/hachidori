@@ -45,7 +45,30 @@ var AnimeListComponent = React.createClass({
         var newlist = React.addons.update(this.state.animelist, changeOptions);
 
         AnimeCache.addAnime(libraryItem.anime.id);
-        this.setState({  animelist: newlist }, callback);
+        this.setState({ animelist: newlist }, callback);
+      }
+    }.bind(this));
+  },
+  remove: function(animeid, callback) {
+    this.HummingbirdApi.removeFromList(animeid, function(err) {
+      if (!err) {
+        var libraryIndex = -1;
+        for (var i = 0; i < this.state.animelist.length; i++) {
+          if (animeid === this.state.animelist[i].anime.id) {
+            libraryIndex = i;
+            break;
+          }
+        }
+        if (libraryIndex !== -1) {
+          var changeOptions = {
+            $splice: [[libraryIndex, 1]]
+          };
+          var newlist = React.addons.update(this.state.animelist, changeOptions);
+          AnimeCache.removeAnime(animeid);
+          this.setState({ animelist: newlist }, callback);
+        } else {
+          alert('Removed item is not in the library!');
+        }
       }
     }.bind(this));
   },
@@ -68,7 +91,8 @@ var AnimeListComponent = React.createClass({
       }.bind(this)).map(function(libraryIndex) {
         return <LibraryItemComponent key={this.state.animelist[libraryIndex].anime.id} 
                                      libraryItem={this.state.animelist[libraryIndex]} 
-                                     update={this.update}/>
+                                     update={this.update}
+                                     remove={this.remove}/>
       }.bind(this));
 
       var searchLibrary = this.props.searchList.map(function(anime) {

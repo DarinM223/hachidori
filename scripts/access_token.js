@@ -34,7 +34,7 @@ var HummingbirdAccessToken = (function($) {
     if (this.getAccessToken() === null) {
       $.ajax({
         type: 'POST',
-        url: 'http://hummingbird.me/api/v1/users/authenticate',
+        url: 'https://hummingbird.me/api/v1/users/authenticate',
         data: {
           username: username,
           password: password

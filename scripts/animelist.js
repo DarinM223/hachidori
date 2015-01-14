@@ -97,21 +97,18 @@ var HummingbirdAnimeList = (function($, _) {
 
     $.ajax({
       type: 'POST', 
-      url: 'http://hummingbird.me/api/v1/libraries/' + animeid + '/remove',
+      url: 'https://hummingbird.me/api/v1/libraries/' + animeid + '/remove',
       data: {
         auth_token: access_token
       },
+      success: function() {
+        return callback(null);
+      },
       statusCode: {
-        200: function() {
-          console.log('Success!');
-          return callback(null);
-        },
         401: function() {
-          console.log('Not authorized!');
           return callback(new Error('You are not authorized to perform this action'));
         },
         500: function() {
-          console.log('Internal server error!');
           return callback(new Error('There was an internal server error'));
         }
       },
@@ -144,7 +141,7 @@ var HummingbirdAnimeList = (function($, _) {
 
     $.ajax({
       type: 'POST',
-      url: 'http://hummingbird.me/api/v1/libraries/' + animeid,
+      url: 'https://hummingbird.me/api/v1/libraries/' + animeid,
       data: params,
       success: function(data, textStatus, jqXHR) {
         return callback(null, data);

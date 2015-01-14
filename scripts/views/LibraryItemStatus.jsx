@@ -3,10 +3,14 @@
 /**
  * @property {LibraryItem} libraryItem
  * @property {function(string)} onChangeStatus
+ * @property {function()} removeFromLibrary
  */
 var LibraryItemStatusComponent = React.createClass({
   onChangeStatus: function(newStatus) {
     this.props.onChangeStatus(newStatus);
+  },
+  removeFromLibrary: function() {
+    this.props.removeFromLibrary();
   },
   render: function() {
     var DropdownButton = window.ReactBootstrap.DropdownButton;
@@ -40,6 +44,7 @@ var LibraryItemStatusComponent = React.createClass({
           <MenuItem href="#" onClick={this.onChangeStatus.bind(null, 'plan-to-watch')}>Plan to Watch</MenuItem>
           <MenuItem href="#" onClick={this.onChangeStatus.bind(null, 'on-hold')}>On Hold</MenuItem>
           <MenuItem href="#" onClick={this.onChangeStatus.bind(null, 'dropped')}>Dropped</MenuItem>
+          <MenuItem href="#" onClick={this.removeFromLibrary}>Remove from Library</MenuItem>
         </DropdownButton>
       </div>
     );
