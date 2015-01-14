@@ -77,6 +77,7 @@ var AnimeListComponent = React.createClass({
       return <h1>Loading data....</h1>
     } else {
       var libraryIndexes = [];
+      var current_date = new Date();
 
       for (var i = 0; i < this.state.animelist.length; i++) {
         if (this.props.tab === 'all') {
@@ -86,7 +87,19 @@ var AnimeListComponent = React.createClass({
         }
       }
 
-      var filteredLibrary = libraryIndexes.filter(function(libraryIndex) {
+      var filteredLibrary = libraryIndexes.sort(function(a, b) {
+        var d_a = new Date(this.state.animelist[a].anime.started_airing);
+        var d_b = new Date(this.state.animelist[b].anime.started_airing);
+        var difference_a = d_a.getDay() - current_date.getDay();
+        var difference_b = d_b.getDay() - current_date.getDay();
+        if (difference_a < 0) {
+          difference_a = 7 - difference_a;
+        }
+        if (difference_b < 0) {
+          difference_b = 7 - difference_b;
+        }
+        return difference_a - difference_b;
+      }.bind(this)).filter(function(libraryIndex) {
         return this.state.animelist[libraryIndex].anime.title.search(new RegExp(this.props.filterText, 'i')) > -1;
       }.bind(this)).map(function(libraryIndex) {
         return <LibraryItemComponent key={this.state.animelist[libraryIndex].anime.id} 

@@ -36,7 +36,8 @@ var LibraryItemStatusComponent = React.createClass({
     }
 
     return (
-      <div>
+      <span>
+        <br/>
         <label htmlFor="dropdown-status">Status: &nbsp;</label>
         <DropdownButton id="dropdown-status" title={statusText}>
           <MenuItem href="#" onClick={this.onChangeStatus.bind(null, 'currently-watching')}>Currently watching</MenuItem>
@@ -46,7 +47,8 @@ var LibraryItemStatusComponent = React.createClass({
           <MenuItem href="#" onClick={this.onChangeStatus.bind(null, 'dropped')}>Dropped</MenuItem>
           <MenuItem href="#" onClick={this.removeFromLibrary}>Remove from Library</MenuItem>
         </DropdownButton>
-      </div>
+        &nbsp;
+      </span>
     );
   }
 });
