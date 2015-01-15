@@ -1,3 +1,4 @@
+/** @jsx React.DOM */
 /**
  * @property {function(this)} onTextChanged
  */

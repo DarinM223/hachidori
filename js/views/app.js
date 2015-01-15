@@ -1,9 +1,10 @@
+/** @jsx React.DOM */
 'use strict';
 
 var access_token = new HummingbirdAccessToken();
 var searchTimeoutID = null;
 
-var App = React.createClass({
+var App = React.createClass({displayName: 'App',
   getInitialState: function() {
     var loggedIn = true;
     if (access_token.getUsername() === null || access_token.getAccessToken() === null) {
@@ -62,19 +63,19 @@ var App = React.createClass({
     var answer = null;
     if (!this.state.loggedIn) {
       return (
-        <LoginPageComponent onLogin={this.onLogin}/>
+        React.createElement(LoginPageComponent, {onLogin: this.onLogin})
       )
     } else {
       return (
-        <div>
-          <a className="btn btn-default" style={this.signoutStyle} onClick={this.onLogout}>Sign out</a>
-          <AnimeTabBarComponent onTabChanged={this.onTabChanged}/>
-          <AnimeSearchComponent onTextChanged={this.onTextChanged}/>
-          <AnimeListComponent username={access_token.getUsername()} 
-            filterText={this.state.filterText} 
-            tab={this.state.tab}
-            searchList={this.state.searchAnime}/>
-        </div>
+        React.createElement("div", null, 
+          React.createElement("a", {className: "btn btn-default", style: this.signoutStyle, onClick: this.onLogout}, "Sign out"), 
+          React.createElement(AnimeTabBarComponent, {onTabChanged: this.onTabChanged}), 
+          React.createElement(AnimeSearchComponent, {onTextChanged: this.onTextChanged}), 
+          React.createElement(AnimeListComponent, {username: access_token.getUsername(), 
+            filterText: this.state.filterText, 
+            tab: this.state.tab, 
+            searchList: this.state.searchAnime})
+        )
       );
     }
   }

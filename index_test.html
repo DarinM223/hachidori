@@ -1,0 +1,43 @@
+<html>
+    <head>
+        <title>Anime checker</title>
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="./bower_components/bootstrap/dist/css/bootstrap.css"/>
+        <link rel="stylesheet" href="./rateit/rateit.css"/>
+        <link rel="stylesheet" href="css/styles.css"/>
+    </head>
+    <body>
+        <div id="app" class="container"></div>
+
+        <script src="./bower_components/underscore/underscore.js"></script>
+        <script src="./bower_components/jquery/dist/jquery.js"></script>
+        <script src="./bower_components/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="./bower_components/react/react-with-addons.js"></script>
+        <script src="./bower_components/react-bootstrap/react-bootstrap.js"></script>
+        <script src="./bower_components/react/JSXTransformer.js"></script>
+        <script src="./rateit/jquery.rateit.js"></script>
+
+        <!-- My scripts -->
+        <script src="./scripts/access_token.js"></script>
+        <script src="./scripts/animelist.js"></script>
+        <script src="./scripts/animecache.js"></script>
+        <script src="./scripts/views/LoginPage.jsx" type="text/jsx"></script>
+        <script src="./scripts/views/LibraryItemStatus.jsx" type="text/jsx"></script>
+        <script src="./scripts/views/LibraryItemIncrement.jsx" type="text/jsx"></script>
+        <script src="./scripts/views/LibraryItemRating.jsx" type="text/jsx"></script>
+        <script src="./scripts/views/LibraryItem.jsx" type="text/jsx"></script>
+        <script src="./scripts/views/AnimeList.jsx" type="text/jsx"></script>
+        <script src="./scripts/views/AnimeSearch.jsx" type="text/jsx"></script>
+        <script src="./scripts/views/AnimeTabBar.jsx" type="text/jsx"></script>
+        <script src="./scripts/views/AnimeItemAdd.jsx" type="text/jsx"></script>
+        <script src="./scripts/views/AnimeItem.jsx" type="text/jsx"></script>
+        <script src="./scripts/views/app.jsx" type="text/jsx"></script>
+
+        <script type="text/jsx">
+          React.render(
+            <App/>,
+            document.getElementById('app')
+          );
+        </script>
+    </body>
+</html>

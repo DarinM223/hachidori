@@ -1,3 +1,4 @@
+/** @jsx React.DOM */
 'use strict';
 
 /**
@@ -20,7 +21,7 @@ var LibraryItemRatingComponent = React.createClass({
     if (this.props.libraryItem.rating.type === 'advanced') {
       return (
         <span>
-          <label htmlFor="rating">Rating: &nbsp;</label>
+          <label htmlFor="rating">Rating: <span>{'\u00a0'}</span></label>
           <select id={"backing-" + this.props.libraryItem.anime.id} name="Rating">
             <option value="1"></option>
             <option value="1.5"></option>

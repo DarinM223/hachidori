@@ -1,3 +1,4 @@
+/** @jsx React.DOM */
 'use strict';
 
 /**
@@ -5,7 +6,7 @@
  * @property {function(integer)} remove
  * @property {LibraryItem} libraryItem
  */
-var LibraryItemComponent = React.createClass({
+var LibraryItemComponent = React.createClass({displayName: 'LibraryItemComponent',
   getInitialState: function() {
     return {
       episodesText: this.props.libraryItem.episodes_watched
@@ -68,27 +69,27 @@ var LibraryItemComponent = React.createClass({
     }
 
     return (
-      <div>
-        <li className="list-group-item" >
-          <LibraryItemIncrementComponent libraryItem={this.props.libraryItem} onClicked={this.onIncrement}/>
-          &nbsp;
-          &nbsp;
-          <div className="spacer"></div>
-          <h1 className="episode">
-            <input type="text" size="2"  
-              value={this.state.episodesText} 
-              onChange={this.onChangeEpisodes}
-              onBlur={this.saveChangeEpisodes}
-              />
-            /{totalEpisodesText}
-          </h1>
-        	<h1 className="anime-title">{this.props.libraryItem.anime.title}</h1>
-          <LibraryItemStatusComponent libraryItem={this.props.libraryItem} 
-            onChangeStatus={this.onChangeStatus}
-            removeFromLibrary={this.removeFromLibrary}/>
-          <LibraryItemRatingComponent libraryItem={this.props.libraryItem} onChangeRating={this.onRatingChanged}/>
-        </li>
-      </div>
+      React.createElement("div", null, 
+        React.createElement("li", {className: "list-group-item"}, 
+          React.createElement(LibraryItemIncrementComponent, {libraryItem: this.props.libraryItem, onClicked: this.onIncrement}), 
+          React.createElement("span", null, '\u00a0'), 
+          React.createElement("span", null, '\u00a0'), 
+          React.createElement("div", {className: "spacer"}), 
+          React.createElement("h1", {className: "episode"}, 
+            React.createElement("input", {type: "text", size: "2", 
+              value: this.state.episodesText, 
+              onChange: this.onChangeEpisodes, 
+              onBlur: this.saveChangeEpisodes}
+              ), 
+            "/", totalEpisodesText
+          ), 
+        	React.createElement("h1", {className: "anime-title"}, this.props.libraryItem.anime.title), 
+          React.createElement(LibraryItemStatusComponent, {libraryItem: this.props.libraryItem, 
+            onChangeStatus: this.onChangeStatus, 
+            removeFromLibrary: this.removeFromLibrary}), 
+          React.createElement(LibraryItemRatingComponent, {libraryItem: this.props.libraryItem, onChangeRating: this.onRatingChanged})
+        )
+      )
     );
   }
 });

@@ -1,3 +1,4 @@
+/** @jsx React.DOM */
 'use strict';
 
 /**
@@ -16,8 +17,8 @@ var AnimeItemComponent = React.createClass({
       <div>
         <li className="list-group-item" >
           <AnimeItemAddComponent anime={this.props.anime} onClicked={this.onAdd}/>
-          &nbsp;
-          &nbsp;
+          <span>{'\u00a0'}</span>
+          <span>{'\u00a0'}</span>
           <div className="spacer"></div>
           <h1 className="episode">
             _/{this.props.anime.episode_count}

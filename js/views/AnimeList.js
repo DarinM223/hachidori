@@ -1,3 +1,4 @@
+/** @jsx React.DOM */
 'use strict';
 
 /**
@@ -6,7 +7,7 @@
  * @property {string} filterText
  * @property {Array.<Anime>} searchList
  */
-var AnimeListComponent = React.createClass({
+var AnimeListComponent = React.createClass({displayName: 'AnimeListComponent',
   inLibrary: {},
   getInitialState: function() {
     this.HummingbirdApi = new HummingbirdAnimeList(this.props.username, function(err) {
@@ -74,7 +75,7 @@ var AnimeListComponent = React.createClass({
   },
   render: function() {
     if (this.state.loading) {
-      return <h1>Loading data....</h1>
+      return React.createElement("h1", null, "Loading data....")
     } else {
       var libraryIndexes = [];
       var current_date = new Date();
@@ -102,25 +103,25 @@ var AnimeListComponent = React.createClass({
       }.bind(this)).filter(function(libraryIndex) {
         return this.state.animelist[libraryIndex].anime.title.search(new RegExp(this.props.filterText, 'i')) > -1;
       }.bind(this)).map(function(libraryIndex) {
-        return <LibraryItemComponent key={this.state.animelist[libraryIndex].anime.id} 
-                                     libraryItem={this.state.animelist[libraryIndex]} 
-                                     update={this.update}
-                                     remove={this.remove}/>
+        return React.createElement(LibraryItemComponent, {key: this.state.animelist[libraryIndex].anime.id, 
+                                     libraryItem: this.state.animelist[libraryIndex], 
+                                     update: this.update, 
+                                     remove: this.remove})
       }.bind(this));
 
       var searchLibrary = this.props.searchList.map(function(anime) {
         if (!AnimeCache.inCache(anime.id)) {
-          return <AnimeItemComponent key={anime.id} anime={anime} update={this.update}/>
+          return React.createElement(AnimeItemComponent, {key: anime.id, anime: anime, update: this.update})
         }
       }.bind(this));
 
       return (
-        <div>
-          <ul id="anime-list" className="list-group">
-            {filteredLibrary}
-            {searchLibrary}
-          </ul>
-        </div>
+        React.createElement("div", null, 
+          React.createElement("ul", {id: "anime-list", className: "list-group"}, 
+            filteredLibrary, 
+            searchLibrary
+          )
+        )
       );
     }
   }

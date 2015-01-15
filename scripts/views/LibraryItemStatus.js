@@ -1,3 +1,4 @@
+/** @jsx React.DOM */
 'use strict';
 
 /**
@@ -38,7 +39,7 @@ var LibraryItemStatusComponent = React.createClass({
     return (
       <span>
         <br/>
-        <label htmlFor="dropdown-status">Status: &nbsp;</label>
+        <label htmlFor="dropdown-status">Status: <span>{'\u00a0'}</span></label>
         <DropdownButton id="dropdown-status" title={statusText}>
           <MenuItem href="#" onClick={this.onChangeStatus.bind(null, 'currently-watching')}>Currently watching</MenuItem>
           <MenuItem href="#" onClick={this.onChangeStatus.bind(null, 'completed')}>Completed</MenuItem>
@@ -47,7 +48,7 @@ var LibraryItemStatusComponent = React.createClass({
           <MenuItem href="#" onClick={this.onChangeStatus.bind(null, 'dropped')}>Dropped</MenuItem>
           <MenuItem href="#" onClick={this.removeFromLibrary}>Remove from Library</MenuItem>
         </DropdownButton>
-        &nbsp;
+        <span>{'\u00a0'}</span>
       </span>
     );
   }
