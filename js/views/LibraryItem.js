@@ -76,14 +76,14 @@ var LibraryItemComponent = React.createClass({displayName: 'LibraryItemComponent
           React.createElement("span", null, '\u00a0'), 
           React.createElement("div", {className: "spacer"}), 
           React.createElement("h1", {className: "episode"}, 
-            React.createElement("input", {type: "text", size: "2", 
+            React.createElement("input", {type: "text", size: "1", 
               value: this.state.episodesText, 
               onChange: this.onChangeEpisodes, 
               onBlur: this.saveChangeEpisodes}
               ), 
             "/", totalEpisodesText
           ), 
-        	React.createElement("h1", {className: "anime-title"}, this.props.libraryItem.anime.title), 
+        	React.createElement("h2", {className: "anime-title"}, this.props.libraryItem.anime.title), 
           React.createElement(LibraryItemStatusComponent, {libraryItem: this.props.libraryItem, 
             onChangeStatus: this.onChangeStatus, 
             removeFromLibrary: this.removeFromLibrary}), 

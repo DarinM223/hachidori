@@ -7,7 +7,7 @@ var HummingbirdAccessToken = (function($) {
    * @return {string} the access token for the user
    */
   AccessToken.prototype.getAccessToken = function getAccessToken() {
-    if (typeof(Storage) !== 'undefined' && this.access_token === null) {
+    if (typeof(Storage) !== 'undefined' && this.access_token === null && localStorage !== undefined) {
       this.access_token = localStorage.getItem('hummingbird_access_token');
     }
     return this.access_token;
@@ -17,7 +17,7 @@ var HummingbirdAccessToken = (function($) {
    * @return {string} the username for the user
    */
   AccessToken.prototype.getUsername = function getUsername() {
-    if (typeof(Storage) !== 'undefined' && this.access_token === null) {
+    if (typeof(Storage) !== 'undefined' && this.access_token === null && localStorage !== undefined) {
       this.username = localStorage.getItem('hummingbird_username');
     }
     return this.username;
@@ -41,7 +41,7 @@ var HummingbirdAccessToken = (function($) {
         }, 
         success: function(data, textStatus, jqXHR) {
           // set access_token in localstorage and in a member
-          if (typeof(Storage) !== 'undefined') { 
+          if (typeof(Storage) !== 'undefined' && localStorage !== undefined) { 
             localStorage.setItem('hummingbird_access_token', data);
             localStorage.setItem('hummingbird_username', username);
           }
@@ -73,7 +73,7 @@ var HummingbirdAccessToken = (function($) {
    */
   AccessToken.prototype.removeAccessToken = function removeAccessToken() {
     this.access_token = null;
-    if (typeof(Storage) !== 'undefined') { 
+    if (typeof(Storage) !== 'undefined' && localStorage !== undefined) { 
       localStorage.removeItem('hummingbird_access_token');
       localStorage.removeItem('hummingbird_username');
     }

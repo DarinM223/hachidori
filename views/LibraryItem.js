@@ -76,14 +76,14 @@ var LibraryItemComponent = React.createClass({
           <span>{'\u00a0'}</span>
           <div className="spacer"></div>
           <h1 className="episode">
-            <input type="text" size="2"  
+            <input type="text" size="1"  
               value={this.state.episodesText} 
               onChange={this.onChangeEpisodes}
               onBlur={this.saveChangeEpisodes}
               />
             /{totalEpisodesText}
           </h1>
-        	<h1 className="anime-title">{this.props.libraryItem.anime.title}</h1>
+        	<h2 className="anime-title">{this.props.libraryItem.anime.title}</h2>
           <LibraryItemStatusComponent libraryItem={this.props.libraryItem} 
             onChangeStatus={this.onChangeStatus}
             removeFromLibrary={this.removeFromLibrary}/>

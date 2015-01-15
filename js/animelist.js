@@ -32,7 +32,7 @@ var HummingbirdAnimeList = (function($, _) {
       url: 'http://hummingbird.me/api/v1/users/' + this.username + '/library',
       success: function(data, textStatus, jqXHR) {
         this.anime_list = data;
-        if (typeof(Storage) !== 'undefined') { // save anime list into local storage
+        if (typeof(Storage) !== 'undefined' && localStorage !== undefined) { // save anime list into local storage
           localStorage.setItem(this.username, JSON.stringify(this.anime_list)); // TODO: call this in webworker
         }
         if (_callback) {
@@ -40,7 +40,7 @@ var HummingbirdAnimeList = (function($, _) {
         }
       }.bind(this),
       error: function(jqXHR, textStatus, error) {
-        if (typeof(Storage) !== 'undefined') { // load anime list from local storage
+        if (typeof(Storage) !== 'undefined' && localStorage !== undefined) { // load anime list from local storage
           this.anime_list = JSON.parse(localStorage.getItem(this.username)); // TODO: call this in webworker
         }
         if (_callback) {
@@ -61,7 +61,7 @@ var HummingbirdAnimeList = (function($, _) {
       url: 'http://hummingbird.me/api/v1/users/' + this.username + '/favorite_anime',
       success: function(data, textStatus, jqXHR) {
         this.favorite_anime = data;
-        if (typeof(Storage) !== 'undefined') {
+        if (typeof(Storage) !== 'undefined' && localStorage !== undefined) {
           localStorage.setItem(this.username+':favorite', JSON.stringify(this.favorite_anime));
         }
         if (_callback) {
@@ -69,7 +69,7 @@ var HummingbirdAnimeList = (function($, _) {
         }
       }.bind(this),
       error: function(jqXHR, textStatus, error) {
-        if (typeof(Storage) !== 'undefined') {
+        if (typeof(Storage) !== 'undefined' && localStorage !== undefined) {
           this.favorite_anime = JSON.parse(localStorage.getItem(this.username + ':favorite'));
         }
         if (_callback) {

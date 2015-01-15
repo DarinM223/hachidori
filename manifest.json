@@ -1,0 +1,20 @@
+{
+  "name": "Hummingbird React Client",
+  "description": "Minimalist Hummingbird Client",
+  "version": "0.1",
+  "manifest_version": 2,
+  "permissions": [
+    "http://hummingbird.me/",
+    "https://hummingbird.me/"
+  ],
+  //"app": {
+  //  "background": {
+  //    "scripts": ["background.js"]
+  //  }
+  //}
+  "app": {
+    "launch": {
+      "local_path": "index.html"
+    }
+  }
+}
