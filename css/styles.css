@@ -41,8 +41,14 @@
   height: 300;
 }
 
+.anime-cover-image {
+  width: 200;
+  height: 300;
+  margin-right: 10px;
+}
+
 .anime-detail {
-  max-width: 500;
+  max-width: 490;
   max-height: 300;
   float: right;
   overflow-y: scroll;

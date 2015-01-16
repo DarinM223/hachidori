@@ -9,7 +9,7 @@ var AnimeDetailComponent = React.createClass({
   render: function() {
     return (
       <div className="anime-detail-container"> 
-        <img src={this.props.imageURL} width="200" height="300"/> 
+        <img className="anime-cover-image" src={this.props.imageURL} /> 
       	<p className="anime-detail">{this.props.detail}</p>
       </div>
     );
