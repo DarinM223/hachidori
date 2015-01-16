@@ -6,7 +6,7 @@
  * @property {function(integer)} remove
  * @property {LibraryItem} libraryItem
  */
-var LibraryItemComponent = React.createClass({displayName: "LibraryItemComponent",
+var LibraryItemComponent = React.createClass({displayName: 'LibraryItemComponent',
   getInitialState: function() {
     return {
       episodesText: this.props.libraryItem.episodes_watched

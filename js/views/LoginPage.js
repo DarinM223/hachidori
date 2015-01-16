@@ -4,7 +4,7 @@
 /**
  * @property {function(username, password)} onLogin
  */
-var LoginPageComponent = React.createClass({displayName: "LoginPageComponent",
+var LoginPageComponent = React.createClass({displayName: 'LoginPageComponent',
   onLoginClicked: function(event) {
     var username = this.refs.username.getDOMNode().value;
     var password = this.refs.password.getDOMNode().value;

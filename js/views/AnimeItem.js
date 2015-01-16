@@ -5,11 +5,21 @@
  * @property {Anime} anime
  * @property {integer,updateparams} update
  */
-var AnimeItemComponent = React.createClass({displayName: "AnimeItemComponent",
+var AnimeItemComponent = React.createClass({displayName: 'AnimeItemComponent',
   onAdd: function() {
     this.props.update(this.props.anime.id, {
       status: 'currently-watching',
       privacy: 'public'
+    });
+  },
+  toggleDescription: function(event) {
+    var html = React.renderToString(React.createElement(AnimeDetailComponent, {
+      imageURL: this.props.anime.cover_image, 
+      detail: this.props.anime.synopsis}));
+    $(this.refs.title.getDOMNode()).popover({
+      placement: 'bottom',
+      html: true,
+      content: html
     });
   },
   render: function() {
@@ -23,7 +33,7 @@ var AnimeItemComponent = React.createClass({displayName: "AnimeItemComponent",
           React.createElement("h1", {className: "episode"}, 
             "_/", this.props.anime.episode_count
           ), 
-        	React.createElement("h1", {className: "anime-title"}, this.props.anime.title)
+          React.createElement("h2", {className: "anime-title", ref: "title", onMouseEnter: this.toggleDescription}, this.props.anime.title)
         )
       )
     );

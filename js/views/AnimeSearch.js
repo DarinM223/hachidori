@@ -2,7 +2,7 @@
 /**
  * @property {function(this)} onTextChanged
  */
-var AnimeSearchComponent = React.createClass({displayName: "AnimeSearchComponent",
+var AnimeSearchComponent = React.createClass({displayName: 'AnimeSearchComponent',
   onTextChanged: function(event) {
     this.props.onTextChanged(event.target.value);
   },

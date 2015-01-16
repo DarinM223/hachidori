@@ -5,7 +5,7 @@
  * @property {string} imageURL
  * @property {string} detail
  */
-var AnimeDetailComponent = React.createClass({displayName: "AnimeDetailComponent",
+var AnimeDetailComponent = React.createClass({displayName: 'AnimeDetailComponent',
   render: function() {
     return (
       React.createElement("div", {className: "anime-detail-container"}, 

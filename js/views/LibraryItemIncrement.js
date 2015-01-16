@@ -5,7 +5,7 @@
  * @property {LibraryItem} libraryItem
  * @property {function()} onClicked
  */
-var LibraryItemIncrementComponent = React.createClass({displayName: "LibraryItemIncrementComponent",
+var LibraryItemIncrementComponent = React.createClass({displayName: 'LibraryItemIncrementComponent',
   onClicked: function() {
     if (this.props.libraryItem.episodes_watched !== null && 
          (this.props.libraryItem.episodes_watched < this.props.libraryItem.anime.episode_count || 
