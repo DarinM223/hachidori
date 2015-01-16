@@ -58,9 +58,6 @@ var HummingbirdAccessToken = (function($) {
             console.log('Internal server error');
             return callback(new Error('Internal server error'));
           }
-        },
-        error: function(jqXHR, textStatus, error) {
-          return callback(error);
         }
       });
     } else {
