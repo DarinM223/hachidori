@@ -2,13 +2,14 @@
 'use strict';
 
 /**
+ * @property {string} tab
  * @property {Anime} anime
  * @property {integer,updateparams} update
  */
 var AnimeItemComponent = React.createClass({
   onAdd: function() {
     this.props.update(this.props.anime.id, {
-      status: 'currently-watching',
+      status: this.props.tab,
       privacy: 'public'
     });
   },

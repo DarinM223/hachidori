@@ -111,7 +111,7 @@ var AnimeListComponent = React.createClass({
 
       var searchLibrary = this.props.searchList.map(function(anime) {
         if (!AnimeCache.inCache(anime.id)) {
-          return <AnimeItemComponent key={anime.id} anime={anime} update={this.update}/>
+          return <AnimeItemComponent key={anime.id} tab={this.props.tab} anime={anime} update={this.update}/>
         }
       }.bind(this));
 
