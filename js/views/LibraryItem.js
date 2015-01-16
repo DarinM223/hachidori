@@ -6,7 +6,7 @@
  * @property {function(integer)} remove
  * @property {LibraryItem} libraryItem
  */
-var LibraryItemComponent = React.createClass({displayName: 'LibraryItemComponent',
+var LibraryItemComponent = React.createClass({displayName: "LibraryItemComponent",
   getInitialState: function() {
     return {
       episodesText: this.props.libraryItem.episodes_watched
@@ -58,6 +58,16 @@ var LibraryItemComponent = React.createClass({displayName: 'LibraryItemComponent
       }
     });
   },
+  toggleDescription: function(event) {
+    var html = React.renderToString(React.createElement(AnimeDetailComponent, {
+      imageURL: this.props.libraryItem.anime.cover_image, 
+      detail: this.props.libraryItem.anime.synopsis}));
+    $(this.refs.title.getDOMNode()).popover({
+      placement: 'bottom',
+      html: true,
+      content: html
+    });
+  },
   render: function() {
     var episodesWatchedText = this.props.libraryItem.episodes_watched;
     var totalEpisodesText = this.props.libraryItem.anime.episode_count;
@@ -83,7 +93,7 @@ var LibraryItemComponent = React.createClass({displayName: 'LibraryItemComponent
               ), 
             "/", totalEpisodesText
           ), 
-        	React.createElement("h2", {className: "anime-title"}, this.props.libraryItem.anime.title), 
+          React.createElement("h2", {className: "anime-title", ref: "title", onMouseEnter: this.toggleDescription}, this.props.libraryItem.anime.title), 
           React.createElement(LibraryItemStatusComponent, {libraryItem: this.props.libraryItem, 
             onChangeStatus: this.onChangeStatus, 
             removeFromLibrary: this.removeFromLibrary}), 

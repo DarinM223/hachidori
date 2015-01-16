@@ -6,7 +6,7 @@
  * @property {function(string)} onChangeStatus
  * @property {function()} removeFromLibrary
  */
-var LibraryItemStatusComponent = React.createClass({displayName: 'LibraryItemStatusComponent',
+var LibraryItemStatusComponent = React.createClass({displayName: "LibraryItemStatusComponent",
   onChangeStatus: function(newStatus) {
     this.props.onChangeStatus(newStatus);
   },

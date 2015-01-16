@@ -5,7 +5,7 @@
  * @property {LibraryItem} libraryItem
  * @property {function(double)} onChangeRating
  */
-var LibraryItemRatingComponent = React.createClass({displayName: 'LibraryItemRatingComponent',
+var LibraryItemRatingComponent = React.createClass({displayName: "LibraryItemRatingComponent",
   onChangeRating: function(newRating) {
     if (newRating !== this.props.libraryItem.rating.value) {
       this.props.onChangeRating(newRating);
@@ -33,8 +33,8 @@ var LibraryItemRatingComponent = React.createClass({displayName: 'LibraryItemRat
             React.createElement("option", {value: "4.5"}), 
             React.createElement("option", {value: "5"})
           ), 
-          React.createElement("span", {ref: "rating", 'data-rateit-backingfld': "select#backing-" + this.props.libraryItem.anime.id, 
-               'data-rateit-resetable': "false", 'data-rateit-value': this.props.libraryItem.rating.value})
+          React.createElement("span", {ref: "rating", "data-rateit-backingfld": "select#backing-" + this.props.libraryItem.anime.id, 
+               "data-rateit-resetable": "false", "data-rateit-value": this.props.libraryItem.rating.value})
         )
       );
     } else {

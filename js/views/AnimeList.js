@@ -7,7 +7,7 @@
  * @property {string} filterText
  * @property {Array.<Anime>} searchList
  */
-var AnimeListComponent = React.createClass({displayName: 'AnimeListComponent',
+var AnimeListComponent = React.createClass({displayName: "AnimeListComponent",
   inLibrary: {},
   getInitialState: function() {
     this.HummingbirdApi = new HummingbirdAnimeList(this.props.username, function(err) {

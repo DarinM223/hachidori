@@ -5,7 +5,7 @@
  * @property {Anime} anime
  * @property {integer,updateparams} update
  */
-var AnimeItemComponent = React.createClass({displayName: 'AnimeItemComponent',
+var AnimeItemComponent = React.createClass({displayName: "AnimeItemComponent",
   onAdd: function() {
     this.props.update(this.props.anime.id, {
       status: 'currently-watching',

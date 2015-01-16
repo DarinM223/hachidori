@@ -4,7 +4,7 @@
 var access_token = new HummingbirdAccessToken();
 var searchTimeoutID = null;
 
-var App = React.createClass({displayName: 'App',
+var App = React.createClass({displayName: "App",
   getInitialState: function() {
     var loggedIn = true;
     if (access_token.getUsername() === null || access_token.getAccessToken() === null) {

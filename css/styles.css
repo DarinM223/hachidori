@@ -31,3 +31,19 @@
 .episode input {
   text-align: right;
 }
+
+.popover {
+  max-width: 100%;
+}
+
+.anime-detail-container {
+  width: 700;
+  height: 300;
+}
+
+.anime-detail {
+  max-width: 500;
+  max-height: 300;
+  float: right;
+  overflow-y: scroll;
+}

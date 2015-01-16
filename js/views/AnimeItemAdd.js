@@ -5,7 +5,7 @@
  * @property {Anime} anime
  * @property {function()} onClicked
  */
-var AnimeItemAddComponent = React.createClass({displayName: 'AnimeItemAddComponent',
+var AnimeItemAddComponent = React.createClass({displayName: "AnimeItemAddComponent",
   onClicked: function() {
     this.props.onClicked();
   },
