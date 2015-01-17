@@ -108,10 +108,10 @@ var AnimeListComponent = React.createClass({
         // account for anime that airs before today
         var difference_b = d_b - current_date.getDay();
         if (difference_a < 0) {
-          difference_a = 7 - difference_a;
+          difference_a += 7;
         }
         if (difference_b < 0) {
-          difference_b = 7 - difference_b;
+          difference_b += 7;
         }
         return difference_a - difference_b;
       }.bind(this)).filter(function(libraryIndex) {
