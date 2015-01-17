@@ -15,25 +15,23 @@ var LoginPageComponent = React.createClass({
     return (
       <div className="container">
         <form className="form-horizontal">
-          <legend><h1>Login page</h1></legend>
+          <legend><h1>Login to Hummingbird</h1></legend>
           <fieldset>
             <div className="form-group">
-              <label htmlFor="inputUsername" className="col-lg-1 control-label">Username: </label>
-              <div className="col-lg-11">
+              <div className="col-lg-10">
                 <input type="text" className="form-control" id="inputUsername" 
-                       ref="username" placeholder="username"/>
+                       ref="username" placeholder="Hummingbird username"/>
               </div>
             </div>
             <div className="form-group">
-              <label htmlFor="inputPassword" className="col-lg-1 control-label">Password: </label>
-              <div className="col-lg-11">
+              <div className="col-lg-10">
                 <input type="password" id="inputUsername" className="form-control" 
-                       ref="password" placeholder="password"/> 
+                       ref="password" placeholder="Hummingbird password"/> 
               </div>
             </div>
             <div className="form-group col-lg-11 col-lg-offset-1">
               <a className="btn btn-primary" onClick={this.onLoginClicked}>
-                Submit
+                Login
               </a>
             </div>
           </fieldset>
