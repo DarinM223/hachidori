@@ -73,6 +73,9 @@ var AnimeListComponent = React.createClass({
       }
     }.bind(this));
   },
+  onAirDayChanged: function(newDay) {
+    this.forceUpdate();
+  },
   render: function() {
     if (this.state.loading) {
       return <h1>Loading data....</h1>
@@ -89,10 +92,21 @@ var AnimeListComponent = React.createClass({
       }
 
       var filteredLibrary = libraryIndexes.sort(function(a, b) {
-        var d_a = new Date(this.state.animelist[a].anime.started_airing);
-        var d_b = new Date(this.state.animelist[b].anime.started_airing);
-        var difference_a = d_a.getDay() - current_date.getDay();
-        var difference_b = d_b.getDay() - current_date.getDay();
+        var d_a = AnimeAirDate.getAirDate(this.state.animelist[a].anime.id);
+        if (d_a === null) { // if no set air day, default to first air date
+          var d = new Date(this.state.animelist[a].anime.started_airing);
+          AnimeAirDate.setAirDate(this.state.animelist[a].anime.id, d.getDay());
+          d_a = AnimeAirDate.getAirDate(this.state.animelist[a].anime.id);
+        }
+        var d_b = AnimeAirDate.getAirDate(this.state.animelist[b].anime.id);
+        if (d_b === null) { // if no set air day, default to first air date
+          var d = new Date(this.state.animelist[b].anime.started_airing);
+          AnimeAirDate.setAirDate(this.state.animelist[b].anime.id, d.getDay());
+          d_b = AnimeAirDate.getAirDate(this.state.animelist[b].anime.id);
+        }
+        var difference_a = d_a - current_date.getDay();
+        // account for anime that airs before today
+        var difference_b = d_b - current_date.getDay();
         if (difference_a < 0) {
           difference_a = 7 - difference_a;
         }
@@ -106,7 +120,8 @@ var AnimeListComponent = React.createClass({
         return <LibraryItemComponent key={this.state.animelist[libraryIndex].anime.id} 
                                      libraryItem={this.state.animelist[libraryIndex]} 
                                      update={this.update}
-                                     remove={this.remove}/>
+                                     remove={this.remove}
+                                     onAirDayChanged={this.onAirDayChanged}/>
       }.bind(this));
 
       var searchLibrary = this.props.searchList.map(function(anime) {

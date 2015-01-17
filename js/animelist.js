@@ -33,7 +33,7 @@ var HummingbirdAnimeList = (function($, _) {
       success: function(data, textStatus, jqXHR) {
         this.anime_list = data;
         if (typeof(Storage) !== 'undefined' && localStorage !== undefined) { // save anime list into local storage
-          localStorage.setItem(this.username, JSON.stringify(this.anime_list)); // TODO: call this in webworker
+          localStorage.setItem('animelist-cached:' + this.username, JSON.stringify(this.anime_list)); // TODO: call this in webworker
         }
         if (_callback) {
           _callback(null);
@@ -41,7 +41,7 @@ var HummingbirdAnimeList = (function($, _) {
       }.bind(this),
       error: function(jqXHR, textStatus, error) {
         if (typeof(Storage) !== 'undefined' && localStorage !== undefined) { // load anime list from local storage
-          this.anime_list = JSON.parse(localStorage.getItem(this.username)); // TODO: call this in webworker
+          this.anime_list = JSON.parse(localStorage.getItem('animelist-cached:' + this.username)); // TODO: call this in webworker
         }
         if (_callback) {
           _callback(error);
@@ -62,7 +62,7 @@ var HummingbirdAnimeList = (function($, _) {
       success: function(data, textStatus, jqXHR) {
         this.favorite_anime = data;
         if (typeof(Storage) !== 'undefined' && localStorage !== undefined) {
-          localStorage.setItem(this.username+':favorite', JSON.stringify(this.favorite_anime));
+          localStorage.setItem('anime-cached:' + this.username+':favorite', JSON.stringify(this.favorite_anime));
         }
         if (_callback) {
           _callback(null);
@@ -70,7 +70,7 @@ var HummingbirdAnimeList = (function($, _) {
       }.bind(this),
       error: function(jqXHR, textStatus, error) {
         if (typeof(Storage) !== 'undefined' && localStorage !== undefined) {
-          this.favorite_anime = JSON.parse(localStorage.getItem(this.username + ':favorite'));
+          this.favorite_anime = JSON.parse(localStorage.getItem('anime-cached:' + this.username + ':favorite'));
         }
         if (_callback) {
           _callback(error);
@@ -157,6 +157,10 @@ var HummingbirdAnimeList = (function($, _) {
     });
   };
 
+  /**
+   * @param {string} query
+   * @param {function(err, Array.<Anime>)} callback
+   */
   Animelist.search = function search(query, callback) {
     $.ajax({
       type: 'GET',

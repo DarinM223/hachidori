@@ -3,6 +3,7 @@
 
 /**
  * @property {function(integer, updateparams)} update
+ * @property {function(integer)} onAirDayChanged
  * @property {function(integer)} remove
  * @property {LibraryItem} libraryItem
  */
@@ -68,6 +69,9 @@ var LibraryItemComponent = React.createClass({
       content: html
     });
   },
+  onAirDayChanged: function(newDay) {
+    this.props.onAirDayChanged(newDay);
+  },
   render: function() {
     var episodesWatchedText = this.props.libraryItem.episodes_watched;
     var totalEpisodesText = this.props.libraryItem.anime.episode_count;
@@ -98,6 +102,7 @@ var LibraryItemComponent = React.createClass({
             onChangeStatus={this.onChangeStatus}
             removeFromLibrary={this.removeFromLibrary}/>
           <LibraryItemRatingComponent libraryItem={this.props.libraryItem} onChangeRating={this.onRatingChanged}/>
+          <LibraryItemAirDayComponent libraryItem={this.props.libraryItem} onChangeAirDay={this.onAirDayChanged}/>
         </li>
       </div>
     );
