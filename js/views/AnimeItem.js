@@ -8,8 +8,12 @@
  */
 var AnimeItemComponent = React.createClass({displayName: 'AnimeItemComponent',
   onAdd: function() {
+    var tab = this.props.tab;
+    if (tab === 'all') {
+      tab = 'currently-watching';
+    }
     this.props.update(this.props.anime.id, {
-      status: this.props.tab,
+      status: tab,
       privacy: 'public'
     });
   },
