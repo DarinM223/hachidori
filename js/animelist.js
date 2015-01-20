@@ -1,6 +1,12 @@
-var HummingbirdAnimeList = (function($, _) {
+var HummingbirdAnimeList = (function($, _, localStorage, Storage) {
   if (HummingbirdAccessToken === null || _ === null) {
-    alert('Error loading script');
+    console.log('Error loading script');
+    return;
+  }
+
+  if (typeof(Storage) === 'undefined' || typeof(localStorage) === undefined) {
+    console.log('localStorage is not defined!');
+    return;
   }
 
   /**
@@ -32,17 +38,13 @@ var HummingbirdAnimeList = (function($, _) {
       url: 'http://hummingbird.me/api/v1/users/' + this.username + '/library',
       success: function(data, textStatus, jqXHR) {
         this.anime_list = data;
-        if (typeof(Storage) !== 'undefined' && localStorage !== undefined) { // save anime list into local storage
-          localStorage.setItem('animelist-cached:' + this.username, JSON.stringify(this.anime_list)); // TODO: call this in webworker
-        }
+        localStorage.setItem('animelist-cached:' + this.username, JSON.stringify(this.anime_list)); // TODO: call this in webworker
         if (_callback) {
           _callback(null);
         }
       }.bind(this),
       error: function(jqXHR, textStatus, error) {
-        if (typeof(Storage) !== 'undefined' && localStorage !== undefined) { // load anime list from local storage
-          this.anime_list = JSON.parse(localStorage.getItem('animelist-cached:' + this.username)); // TODO: call this in webworker
-        }
+        this.anime_list = JSON.parse(localStorage.getItem('animelist-cached:' + this.username)); // TODO: call this in webworker
         if (_callback) {
           _callback(error);
         }
@@ -61,17 +63,13 @@ var HummingbirdAnimeList = (function($, _) {
       url: 'http://hummingbird.me/api/v1/users/' + this.username + '/favorite_anime',
       success: function(data, textStatus, jqXHR) {
         this.favorite_anime = data;
-        if (typeof(Storage) !== 'undefined' && localStorage !== undefined) {
-          localStorage.setItem('anime-cached:' + this.username+':favorite', JSON.stringify(this.favorite_anime));
-        }
+        localStorage.setItem('anime-cached:' + this.username+':favorite', JSON.stringify(this.favorite_anime));
         if (_callback) {
           _callback(null);
         }
       }.bind(this),
       error: function(jqXHR, textStatus, error) {
-        if (typeof(Storage) !== 'undefined' && localStorage !== undefined) {
-          this.favorite_anime = JSON.parse(localStorage.getItem('anime-cached:' + this.username + ':favorite'));
-        }
+        this.favorite_anime = JSON.parse(localStorage.getItem('anime-cached:' + this.username + ':favorite'));
         if (_callback) {
           _callback(error);
         }
@@ -172,4 +170,4 @@ var HummingbirdAnimeList = (function($, _) {
   };
 
   return Animelist;
-}) (jQuery, _);
+}) (jQuery, _, localStorage, Storage);
