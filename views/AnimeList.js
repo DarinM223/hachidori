@@ -83,42 +83,46 @@ var AnimeListComponent = React.createClass({
       var libraryIndexes = [];
       var current_date = new Date();
 
-      for (var i = 0; i < this.state.animelist.length; i++) {
-        if (this.props.tab === 'all') {
-          libraryIndexes.push(i);
-        } else if (this.props.tab === this.state.animelist[i].status) {
-          libraryIndexes.push(i);
-        }
+      var filteredTabLibrary = null;
+
+      if (this.props.tab === 'all') {
+        filteredTabLibrary = this.state.animelist;
+      } else {
+        filteredTabLibrary = this.state.animelist.filter(function(libraryItem) {
+          return libraryItem.status === this.props.tab;
+        }.bind(this)).sort(function(a, b) {
+          var d_a = AnimeAirDate.getAirDate(a.anime.id);
+          var d_b = AnimeAirDate.getAirDate(b.anime.id);
+          if (d_a === null) {
+            var d = new Date(a.anime.started_airing);
+            AnimeAirDate.setAirDate(a.anime.id, d.getDay());
+            d_a = d.getDay();
+          }
+          if (d_b === null) {
+            var d = new Date(b.anime.started_airing);
+            AnimeAirDate.setAirDate(b.anime.id, d.getDay());
+            d_a = d.getDay();
+          }
+          var difference_a = d_a - current_date.getDay();
+          var difference_b = d_b - current_date.getDay();
+
+          // account for anime that airs before today
+          if (difference_a < 0) {
+            difference_a += 7;
+          }
+          if (difference_b < 0) {
+            difference_b += 7;
+          }
+
+          return difference_a - difference_b;
+        }.bind(this));
       }
 
-      var filteredLibrary = libraryIndexes.sort(function(a, b) {
-        var d_a = AnimeAirDate.getAirDate(this.state.animelist[a].anime.id);
-        if (d_a === null) { // if no set air day, default to first air date
-          var d = new Date(this.state.animelist[a].anime.started_airing);
-          AnimeAirDate.setAirDate(this.state.animelist[a].anime.id, d.getDay());
-          d_a = AnimeAirDate.getAirDate(this.state.animelist[a].anime.id);
-        }
-        var d_b = AnimeAirDate.getAirDate(this.state.animelist[b].anime.id);
-        if (d_b === null) { // if no set air day, default to first air date
-          var d = new Date(this.state.animelist[b].anime.started_airing);
-          AnimeAirDate.setAirDate(this.state.animelist[b].anime.id, d.getDay());
-          d_b = AnimeAirDate.getAirDate(this.state.animelist[b].anime.id);
-        }
-        var difference_a = d_a - current_date.getDay();
-        // account for anime that airs before today
-        var difference_b = d_b - current_date.getDay();
-        if (difference_a < 0) {
-          difference_a += 7;
-        }
-        if (difference_b < 0) {
-          difference_b += 7;
-        }
-        return difference_a - difference_b;
-      }.bind(this)).filter(function(libraryIndex) {
-        return this.state.animelist[libraryIndex].anime.title.search(new RegExp(this.props.filterText, 'i')) > -1;
-      }.bind(this)).map(function(libraryIndex) {
-        return <LibraryItemComponent key={this.state.animelist[libraryIndex].anime.id} 
-                                     libraryItem={this.state.animelist[libraryIndex]} 
+      var filteredLibrary = filteredTabLibrary.filter(function(libraryItem) {
+        return libraryItem.anime.title.search(new RegExp(this.props.filterText, 'i')) > -1;
+      }.bind(this)).map(function(libraryItem) {
+        return <LibraryItemComponent key={libraryItem.anime.id} 
+                                     libraryItem={libraryItem} 
                                      update={this.update}
                                      remove={this.remove}
                                      onAirDayChanged={this.onAirDayChanged}/>
