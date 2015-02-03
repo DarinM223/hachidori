@@ -1,5 +1,6 @@
 /** @jsx React.DOM */
 'use strict';
+import React from 'react';
 
 /**
  * @property {Anime} anime
@@ -15,3 +16,5 @@ var AnimeItemAddComponent = React.createClass({
     );
   }
 });
+
+export default AnimeItemAddComponent;

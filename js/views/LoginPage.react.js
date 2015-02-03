@@ -1,5 +1,6 @@
 /** @jsx React.DOM */
 'use strict';
+import React from 'react';
 
 /**
  * @property {function(username, password)} onLogin
@@ -40,3 +41,5 @@ var LoginPageComponent = React.createClass({
     );
   }
 });
+
+export default LoginPageComponent;

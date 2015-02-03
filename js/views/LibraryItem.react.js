@@ -1,5 +1,13 @@
 /** @jsx React.DOM */
 'use strict';
+import React from 'react';
+import AnimeDetailComponent from './AnimeDetail.react.js';
+import $ from 'jquery';
+import LibraryItemStatusComponent from './LibraryItemStatus.react.js';
+import LibraryItemIncrementComponent from './LibraryItemIncrement.react.js';
+import LibraryItemRatingComponent from './LibraryItemRating.react.js';
+import LibraryItemAirDayComponent from './LibraryItemAirDay.react.js';
+import HummingbirdAnimeList from '../HummingbirdAnimeList.js';
 
 /**
  * @property {function(integer, updateparams)} update
@@ -13,15 +21,15 @@ var LibraryItemComponent = React.createClass({
       episodesText: this.props.libraryItem.episodes_watched
     };
   },
-  onIncrement: function(event) {
-    this.props.update(this.props.libraryItem.anime.id, { 
+  onIncrement: async function(event) {
+    await this.props.update(this.props.libraryItem.anime.id, {
       episodes_watched: this.props.libraryItem.episodes_watched+1 
-    }, function(err) {
-      // set the state's episode watched back to the properties episode watched
-      if (this.isMounted()) {
-        this.setState({ episodesText: this.props.libraryItem.episodes_watched }); 
-      }
-    }.bind(this));
+    });
+
+    // set the state's episode watched back to the properties episode watched
+    if (this.isMounted()) {
+      this.setState({ episodesText: this.props.libraryItem.episodes_watched }); 
+    }
   },
   onChangeStatus: function(statusString) {
     if (statusString !== this.props.libraryItem.status) {
@@ -50,20 +58,20 @@ var LibraryItemComponent = React.createClass({
   removeFromLibrary: function() {
     this.props.remove(this.props.libraryItem.anime.id);
   },
-  onRatingChanged: function(newRating) {
-    this.props.update(this.props.libraryItem.anime.id, {
-      sane_rating_update: parseFloat(newRating)
-    }, function(err) {
-      if (err) {
-        console.log(err);
-      }
-    });
+  onRatingChanged: async function(newRating) {
+    try {
+      await this.props.update(this.props.libraryItem.anime.id, {
+        sane_rating_update: parseFloat(newRating)
+      });
+    } catch (e) {
+      console.log(e);
+    }
   },
   toggleDescription: function(event) {
     var html = React.renderToString(<AnimeDetailComponent 
       imageURL={this.props.libraryItem.anime.cover_image} 
       detail={this.props.libraryItem.anime.synopsis}/>);
-    $(this.refs.title.getDOMNode()).popover({
+    window.$(this.refs.title.getDOMNode()).popover({
       placement: 'bottom',
       html: true,
       content: html
@@ -90,7 +98,7 @@ var LibraryItemComponent = React.createClass({
           <span>{'\u00a0'}</span>
           <div className="spacer"></div>
           <h1 className="episode">
-            <input type="text" size="1"  
+            <input type="text" size="2"  
               value={this.state.episodesText} 
               onChange={this.onChangeEpisodes}
               onBlur={this.saveChangeEpisodes}
@@ -108,3 +116,5 @@ var LibraryItemComponent = React.createClass({
     );
   }
 });
+
+export default LibraryItemComponent;

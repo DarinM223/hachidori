@@ -1,5 +1,7 @@
 /** @jsx React.DOM */
 'use strict';
+import React from 'react';
+import $ from 'jquery';
 
 /**
  * @property {LibraryItem} libraryItem
@@ -12,10 +14,10 @@ var LibraryItemRatingComponent = React.createClass({
     }
   },
   componentDidMount: function() {
-    $(this.refs.rating.getDOMNode()).rateit();
-    $(this.refs.rating.getDOMNode()).bind('rated', function(event, value) {
+    window.$(this.refs.rating.getDOMNode()).rateit();
+    window.$(this.refs.rating.getDOMNode()).bind('rated', (event, value) => {
       this.onChangeRating(value);
-    }.bind(this));
+    });
   },
   render: function() {
     if (this.props.libraryItem.rating.type === 'advanced') {
@@ -34,7 +36,7 @@ var LibraryItemRatingComponent = React.createClass({
             <option value="5"></option>
           </select>
           <span ref="rating" data-rateit-backingfld={"select#backing-" + this.props.libraryItem.anime.id} 
-               data-rateit-resetable="false" data-rateit-value={this.props.libraryItem.rating.value}/>
+                data-rateit-resetable="false" data-rateit-value={this.props.libraryItem.rating.value}/>
         </span>
       );
     } else {
@@ -44,3 +46,5 @@ var LibraryItemRatingComponent = React.createClass({
     }
   }
 });
+
+export default LibraryItemRatingComponent;

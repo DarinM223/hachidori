@@ -1,5 +1,7 @@
 /** @jsx React.DOM */
 'use strict';
+import React from 'react';
+import ReactBootstrap from 'react-bootstrap';
 
 /**
  * @property {LibraryItem} libraryItem
@@ -14,8 +16,8 @@ var LibraryItemStatusComponent = React.createClass({
     this.props.removeFromLibrary();
   },
   render: function() {
-    var DropdownButton = window.ReactBootstrap.DropdownButton;
-    var MenuItem = window.ReactBootstrap.MenuItem;
+    var DropdownButton = ReactBootstrap.DropdownButton;
+    var MenuItem = ReactBootstrap.MenuItem;
 
     var statusText = "";
     switch (this.props.libraryItem.status) {
@@ -53,3 +55,5 @@ var LibraryItemStatusComponent = React.createClass({
     );
   }
 });
+
+export default LibraryItemStatusComponent;

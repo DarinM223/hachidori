@@ -1,5 +1,11 @@
 /** @jsx React.DOM */
 'use strict';
+import React from 'react/addons';
+import AnimeAirDate from '../AnimeAirDate.js';
+import AnimeCache from '../AnimeCache.js';
+import LibraryItemComponent from './LibraryItem.react.js';
+import AnimeItemComponent from './AnimeItem.react.js';
+import HummingbirdAnimeList from '../HummingbirdAnimeList.js';
 
 /**
  * @property {string} username
@@ -7,23 +13,24 @@
  * @property {string} filterText
  * @property {Array.<Anime>} searchList
  */
-var AnimeListComponent = React.createClass({displayName: 'AnimeListComponent',
+var AnimeListComponent = React.createClass({
   inLibrary: {},
   getInitialState: function() {
-    this.HummingbirdApi = new HummingbirdAnimeList(this.props.username, function(err) {
+    this.HummingbirdApi = new HummingbirdAnimeList(this.props.username, () => {
       var library = this.HummingbirdApi.getList();
       for (var i = 0; i < library.length; i++) {
         AnimeCache.addAnime(library[i].anime.id);
       }
       this.setState({ loading: false, animelist: this.HummingbirdApi.getList() });
-    }.bind(this));
+    }, (err) => console.log(err));
     return {
       loading: true,
       animelist: null
     };
   },
-  update: function(animeid, updateparams, callback) {
-    this.HummingbirdApi.update(animeid, updateparams, function(err, libraryItem) {
+  update: async function(animeid, updateparams) {
+    try {
+      var libraryItem = await HummingbirdAnimeList.update(animeid, updateparams);
       var changeOptions = { };
       var libraryIndex = -1;
       for (var i = 0; i < this.state.animelist.length; i++) {
@@ -38,7 +45,8 @@ var AnimeListComponent = React.createClass({displayName: 'AnimeListComponent',
         };
         var newlist = React.addons.update(this.state.animelist, changeOptions);
 
-        this.setState({ animelist: newlist }, callback);
+        this.setState({ animelist: newlist });
+        return;
       } else { // add new anime
         changeOptions = {
           $push: [libraryItem]
@@ -46,39 +54,44 @@ var AnimeListComponent = React.createClass({displayName: 'AnimeListComponent',
         var newlist = React.addons.update(this.state.animelist, changeOptions);
 
         AnimeCache.addAnime(libraryItem.anime.id);
-        this.setState({ animelist: newlist }, callback);
+        this.setState({ animelist: newlist });
+        return;
       }
-    }.bind(this));
+    } catch (e) {
+      throw e;
+    }
   },
-  remove: function(animeid, callback) {
-    this.HummingbirdApi.removeFromList(animeid, function(err) {
-      if (!err) {
-        var libraryIndex = -1;
-        for (var i = 0; i < this.state.animelist.length; i++) {
-          if (animeid === this.state.animelist[i].anime.id) {
-            libraryIndex = i;
-            break;
-          }
-        }
-        if (libraryIndex !== -1) {
-          var changeOptions = {
-            $splice: [[libraryIndex, 1]]
-          };
-          var newlist = React.addons.update(this.state.animelist, changeOptions);
-          AnimeCache.removeAnime(animeid);
-          this.setState({ animelist: newlist }, callback);
-        } else {
-          alert('Removed item is not in the library!');
+  remove: async function(animeid) {
+    try {
+      await HummingbirdAnimeList.removeFromList(animeid);
+      var libraryIndex = -1;
+      for (var i = 0; i < this.state.animelist.length; i++) {
+        if (animeid === this.state.animelist[i].anime.id) {
+          libraryIndex = i;
+          break;
         }
       }
-    }.bind(this));
+      if (libraryIndex !== -1) {
+        var changeOptions = {
+          $splice: [[libraryIndex, 1]]
+        };
+        var newlist = React.addons.update(this.state.animelist, changeOptions);
+        AnimeCache.removeAnime(animeid);
+        this.setState({ animelist: newlist });
+        return;
+      } else {
+        throw new Error('Removed item is not in the library!');
+      }
+    } catch (e) {
+      throw e;
+    }
   },
   onAirDayChanged: function(newDay) {
     this.forceUpdate();
   },
   render: function() {
     if (this.state.loading) {
-      return React.createElement("h1", null, "Loading data....")
+      return <h1>Loading data....</h1>
     } else {
       var libraryIndexes = [];
       var current_date = new Date();
@@ -121,27 +134,29 @@ var AnimeListComponent = React.createClass({displayName: 'AnimeListComponent',
       var filteredLibrary = filteredTabLibrary.filter(function(libraryItem) {
         return libraryItem.anime.title.search(new RegExp(this.props.filterText, 'i')) > -1;
       }.bind(this)).map(function(libraryItem) {
-        return React.createElement(LibraryItemComponent, {key: libraryItem.anime.id, 
-                                     libraryItem: libraryItem, 
-                                     update: this.update, 
-                                     remove: this.remove, 
-                                     onAirDayChanged: this.onAirDayChanged})
+        return <LibraryItemComponent key={libraryItem.anime.id} 
+                                     libraryItem={libraryItem} 
+                                     update={this.update}
+                                     remove={this.remove}
+                                     onAirDayChanged={this.onAirDayChanged}/>
       }.bind(this));
 
       var searchLibrary = this.props.searchList.map(function(anime) {
         if (!AnimeCache.inCache(anime.id)) {
-          return React.createElement(AnimeItemComponent, {key: anime.id, tab: this.props.tab, anime: anime, update: this.update})
+          return <AnimeItemComponent key={anime.id} tab={this.props.tab} anime={anime} update={this.update}/>
         }
       }.bind(this));
 
       return (
-        React.createElement("div", null, 
-          React.createElement("ul", {id: "anime-list", className: "list-group"}, 
-            filteredLibrary, 
-            searchLibrary
-          )
-        )
+        <div>
+          <ul id="anime-list" className="list-group">
+            {filteredLibrary}
+            {searchLibrary}
+          </ul>
+        </div>
       );
     }
   }
 });
+
+export default AnimeListComponent;

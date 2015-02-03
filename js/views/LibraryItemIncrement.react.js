@@ -1,5 +1,6 @@
 /** @jsx React.DOM */
 'use strict';
+import React from 'react';
 
 /**
  * @property {LibraryItem} libraryItem
@@ -26,3 +27,5 @@ var LibraryItemIncrementComponent = React.createClass({
     }
   }
 });
+
+export default LibraryItemIncrementComponent;

@@ -1,10 +1,19 @@
 /** @jsx React.DOM */
 'use strict';
 
+import React from 'react';
+import AnimeCache from '../AnimeCache.js';
+import HummingbirdAccessToken from '../HummingbirdAccessToken.js';
+import HummingbirdAnimeList from '../HummingbirdAnimeList.js';
+import LoginPageComponent from './LoginPage.react.js';
+import AnimeTabBarComponent from './AnimeTabBar.react.js';
+import AnimeSearchComponent from './AnimeSearch.react.js';
+import AnimeListComponent from './AnimeList.react.js';
+
 var access_token = new HummingbirdAccessToken();
 var searchTimeoutID = null;
 
-var App = React.createClass({displayName: 'App',
+var App = React.createClass({
   getInitialState: function() {
     var loggedIn = true;
     if (access_token.getUsername() === null || access_token.getAccessToken() === null) {
@@ -17,16 +26,16 @@ var App = React.createClass({displayName: 'App',
       searchAnime: []
     };
   },
-  searchAnime: function() {
+  searchAnime: async function() {
     var newAnimeList = [];
-    HummingbirdAnimeList.search(this.state.filterText, function(err, data) {
-      for (var i = 0; i < data.length; i++) {
-        if (!AnimeCache.inCache(data[i].id)) {
-          newAnimeList.push(data[i]);
-        }
+    var data = await HummingbirdAnimeList.search(this.state.filterText);
+
+    for (var i = 0; i < data.length; i++) {
+      if (!AnimeCache.inCache(data[i].id)) {
+        newAnimeList.push(data[i]);
       }
-      this.setState({ searchAnime: newAnimeList });
-    }.bind(this));
+    }
+    this.setState({ searchAnime: newAnimeList });
   },
   onTextChanged: function(filterText) {
     this.setState({ filterText: filterText }, function() {
@@ -43,14 +52,14 @@ var App = React.createClass({displayName: 'App',
   onTabChanged: function(newTab) {
     this.setState({ tab: newTab });
   },
-  onLogin: function(username, password) {
-    access_token.authenticate(username, password, function(err) {
-      if (!err) {
-        this.setState({ loggedIn: true });
-      } else {
-        alert('Error logging in');
-      }
-    }.bind(this));
+  onLogin: async function(username, password) {
+    try {
+      await access_token.authenticate(username, password);
+      this.setState({ loggedIn: true });
+    } catch (e) {
+      console.log(e);
+      throw e;
+    }
   },
   onLogout: function() {
     access_token.removeAccessToken();
@@ -63,21 +72,23 @@ var App = React.createClass({displayName: 'App',
     var answer = null;
     if (!this.state.loggedIn) {
       return (
-        React.createElement(LoginPageComponent, {onLogin: this.onLogin})
+        <LoginPageComponent onLogin={this.onLogin}/>
       )
     } else {
       return (
-        React.createElement("div", null, 
-          React.createElement("a", {className: "btn btn-default", style: this.signoutStyle, onClick: this.onLogout}, "Sign out"), 
-          React.createElement(AnimeTabBarComponent, {onTabChanged: this.onTabChanged}), 
-          React.createElement(AnimeSearchComponent, {onTextChanged: this.onTextChanged}), 
-          React.createElement(AnimeListComponent, {username: access_token.getUsername(), 
-            filterText: this.state.filterText, 
-            tab: this.state.tab, 
-            searchList: this.state.searchAnime})
-        )
+        <div>
+          <a className="btn btn-default" style={this.signoutStyle} onClick={this.onLogout}>Sign out</a>
+          <AnimeTabBarComponent onTabChanged={this.onTabChanged}/>
+          <AnimeSearchComponent onTextChanged={this.onTextChanged}/>
+          <AnimeListComponent username={access_token.getUsername()} 
+            filterText={this.state.filterText} 
+            tab={this.state.tab}
+            searchList={this.state.searchAnime}/>
+        </div>
       );
     }
   }
 });
+
+export default App;
 

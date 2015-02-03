@@ -1,4 +1,5 @@
 /** @jsx React.DOM */
+import React from 'react';
 /**
  * @property {function(this)} onTextChanged
  */
@@ -13,3 +14,5 @@ var AnimeSearchComponent = React.createClass({
     );
   }
 });
+
+export default AnimeSearchComponent;

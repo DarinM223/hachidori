@@ -1,5 +1,8 @@
 /** @jsx React.DOM */
 'use strict';
+import React from 'react';
+import ReactBootstrap from 'react-bootstrap';
+import AnimeAirDate from '../AnimeAirDate.js';
 
 /**
  * @param {LibraryItem} libraryItem
@@ -11,8 +14,8 @@ var LibraryItemAirDayComponent = React.createClass({
     this.props.onChangeAirDay(dayOfWeek);
   },
   render: function() {
-    var DropdownButton = window.ReactBootstrap.DropdownButton;
-    var MenuItem = window.ReactBootstrap.MenuItem;
+    var DropdownButton = ReactBootstrap.DropdownButton;
+    var MenuItem = ReactBootstrap.MenuItem;
 
     var airDate = AnimeAirDate.getAirDate(this.props.libraryItem.anime.id);
     var dateText = null;
@@ -49,3 +52,5 @@ var LibraryItemAirDayComponent = React.createClass({
     );
   }
 });
+
+export default LibraryItemAirDayComponent;

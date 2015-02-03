@@ -7,11 +7,6 @@
     "http://hummingbird.me/",
     "https://hummingbird.me/"
   ],
-  //"app": {
-  //  "background": {
-  //    "scripts": ["background.js"]
-  //  }
-  //}
   "app": {
     "launch": {
       "local_path": "index.html"

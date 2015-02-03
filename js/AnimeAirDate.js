@@ -22,3 +22,5 @@ var AnimeAirDate = {};
     localStorage.setItem('anime-air-date:' + animeid, day);
   };
 })(localStorage, Storage);
+
+export default AnimeAirDate;

@@ -1,5 +1,8 @@
 /** @jsx React.DOM */
 'use strict';
+import React from 'react';
+import AnimeItemAddComponent from './AnimeItemAdd.react.js';
+import AnimeDetailComponent from './AnimeDetail.react.js';
 
 /**
  * @property {string} tab
@@ -44,3 +47,5 @@ var AnimeItemComponent = React.createClass({
     );
   }
 });
+
+export default AnimeItemComponent;
