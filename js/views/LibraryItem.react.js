@@ -94,8 +94,7 @@ var LibraryItemComponent = React.createClass({
       <div>
         <li className="list-group-item" >
           <LibraryItemIncrementComponent libraryItem={this.props.libraryItem} onClicked={this.onIncrement}/>
-          <span>{'\u00a0'}</span>
-          <span>{'\u00a0'}</span>
+          &nbsp;&nbsp;
           <div className="spacer"></div>
           <h1 className="episode">
             <input type="text" size="2"  

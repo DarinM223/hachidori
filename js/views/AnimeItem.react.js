@@ -35,8 +35,7 @@ var AnimeItemComponent = React.createClass({
       <div>
         <li className="list-group-item" >
           <AnimeItemAddComponent anime={this.props.anime} onClicked={this.onAdd}/>
-          <span>{'\u00a0'}</span>
-          <span>{'\u00a0'}</span>
+          &nbsp;&nbsp;
           <div className="spacer"></div>
           <h1 className="episode">
             _/{this.props.anime.episode_count}
