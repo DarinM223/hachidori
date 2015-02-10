@@ -1,5 +1,6 @@
 /** @jsx React.DOM */
 'use strict';
+
 import React from 'react';
 import ReactBootstrap from 'react-bootstrap';
 
@@ -12,9 +13,11 @@ var LibraryItemStatusComponent = React.createClass({
   onChangeStatus: function(newStatus) {
     this.props.onChangeStatus(newStatus);
   },
+
   removeFromLibrary: function() {
     this.props.removeFromLibrary();
   },
+
   render: function() {
     var DropdownButton = ReactBootstrap.DropdownButton;
     var MenuItem = ReactBootstrap.MenuItem;

@@ -1,5 +1,6 @@
 /** @jsx React.DOM */
 'use strict';
+
 import React from 'react';
 import ReactBootstrap from 'react-bootstrap';
 import AnimeAirDate from '../AnimeAirDate.js';
@@ -13,6 +14,7 @@ var LibraryItemAirDayComponent = React.createClass({
     AnimeAirDate.setAirDate(this.props.libraryItem.anime.id, dayOfWeek);
     this.props.onChangeAirDay(dayOfWeek);
   },
+
   render: function() {
     var DropdownButton = ReactBootstrap.DropdownButton;
     var MenuItem = ReactBootstrap.MenuItem;

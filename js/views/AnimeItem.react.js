@@ -1,5 +1,6 @@
 /** @jsx React.DOM */
 'use strict';
+
 import React from 'react';
 import AnimeItemAddComponent from './AnimeItemAdd.react.js';
 import AnimeDetailComponent from './AnimeDetail.react.js';
@@ -20,6 +21,7 @@ var AnimeItemComponent = React.createClass({
       privacy: 'public'
     });
   },
+
   toggleDescription: function(event) {
     var html = React.renderToString(<AnimeDetailComponent 
       imageURL={this.props.anime.cover_image} 
@@ -30,6 +32,7 @@ var AnimeItemComponent = React.createClass({
       content: html
     });
   },
+
   render: function() {
     return (
       <div>

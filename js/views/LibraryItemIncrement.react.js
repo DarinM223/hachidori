@@ -1,5 +1,6 @@
 /** @jsx React.DOM */
 'use strict';
+
 import React from 'react';
 
 /**
@@ -14,6 +15,7 @@ var LibraryItemIncrementComponent = React.createClass({
       this.props.onClicked();
     }
   },
+
   render: function() {
     if (this.props.libraryItem.anime.episode_count === null || 
         this.props.libraryItem.episodes_watched < this.props.libraryItem.anime.episode_count) {

@@ -1,5 +1,6 @@
 /** @jsx React.DOM */
 'use strict';
+
 import React from 'react';
 
 /**
@@ -12,6 +13,7 @@ var LoginPageComponent = React.createClass({
 
     this.props.onLogin(username, password);
   },
+
   render: function() {
     return (
       <div className="container">

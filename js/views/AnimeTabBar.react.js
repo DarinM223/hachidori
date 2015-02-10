@@ -1,5 +1,6 @@
 /** @jsx React.DOM */
 'use strict';
+
 import React from 'react';
 
 /**
@@ -11,11 +12,13 @@ var AnimeTabBarComponent = React.createClass({
       tab: 'currently-watching'
     };
   },
+
   onTabChanged: function(newTab) {
     this.setState({ tab: newTab }, function() {
       this.props.onTabChanged(newTab);
     });
   },
+
   render: function() {
     var tabbarClass = 'tabbar-item';
     var allStr               = tabbarClass + (this.state.tab === 'all' ? ' active' : '');

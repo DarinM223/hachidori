@@ -1,5 +1,6 @@
 /** @jsx React.DOM */
 'use strict';
+
 import React from 'react';
 
 /**
@@ -10,6 +11,7 @@ var AnimeItemAddComponent = React.createClass({
   onClicked: function() {
     this.props.onClicked();
   },
+
   render: function() {
     return (
       <input type="button" className="btn btn-danger btn-lg" onClick={this.onClicked} value="+"/>

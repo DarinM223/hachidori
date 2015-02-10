@@ -1,5 +1,6 @@
 /** @jsx React.DOM */
 'use strict';
+
 import React from 'react';
 import AnimeDetailComponent from './AnimeDetail.react.js';
 import $ from 'jquery';
@@ -21,6 +22,7 @@ var LibraryItemComponent = React.createClass({
       episodesText: this.props.libraryItem.episodes_watched
     };
   },
+
   onIncrement: async function(event) {
     await this.props.update(this.props.libraryItem.anime.id, {
       episodes_watched: this.props.libraryItem.episodes_watched+1 
@@ -31,11 +33,13 @@ var LibraryItemComponent = React.createClass({
       this.setState({ episodesText: this.props.libraryItem.episodes_watched }); 
     }
   },
+
   onChangeStatus: function(statusString) {
     if (statusString !== this.props.libraryItem.status) {
       this.props.update(this.props.libraryItem.anime.id, { status: statusString });
     }
   },
+
   onChangeEpisodes: function(event) {
     var isnum = /^\d+$/.test(event.target.value);
     var num = parseInt(event.target.value, 10);
@@ -44,6 +48,7 @@ var LibraryItemComponent = React.createClass({
     } else {
     }
   },
+
   saveChangeEpisodes: function(event) {
     if (event.target.value === '') {
       this.setState({ episodesText: this.props.libraryItem.episodes_watched });
@@ -55,9 +60,11 @@ var LibraryItemComponent = React.createClass({
       }
     }
   },
+
   removeFromLibrary: function() {
     this.props.remove(this.props.libraryItem.anime.id);
   },
+
   onRatingChanged: async function(newRating) {
     try {
       await this.props.update(this.props.libraryItem.anime.id, {
@@ -67,6 +74,7 @@ var LibraryItemComponent = React.createClass({
       console.log(e);
     }
   },
+
   toggleDescription: function(event) {
     var html = React.renderToString(<AnimeDetailComponent 
       imageURL={this.props.libraryItem.anime.cover_image} 
@@ -77,9 +85,11 @@ var LibraryItemComponent = React.createClass({
       content: html
     });
   },
+
   onAirDayChanged: function(newDay) {
     this.props.onAirDayChanged(newDay);
   },
+
   render: function() {
     var episodesWatchedText = this.props.libraryItem.episodes_watched;
     var totalEpisodesText = this.props.libraryItem.anime.episode_count;

@@ -26,6 +26,10 @@ var App = React.createClass({
       searchAnime: []
     };
   },
+
+  /**
+   * Search the Hummingbird API for anime with the state's filterText
+   */
   searchAnime: async function() {
     var newAnimeList = [];
     var data = await HummingbirdAnimeList.search(this.state.filterText);
@@ -37,6 +41,7 @@ var App = React.createClass({
     }
     this.setState({ searchAnime: newAnimeList });
   },
+
   onTextChanged: function(filterText) {
     this.setState({ filterText: filterText }, function() {
       if (searchTimeoutID === null) {
@@ -49,9 +54,11 @@ var App = React.createClass({
       }
     });
   },
+
   onTabChanged: function(newTab) {
     this.setState({ tab: newTab });
   },
+
   onLogin: async function(username, password) {
     try {
       await access_token.authenticate(username, password);
@@ -61,13 +68,16 @@ var App = React.createClass({
       throw e;
     }
   },
+
   onLogout: function() {
     access_token.removeAccessToken();
     this.setState({ loggedIn: false });
   },
+
   signoutStyle: {
     float: 'right'
   },
+
   render: function() {
     var answer = null;
     if (!this.state.loggedIn) {

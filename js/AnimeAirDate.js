@@ -1,3 +1,5 @@
+'use strict';
+
 var AnimeAirDate = {};
 
 (function(localStorage, Storage) {
@@ -5,6 +7,10 @@ var AnimeAirDate = {};
     console.log('localStorage is not defined!');
     return;
   }
+
+  AnimeAirDate.getAirDate = function(animeid) {
+    return localStorage.getItem('anime-air-date:' + animeid);
+  };
 
   /**
    * @param {integer} animeid

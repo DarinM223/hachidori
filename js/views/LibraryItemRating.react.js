@@ -1,5 +1,6 @@
 /** @jsx React.DOM */
 'use strict';
+
 import React from 'react';
 import $ from 'jquery';
 
@@ -13,12 +14,17 @@ var LibraryItemRatingComponent = React.createClass({
       this.props.onChangeRating(newRating);
     }
   },
+
+  /**
+   * Loads the rateit jquery plugin and calls event whenever the rating is changed
+   */
   componentDidMount: function() {
     window.$(this.refs.rating.getDOMNode()).rateit();
     window.$(this.refs.rating.getDOMNode()).bind('rated', (event, value) => {
       this.onChangeRating(value);
     });
   },
+
   render: function() {
     if (this.props.libraryItem.rating.type === 'advanced') {
       return (
