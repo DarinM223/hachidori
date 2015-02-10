@@ -19,13 +19,8 @@ function HummingbirdAnimeList(username, success, error) {
 }
 
 HummingbirdAnimeList.prototype.loadStuff = async function() {
-  try {
-    await this._loadList();
-    await this._loadFavoriteAnime();
-    return null;
-  } catch (e) {
-    throw e;
-  }
+  await this._loadList();
+  await this._loadFavoriteAnime();
 };
 
 /**
@@ -164,7 +159,7 @@ HummingbirdAnimeList.search = function(query) {
   var current_date = new Date();
 
   /**
-   * Compares two dates in order of how close they are to today
+   * Compares two library items in order of how close they are to today
    * The order of comparison is as follows:
    *
    * 1. How close the day is to today (if today is monday, anime on monday > anime on tuesday > anime on wednesday, etc)
