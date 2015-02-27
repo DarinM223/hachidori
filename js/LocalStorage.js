@@ -4,62 +4,106 @@
  * localstorage wrapper that works for both localstorage and chrome storage
  */
 var LocalStorage = (function(localStorage, Storage, chrome) {
-  if (typeof(Storage) !== 'undefined' && typeof(localStorage) !== 'undefined') {
-    return localStorage;
-  } else if (chrome && chrome.app && chrome.app.runtime && chrome.storage) {
-    return FakeLocalStorage;
-  } else {
-    throw new Error('localStorage is not defined');
-  }
-
   /**
    * Fake localstorage that is synchronous using chrome storage
    */
   var FakeLocalStorage = {
-    data: {}
+    data: {},
+    isReady: false
+  };
+
+  var ChromeStorageWrapper = {};
+
+  ChromeStorageWrapper.get = function(key) {
+    return new Promise((resolve, reject) => {
+      chrome.storage.local.get(key, function(value) {
+        resolve(value);
+      });
+    });
+  };
+
+  ChromeStorageWrapper.set = function(key, value) {
+    return new Promise((resolve, reject) => {
+      chrome.storage.local.set({ key: value }, function() {
+        resolve();
+      });
+    });
+  };
+
+  ChromeStorageWrapper.remove = function(key) {
+    return new Promise((resolve, reject) => {
+      chrome.storage.local.remove(key, function() {
+        resolve();
+      });
+    });
+  };
+
+  FakeLocalStorage.init = function() {
+    return ChromeStorageWrapper.get('chrome-storage-keys').then(function(result) {
+      if (typeof(result) === 'undefined' || result === null || Object.keys(result).length === 0) {
+        var obj = {};
+        obj['keys'] = [];
+        return ChromeStorageWrapper.set('chrome-storage-keys', obj);
+      } else {
+        var keyPromises = result.keys.map(function(key) {
+          return ChromeStorageWrapper.get(key).then(function(value) {
+            FakeLocalStorage.data[key] = value;
+          });
+        });
+
+        return Promise.all(keyPromises);
+      }
+    }).catch((e) => { throw e; });
   };
 
   FakeLocalStorage.setItem = function(key, value) {
-    if (typeof(key) !== 'string' || typeof(value) !== 'string') {
-      throw new TypeError('Parameters of setItem have to be strings');
-    }
-
+    console.log('Setting key: ' + key + ' to value: ' + value);
     if (chrome && chrome.storage) {
-      chrome.storage.sync.set({ key: value }, function() {
-        FakeLocalStorage.data[key] = value;
-      });
+      FakeLocalStorage.data[key] = value;
+      ChromeStorageWrapper.set(key, value).then(function() {
+        return ChromeStorageWrapper.get('chrome-storage-keys');
+      }).then(function(result) {
+        if (typeof(result) === 'undefined' || result === null || Object.keys(result).length === 0){
+          var obj = {};
+          obj['keys'] = [];
+          return ChromeStorageWrapper.set('chrome-storage-keys', obj);
+        } else {
+          console.log(result.keys);
+          result.keys.push(key);
+          return ChromeStorageWrapper.set('chrome-storage-keys', result);
+        }
+      }).catch((e) => { throw e; });
     } else {
       throw new Error('FakeLocalStorage needs chrome storage to work');
     }
   };
 
   FakeLocalStorage.getItem = function(key) {
-    if (typeof(key) !== 'string') {
-      throw new TypeError('Parameters of getItem has to be strings');
+    //console.log('Getting key: ' + key);
+    if (typeof(FakeLocalStorage.data[key]) === 'undefined') {
+      FakeLocalStorage.data[key] = null;
+      return null;
+    } else {
+      return FakeLocalStorage.data[key];
     }
-
-    return FakeLocalStorage.data[key];
   };
 
   FakeLocalStorage.removeItem = function(key) {
-    if (typeof(key) !== 'string') {
-      throw new TypeError('Parameters of removeItem has to be a string');
-    }
-
-    chrome.storage.sync.remove(key, function() {
+    console.log('Removing key: ' + key);
+    ChromeStorageWrapper.remove(key).then(function() {
       FakeLocalStorage.data[key] = null;
     });
   };
 
-  if (chrome && chrome.storage) {
-    // on the event that an item changed set the localstorage to the changed value
-    chrome.storage.onChanged.addListener(function(changes) {
-      for (key in changes) {
-        var storageChange = changes[key];
-        FakeLocalStorage.data[key] = storageChange.newValue;
-        console.log('Data in key: ' + key + ' was changed to value: ' + FakeLocalStorage.data[key]);
-      }
-    });
+  if (typeof(Storage) !== 'undefined' && typeof(localStorage) !== 'undefined') {
+    localStorage.init = function() {
+      return Promise.resolve();
+    };
+    return localStorage;
+  } else if (chrome && chrome.storage) {
+    return FakeLocalStorage;
+  } else {
+    throw new Error('localStorage is not defined');
   }
 })(localStorage, Storage, chrome);
 

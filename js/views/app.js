@@ -9,20 +9,26 @@ import LoginPageComponent from './LoginPage.react.js';
 import AnimeTabBarComponent from './AnimeTabBar.react.js';
 import AnimeSearchComponent from './AnimeSearch.react.js';
 import AnimeListComponent from './AnimeList.react.js';
+import LocalStorage from '../LocalStorage.js';
 
 var access_token = new HummingbirdAccessToken();
 var searchTimeoutID = null;
 
 var App = React.createClass({
   getInitialState: function() {
-    var loggedIn = true;
-    if (access_token.getUsername() === null || access_token.getAccessToken() === null) {
-      loggedIn = false;
-    }
+    LocalStorage.init().then(() => {
+      console.log(LocalStorage);
+      if (typeof(access_token.getUsername()) !== 'undefined' && typeof(access_token.getAccessToken()) !== 'undefined' && 
+          access_token.getUsername() !== null && access_token.getAccessToken() !== null) {
+        console.log(access_token.getUsername());
+        this.setState({ loggedIn: true });
+      }
+    }).catch((e) => { throw e; });
+
     return {
       filterText: '',
       tab: 'currently-watching',
-      loggedIn: loggedIn, 
+      loggedIn: false, 
       searchAnime: []
     };
   },
@@ -80,11 +86,13 @@ var App = React.createClass({
 
   render: function() {
     var answer = null;
+    console.log(this.state.loggedIn);
     if (!this.state.loggedIn) {
       return (
         <LoginPageComponent onLogin={this.onLogin}/>
       )
     } else {
+      console.log('Why am I here?');
       return (
         <div>
           <a className="btn btn-default" style={this.signoutStyle} onClick={this.onLogout}>Sign out</a>

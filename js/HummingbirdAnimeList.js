@@ -39,6 +39,8 @@ HummingbirdAnimeList.prototype._loadList = function() {
         resolve();
       },
       error: (jqXHR, textStatus, err) => {
+        console.log(LocalStorage.data);
+        console.log(LocalStorage.getItem('animelist-cached:' + this.username));
         this.anime_list = JSON.parse(LocalStorage.getItem('animelist-cached:' + this.username)); 
         reject(err);
       }
