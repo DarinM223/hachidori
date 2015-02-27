@@ -4,6 +4,7 @@ import HummingbirdAccessToken from './HummingbirdAccessToken.js';
 import AnimeAirDate from './AnimeAirDate.js';
 import $ from 'jquery';
 import _ from 'underscore';
+import LocalStorage from './LocalStorage.js';
 
 /**
  * Hummingbird animelist for a user
@@ -34,11 +35,11 @@ HummingbirdAnimeList.prototype._loadList = function() {
       url: 'http://hummingbird.me/api/v1/users/' + this.username + '/library',
       success: (data, textStatus, jqXHR) => {
         this.anime_list = data;
-        localStorage.setItem('animelist-cached:' + this.username, JSON.stringify(this.anime_list)); 
+        LocalStorage.setItem('animelist-cached:' + this.username, JSON.stringify(this.anime_list)); 
         resolve();
       },
       error: (jqXHR, textStatus, err) => {
-        this.anime_list = JSON.parse(localStorage.getItem('animelist-cached:' + this.username)); 
+        this.anime_list = JSON.parse(LocalStorage.getItem('animelist-cached:' + this.username)); 
         reject(err);
       }
     });
@@ -56,11 +57,11 @@ HummingbirdAnimeList.prototype._loadFavoriteAnime = function() {
       url: 'http://hummingbird.me/api/v1/users/' + this.username + '/favorite_anime',
       success: (data, textStatus, jqXHR) => {
         this.favorite_anime = data;
-        localStorage.setItem('anime-cached:' + this.username+':favorite', JSON.stringify(this.favorite_anime));
+        LocalStorage.setItem('anime-cached:' + this.username+':favorite', JSON.stringify(this.favorite_anime));
         resolve();
       },
       error: (jqXHR, textStatus, err) => {
-        this.favorite_anime = JSON.parse(localStorage.getItem('anime-cached:' + this.username + ':favorite'));
+        this.favorite_anime = JSON.parse(LocalStorage.getItem('anime-cached:' + this.username + ':favorite'));
         reject(err);
       }
     });

@@ -1,6 +1,7 @@
 'use strict'; 
 
 import $ from 'jquery';
+import LocalStorage from './LocalStorage.js';
 
 /**
  * An access token for a Hummingbird account
@@ -15,8 +16,8 @@ function HummingbirdAccessToken() {
  * @return {string} the access token for the user
  */
 HummingbirdAccessToken.prototype.getAccessToken = function() {
-  if (typeof(Storage) !== 'undefined' && this.access_token === null && localStorage !== undefined) {
-    this.access_token = localStorage.getItem('hummingbird_access_token');
+  if (this.access_token === null) {
+    this.access_token = LocalStorage.getItem('hummingbird_access_token');
   }
   return this.access_token;
 };
@@ -25,8 +26,8 @@ HummingbirdAccessToken.prototype.getAccessToken = function() {
  * @return {string} the username for the user
  */
 HummingbirdAccessToken.prototype.getUsername = function() {
-  if (typeof(Storage) !== 'undefined' && this.access_token === null && localStorage !== undefined) {
-    this.username = localStorage.getItem('hummingbird_username');
+  if (this.username === null) {
+    this.username = LocalStorage.getItem('hummingbird_username');
   }
   return this.username;
 };
@@ -51,10 +52,9 @@ HummingbirdAccessToken.prototype.authenticate = function(username, password) {
         },
         success: (data, textStatus, jqXHR) => {
           // set access_token in localstorage and in a member
-          if (typeof(Storage) !== 'undefined' && localStorage !== undefined) { 
-            localStorage.setItem('hummingbird_access_token', data);
-            localStorage.setItem('hummingbird_username', username);
-          }
+          LocalStorage.setItem('hummingbird_access_token', data);
+          LocalStorage.setItem('hummingbird_username', username);
+
           this.access_token = data;
           this.username = username;
           resolve();
@@ -70,10 +70,8 @@ HummingbirdAccessToken.prototype.authenticate = function(username, password) {
 
 HummingbirdAccessToken.prototype.removeAccessToken = function() {
   this.access_token = null;
-  if (typeof(Storage) !== 'undefined' && localStorage !== undefined) { 
-    localStorage.removeItem('hummingbird_access_token');
-    localStorage.removeItem('hummingbird_username');
-  }
+  LocalStorage.removeItem('hummingbird_access_token');
+  LocalStorage.removeItem('hummingbird_username');
 };
 
 export default HummingbirdAccessToken;
