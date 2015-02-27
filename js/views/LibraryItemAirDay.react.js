@@ -23,19 +23,21 @@ var LibraryItemAirDayComponent = React.createClass({
     var dateText = null;
 
     if (airDate == 0) {
-        dateText = 'Sunday';
+      dateText = 'Sunday';
     } else if (airDate == 1) {
-        dateText = 'Monday';
+      dateText = 'Monday';
     } else if (airDate == 2) {
-        dateText = 'Tuesday';
+      dateText = 'Tuesday';
     } else if (airDate == 3) {
-        dateText = 'Wednesday';
+      dateText = 'Wednesday';
     } else if (airDate == 4) {
-        dateText = 'Thursday';
+      dateText = 'Thursday';
     } else if (airDate == 5) {
-        dateText = 'Friday';
+      dateText = 'Friday';
     } else if (airDate == 6) {
-        dateText = 'Saturday';
+      dateText = 'Saturday';
+    } else {
+      dateText = 'No air day';
     }
 
     return (

@@ -24,7 +24,9 @@ var LocalStorage = (function(localStorage, Storage, chrome) {
 
   ChromeStorageWrapper.set = function(key, value) {
     return new Promise((resolve, reject) => {
-      chrome.storage.local.set({ key: value }, function() {
+      var obj = {};
+      obj[key] = value;
+      chrome.storage.local.set(obj, function() {
         resolve();
       });
     });
@@ -41,11 +43,9 @@ var LocalStorage = (function(localStorage, Storage, chrome) {
   FakeLocalStorage.init = function() {
     return ChromeStorageWrapper.get('chrome-storage-keys').then(function(result) {
       if (typeof(result) === 'undefined' || result === null || Object.keys(result).length === 0) {
-        var obj = {};
-        obj['keys'] = [];
-        return ChromeStorageWrapper.set('chrome-storage-keys', obj);
+        return ChromeStorageWrapper.set('chrome-storage-keys', []);
       } else {
-        var keyPromises = result.keys.map(function(key) {
+        var keyPromises = result['chrome-storage-keys'].map(function(key) {
           return ChromeStorageWrapper.get(key).then(function(value) {
             FakeLocalStorage.data[key] = value;
           });
@@ -63,14 +63,14 @@ var LocalStorage = (function(localStorage, Storage, chrome) {
       ChromeStorageWrapper.set(key, value).then(function() {
         return ChromeStorageWrapper.get('chrome-storage-keys');
       }).then(function(result) {
+        console.log(result);
         if (typeof(result) === 'undefined' || result === null || Object.keys(result).length === 0){
-          var obj = {};
-          obj['keys'] = [];
-          return ChromeStorageWrapper.set('chrome-storage-keys', obj);
+          return ChromeStorageWrapper.set('chrome-storage-keys', []);
         } else {
-          console.log(result.keys);
-          result.keys.push(key);
-          return ChromeStorageWrapper.set('chrome-storage-keys', result);
+          var keys = result['chrome-storage-keys'];
+          console.log(keys);
+          keys.push(key);
+          return ChromeStorageWrapper.set('chrome-storage-keys', keys);
         }
       }).catch((e) => { throw e; });
     } else {
@@ -79,7 +79,7 @@ var LocalStorage = (function(localStorage, Storage, chrome) {
   };
 
   FakeLocalStorage.getItem = function(key) {
-    //console.log('Getting key: ' + key);
+    console.log('Getting key: ' + key);
     if (typeof(FakeLocalStorage.data[key]) === 'undefined') {
       FakeLocalStorage.data[key] = null;
       return null;

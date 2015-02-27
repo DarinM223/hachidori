@@ -188,8 +188,10 @@ HummingbirdAnimeList.search = function(query) {
     if (d_b === null) {
       var d_2 = new Date(b.anime.started_airing);
       AnimeAirDate.setAirDate(b.anime.id, d_2.getDay());
-      d_a = d_2.getDay();
+      d_b = d_2.getDay();
     }
+
+    console.log(d_a + " " + d_b);
     var difference_a = d_a - current_date.getDay();
     var difference_b = d_b - current_date.getDay();
 
