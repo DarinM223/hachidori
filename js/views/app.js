@@ -92,7 +92,6 @@ var App = React.createClass({
         <LoginPageComponent onLogin={this.onLogin}/>
       )
     } else {
-      console.log('Why am I here?');
       return (
         <div>
           <a className="btn btn-default" style={this.signoutStyle} onClick={this.onLogout}>Sign out</a>
