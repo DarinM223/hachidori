@@ -53,3 +53,8 @@
   float: right;
   overflow-y: scroll;
 }
+
+.error {
+    color: red;
+    text-align: center;
+}

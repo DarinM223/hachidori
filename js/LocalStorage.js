@@ -6,9 +6,6 @@ import FakeLocalStorage from './FakeLocalStorage.js';
  */
 var LocalStorage = (function(localStorage, Storage, chrome) {
   if (typeof(Storage) !== 'undefined' && typeof(localStorage) !== 'undefined') {
-    localStorage.init = function() {
-      return Promise.resolve();
-    };
     localStorage.isChromeExtension = false;
     return localStorage;
   } else if (chrome && chrome.storage) {

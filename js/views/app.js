@@ -16,18 +16,28 @@ var searchTimeoutID = null;
 
 var App = React.createClass({
   getInitialState: function() {
-    LocalStorage.init().then(() => {
+    var loggedIn = false;
+
+    if (LocalStorage.isChromeExtension == true) {
+      LocalStorage.init().then(() => {
+        if (typeof(access_token.getUsername()) !== 'undefined' && typeof(access_token.getAccessToken()) !== 'undefined' && 
+            access_token.getUsername() !== null && access_token.getAccessToken() !== null) {
+          this.setState({ loggedIn: true });
+        }
+      }).catch((e) => { throw e; });
+    } else {
       if (typeof(access_token.getUsername()) !== 'undefined' && typeof(access_token.getAccessToken()) !== 'undefined' && 
           access_token.getUsername() !== null && access_token.getAccessToken() !== null) {
-        this.setState({ loggedIn: true });
+        loggedIn = true;
       }
-    }).catch((e) => { throw e; });
+    }
 
     return {
       filterText: '',
       tab: 'currently-watching',
-      loggedIn: false, 
-      searchAnime: []
+      loggedIn: loggedIn, 
+      searchAnime: [],
+      err: null
     };
   },
 
@@ -68,8 +78,7 @@ var App = React.createClass({
       await access_token.authenticate(username, password);
       this.setState({ loggedIn: true });
     } catch (e) {
-      console.log(e);
-      throw e;
+      this.setState({ err: e });
     }
   },
 
@@ -84,10 +93,20 @@ var App = React.createClass({
 
   render: function() {
     var answer = null;
+
     if (!this.state.loggedIn) {
-      return (
-        <LoginPageComponent onLogin={this.onLogin}/>
-      )
+      if (this.state.err) {
+        return (
+          <div>
+            <LoginPageComponent onLogin={this.onLogin}/>
+            <p className='error'>{this.state.err + ''}</p>
+          </div>
+        );
+      } else {
+        return (
+          <LoginPageComponent onLogin={this.onLogin}/>
+        );
+      }
     } else {
       return (
         <div>
