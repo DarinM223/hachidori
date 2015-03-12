@@ -44,7 +44,6 @@ FakeLocalStorage.init = function() {
     if (typeof(result) === 'undefined' || result === null) {
       return ChromeStorageWrapper.set('chrome-storage-keys', {});
     } else {
-      console.log(Object.keys(result));
       var keyPromises = Object.keys(result).map(function(key) {
         return ChromeStorageWrapper.get(key).then(function(value) {
           FakeLocalStorage.data[key] = value;
@@ -62,7 +61,6 @@ FakeLocalStorage.init = function() {
  * @param {Object} value
  */
 function addItem(key, value) {
-  console.log('Adding key: ' + key + ' to ' + value);
   return ChromeStorageWrapper.set(key, value).then(function() {
     return ChromeStorageWrapper.get('chrome-storage-keys');
   }).then(function(result) {
@@ -70,8 +68,6 @@ function addItem(key, value) {
       return ChromeStorageWrapper.set('chrome-storage-keys', {});
     } else {
       var storageKeys = result;
-      console.log('Storage keys: ');
-      console.log(storageKeys);
       // if key is not inside storage keys dictionary, then add it to the dictionary
       if (typeof(storageKeys[key]) === 'undefined' || storageKeys[key] !== true) {
         storageKeys[key] = true;
@@ -82,7 +78,6 @@ function addItem(key, value) {
 }
 
 FakeLocalStorage.setItem = function(key, value) {
-  console.log('Setting key: ' + key + ' to value: ' + value);
   if (chrome && chrome.storage) {
     FakeLocalStorage.data[key] = value;
     taskQueue.enqueueWork(addItem.bind(null, key, value)); // add task to queue
@@ -92,7 +87,6 @@ FakeLocalStorage.setItem = function(key, value) {
 };
 
 FakeLocalStorage.getItem = function(key) {
-  console.log('Getting key: ' + key);
   if (typeof(FakeLocalStorage.data[key]) === 'undefined') {
     FakeLocalStorage.data[key] = null;
     return null;
@@ -102,10 +96,11 @@ FakeLocalStorage.getItem = function(key) {
 };
 
 FakeLocalStorage.removeItem = function(key) {
-  console.log('Removing key: ' + key);
   ChromeStorageWrapper.remove(key).then(function() {
     FakeLocalStorage.data[key] = null;
   });
 };
+
+FakeLocalStorage.isChromeExtension = true;
 
 export default FakeLocalStorage;

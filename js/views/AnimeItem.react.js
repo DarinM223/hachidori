@@ -4,6 +4,7 @@
 import React from 'react';
 import AnimeItemAddComponent from './AnimeItemAdd.react.js';
 import AnimeDetailComponent from './AnimeDetail.react.js';
+import LocalStorage from '../LocalStorage.js';
 
 /**
  * @property {string} tab
@@ -23,10 +24,31 @@ var AnimeItemComponent = React.createClass({
   },
 
   toggleDescription: function(event) {
-    var html = React.renderToString(<AnimeDetailComponent 
-      imageURL={this.props.anime.cover_image} 
-      detail={this.props.anime.synopsis}/>);
-    $(this.refs.title.getDOMNode()).popover({
+    var html;
+
+    if (LocalStorage.isChromeExtension) {
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', this.props.anime.cover_image, true);
+      xhr.responseType = 'blob';
+
+      xhr.onload = (e) => {
+        html = React.renderToString(<AnimeDetailComponent 
+          imageURL={ window.URL.createObjectURL(xhr.response) }
+          detail={this.props.anime.synopsis}/>);
+        this.displayPopup(html);
+      };
+
+      xhr.send();
+    } else {
+      html = React.renderToString(<AnimeDetailComponent 
+        imageURL={this.props.anime.cover_image} 
+        detail={this.props.anime.synopsis}/>);
+      this.displayPopup(html);
+    }
+  },
+
+  displayPopup: function(html) {
+    window.$(this.refs.title.getDOMNode()).popover({
       placement: 'bottom',
       html: true,
       content: html
@@ -43,7 +65,7 @@ var AnimeItemComponent = React.createClass({
           <h1 className="episode">
             _/{this.props.anime.episode_count}
           </h1>
-          <h2 className="anime-title" ref="title" onMouseEnter={this.toggleDescription}>{this.props.anime.title}</h2>
+          <h2 className="anime-title" ref="title" onMouseDown={this.toggleDescription}>{this.props.anime.title}</h2>
         </li>
       </div>
     );

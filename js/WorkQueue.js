@@ -32,7 +32,6 @@ function WorkQueue() {
 WorkQueue.prototype.enqueueWork = function(fn) {
   var workNode = new WorkNode(fn);
   if (this.head === null) { 
-    console.log('Work node: ' + workNode);
     this.head = workNode;
     this.tail = this.head;
     this.executeHead(); 
@@ -50,11 +49,9 @@ WorkQueue.prototype.executeHead = function() {
   var that = this;
 
   if (this.head !== null) {
-    console.log('Running current head');
     this.head.fn().then(function() {
       that.head = that.head.next; 
       if (that.head !== null) {
-        console.log('Moving to next node');
         setTimeout(that.executeHead.bind(that), 0); 
       } else {
         that.tail = null; // clean up tail node

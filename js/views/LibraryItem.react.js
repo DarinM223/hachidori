@@ -9,6 +9,7 @@ import LibraryItemIncrementComponent from './LibraryItemIncrement.react.js';
 import LibraryItemRatingComponent from './LibraryItemRating.react.js';
 import LibraryItemAirDayComponent from './LibraryItemAirDay.react.js';
 import HummingbirdAnimeList from '../HummingbirdAnimeList.js';
+import LocalStorage from '../LocalStorage.js';
 
 /**
  * @property {function(integer, updateparams)} update
@@ -76,9 +77,30 @@ var LibraryItemComponent = React.createClass({
   },
 
   toggleDescription: function(event) {
-    var html = React.renderToString(<AnimeDetailComponent 
-      imageURL={this.props.libraryItem.anime.cover_image} 
-      detail={this.props.libraryItem.anime.synopsis}/>);
+    var html;
+
+    if (LocalStorage.isChromeExtension) {
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', this.props.libraryItem.anime.cover_image, true);
+      xhr.responseType = 'blob';
+
+      xhr.onload = (e) => {
+        html = React.renderToString(<AnimeDetailComponent 
+          imageURL={ window.URL.createObjectURL(xhr.response) }
+          detail={this.props.libraryItem.anime.synopsis}/>);
+        this.displayPopup(html);
+      };
+
+      xhr.send();
+    } else {
+      html = React.renderToString(<AnimeDetailComponent 
+        imageURL={this.props.libraryItem.anime.cover_image} 
+        detail={this.props.libraryItem.anime.synopsis}/>);
+      this.displayPopup(html);
+    }
+  },
+
+  displayPopup: function(html) {
     window.$(this.refs.title.getDOMNode()).popover({
       placement: 'bottom',
       html: true,
@@ -114,7 +136,7 @@ var LibraryItemComponent = React.createClass({
               />
             /{totalEpisodesText}
           </h1>
-          <h2 className="anime-title" ref="title" onMouseEnter={this.toggleDescription}>{this.props.libraryItem.anime.title}</h2>
+          <h2 className="anime-title" ref="title" onMouseDown={this.toggleDescription}>{this.props.libraryItem.anime.title}</h2>
           <LibraryItemStatusComponent libraryItem={this.props.libraryItem} 
             onChangeStatus={this.onChangeStatus}
             removeFromLibrary={this.removeFromLibrary}/>

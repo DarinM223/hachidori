@@ -19,7 +19,6 @@ var App = React.createClass({
     LocalStorage.init().then(() => {
       if (typeof(access_token.getUsername()) !== 'undefined' && typeof(access_token.getAccessToken()) !== 'undefined' && 
           access_token.getUsername() !== null && access_token.getAccessToken() !== null) {
-        console.log(access_token.getUsername());
         this.setState({ loggedIn: true });
       }
     }).catch((e) => { throw e; });
@@ -85,7 +84,6 @@ var App = React.createClass({
 
   render: function() {
     var answer = null;
-    console.log(this.state.loggedIn);
     if (!this.state.loggedIn) {
       return (
         <LoginPageComponent onLogin={this.onLogin}/>

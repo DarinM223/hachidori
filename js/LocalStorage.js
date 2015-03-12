@@ -9,6 +9,7 @@ var LocalStorage = (function(localStorage, Storage, chrome) {
     localStorage.init = function() {
       return Promise.resolve();
     };
+    localStorage.isChromeExtension = false;
     return localStorage;
   } else if (chrome && chrome.storage) {
     return FakeLocalStorage;

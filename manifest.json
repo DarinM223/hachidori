@@ -6,6 +6,7 @@
   "permissions": [
     "http://hummingbird.me/",
     "https://hummingbird.me/",
+    "https://static.hummingbird.me/",
     "storage"
   ],
   //"app": {

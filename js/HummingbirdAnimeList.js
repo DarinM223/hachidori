@@ -189,7 +189,6 @@ HummingbirdAnimeList.search = function(query) {
       d_b = d_2.getDay();
     }
 
-    console.log(d_a + " " + d_b);
     var difference_a = d_a - current_date.getDay();
     var difference_b = d_b - current_date.getDay();
 
