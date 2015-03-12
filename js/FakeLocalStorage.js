@@ -16,7 +16,7 @@ var ChromeStorageWrapper = {};
 ChromeStorageWrapper.get = function(key) {
   return new Promise((resolve, reject) => {
     chrome.storage.local.get(key, function(value) {
-      resolve(value);
+      resolve(value[key]);
     });
   });
 };
@@ -41,10 +41,11 @@ ChromeStorageWrapper.remove = function(key) {
 
 FakeLocalStorage.init = function() {
   return ChromeStorageWrapper.get('chrome-storage-keys').then(function(result) {
-    if (typeof(result) === 'undefined' || result === null || Object.keys(result).length === 0) {
-      return ChromeStorageWrapper.set('chrome-storage-keys', []);
+    if (typeof(result) === 'undefined' || result === null) {
+      return ChromeStorageWrapper.set('chrome-storage-keys', {});
     } else {
-      var keyPromises = result['chrome-storage-keys'].map(function(key) {
+      console.log(Object.keys(result));
+      var keyPromises = Object.keys(result).map(function(key) {
         return ChromeStorageWrapper.get(key).then(function(value) {
           FakeLocalStorage.data[key] = value;
         });
@@ -55,18 +56,27 @@ FakeLocalStorage.init = function() {
   }).catch((e) => { throw e; });
 };
 
+/**
+ * Sets the item in chrome storage and if item key is not in storage keys, it adds it to the storage keys
+ * @param {string} key
+ * @param {Object} value
+ */
 function addItem(key, value) {
   console.log('Adding key: ' + key + ' to ' + value);
   return ChromeStorageWrapper.set(key, value).then(function() {
     return ChromeStorageWrapper.get('chrome-storage-keys');
   }).then(function(result) {
-    if (typeof(result) === 'undefined' || result === null || Object.keys(result).length === 0){
-      return ChromeStorageWrapper.set('chrome-storage-keys', []);
+    if (typeof(result) === 'undefined' || result === null){
+      return ChromeStorageWrapper.set('chrome-storage-keys', {});
     } else {
-      var keys = result['chrome-storage-keys'];
-      console.log(keys);
-      keys.push(key);
-      return ChromeStorageWrapper.set('chrome-storage-keys', keys);
+      var storageKeys = result;
+      console.log('Storage keys: ');
+      console.log(storageKeys);
+      // if key is not inside storage keys dictionary, then add it to the dictionary
+      if (typeof(storageKeys[key]) === 'undefined' || storageKeys[key] !== true) {
+        storageKeys[key] = true;
+      }
+      return ChromeStorageWrapper.set('chrome-storage-keys', storageKeys);
     }
   }).catch((e) => { throw e; });
 }

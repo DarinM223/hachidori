@@ -17,7 +17,6 @@ var searchTimeoutID = null;
 var App = React.createClass({
   getInitialState: function() {
     LocalStorage.init().then(() => {
-      console.log(LocalStorage);
       if (typeof(access_token.getUsername()) !== 'undefined' && typeof(access_token.getAccessToken()) !== 'undefined' && 
           access_token.getUsername() !== null && access_token.getAccessToken() !== null) {
         console.log(access_token.getUsername());

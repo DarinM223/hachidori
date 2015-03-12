@@ -5,7 +5,6 @@ import FakeLocalStorage from './FakeLocalStorage.js';
  * localstorage wrapper that works for both localstorage and chrome storage
  */
 var LocalStorage = (function(localStorage, Storage, chrome) {
-
   if (typeof(Storage) !== 'undefined' && typeof(localStorage) !== 'undefined') {
     localStorage.init = function() {
       return Promise.resolve();
