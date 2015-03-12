@@ -1,9 +1,12 @@
 'use strict';
+import WorkQueue from './WorkQueue.js';
 
 /**
  * localstorage wrapper that works for both localstorage and chrome storage
  */
 var LocalStorage = (function(localStorage, Storage, chrome) {
+  var taskQueue = new WorkQueue();
+
   /**
    * Fake localstorage that is synchronous using chrome storage
    */
@@ -56,23 +59,27 @@ var LocalStorage = (function(localStorage, Storage, chrome) {
     }).catch((e) => { throw e; });
   };
 
+  function addItem(key, value) {
+    console.log('Adding key: ' + key + ' to ' + value);
+    return ChromeStorageWrapper.set(key, value).then(function() {
+      return ChromeStorageWrapper.get('chrome-storage-keys');
+    }).then(function(result) {
+      if (typeof(result) === 'undefined' || result === null || Object.keys(result).length === 0){
+        return ChromeStorageWrapper.set('chrome-storage-keys', []);
+      } else {
+        var keys = result['chrome-storage-keys'];
+        console.log(keys);
+        keys.push(key);
+        return ChromeStorageWrapper.set('chrome-storage-keys', keys);
+      }
+    }).catch((e) => { throw e; });
+  }
+
   FakeLocalStorage.setItem = function(key, value) {
     console.log('Setting key: ' + key + ' to value: ' + value);
     if (chrome && chrome.storage) {
       FakeLocalStorage.data[key] = value;
-      ChromeStorageWrapper.set(key, value).then(function() {
-        return ChromeStorageWrapper.get('chrome-storage-keys');
-      }).then(function(result) {
-        console.log(result);
-        if (typeof(result) === 'undefined' || result === null || Object.keys(result).length === 0){
-          return ChromeStorageWrapper.set('chrome-storage-keys', []);
-        } else {
-          var keys = result['chrome-storage-keys'];
-          console.log(keys);
-          keys.push(key);
-          return ChromeStorageWrapper.set('chrome-storage-keys', keys);
-        }
-      }).catch((e) => { throw e; });
+      taskQueue.enqueueWork(addItem.bind(null, key, value)); // add task to queue
     } else {
       throw new Error('FakeLocalStorage needs chrome storage to work');
     }

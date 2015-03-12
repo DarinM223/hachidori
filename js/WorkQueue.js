@@ -1,3 +1,5 @@
+'use strict';
+
 /*
  * A promise based work queue that handles asynchronous work one by one
  * You can push work to the end of the queue and it will be finished after the other work finishes
@@ -30,8 +32,9 @@ function WorkQueue() {
 WorkQueue.prototype.enqueueWork = function(fn) {
   var workNode = new WorkNode(fn);
   if (this.head === null) { 
+    console.log('Work node: ' + workNode);
     this.head = workNode;
-    this.tail = head;
+    this.tail = this.head;
     this.executeHead(); 
   } else {
     this.tail.next = workNode;
@@ -46,13 +49,20 @@ WorkQueue.prototype.enqueueWork = function(fn) {
 WorkQueue.prototype.executeHead = function() {
   var that = this;
 
-  this.head.fn().then(function() {
-    that.head = that.head.next; 
-    if (that.head !== null) {
-      var nextFn = that.executeHead.bind.apply(that.executeHead.bind, [that].concat(arguments));
-      setTimeout(nextFn, 0); 
-    } else {
-      that.tail = null; // clean up tail node
-    }
-  });
+  if (this.head !== null) {
+
+    console.log('Running current head');
+    this.head.fn().then(function() {
+      that.head = that.head.next; 
+      if (that.head !== null) {
+        console.log('Moving to next node');
+        setTimeout(that.executeHead.bind(that), 0); 
+      } else {
+        that.tail = null; // clean up tail node
+      }
+    });
+
+  }
 };
+
+module.exports = WorkQueue;
