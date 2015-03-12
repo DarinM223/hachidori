@@ -50,7 +50,6 @@ WorkQueue.prototype.executeHead = function() {
   var that = this;
 
   if (this.head !== null) {
-
     console.log('Running current head');
     this.head.fn().then(function() {
       that.head = that.head.next; 
@@ -61,7 +60,6 @@ WorkQueue.prototype.executeHead = function() {
         that.tail = null; // clean up tail node
       }
     });
-
   }
 };
 
