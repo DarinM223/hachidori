@@ -1,7 +1,7 @@
 'use strict';
-import WorkQueue from './WorkQueue.js';
 
-var taskQueue = new WorkQueue();
+var WorkQueue = require('./WorkQueue.js')
+  , taskQueue = new WorkQueue();
 
 /**
  * Fake localstorage that is synchronous using chrome storage
@@ -14,7 +14,7 @@ var FakeLocalStorage = {
 var ChromeStorageWrapper = {};
 
 ChromeStorageWrapper.get = function(key) {
-  return new Promise((resolve, reject) => {
+  return new Promise(function(resolve, reject) {
     chrome.storage.local.get(key, function(value) {
       resolve(value[key]);
     });
@@ -22,7 +22,7 @@ ChromeStorageWrapper.get = function(key) {
 };
 
 ChromeStorageWrapper.set = function(key, value) {
-  return new Promise((resolve, reject) => {
+  return new Promise(function(resolve, reject) {
     var obj = {};
     obj[key] = value;
     chrome.storage.local.set(obj, function() {
@@ -32,7 +32,7 @@ ChromeStorageWrapper.set = function(key, value) {
 };
 
 ChromeStorageWrapper.remove = function(key) {
-  return new Promise((resolve, reject) => {
+  return new Promise(function(resolve, reject) {
     chrome.storage.local.remove(key, function() {
       resolve();
     });
@@ -52,7 +52,7 @@ FakeLocalStorage.init = function() {
 
       return Promise.all(keyPromises);
     }
-  }).catch((e) => { throw e; });
+  }).catch(function(e) { throw e; });
 };
 
 /**
@@ -74,7 +74,7 @@ function addItem(key, value) {
       }
       return ChromeStorageWrapper.set('chrome-storage-keys', storageKeys);
     }
-  }).catch((e) => { throw e; });
+  }).catch(function(e) { throw e; });
 }
 
 FakeLocalStorage.setItem = function(key, value) {
@@ -103,4 +103,4 @@ FakeLocalStorage.removeItem = function(key) {
 
 FakeLocalStorage.isChromeExtension = true;
 
-export default FakeLocalStorage;
+module.exports = FakeLocalStorage;

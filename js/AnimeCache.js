@@ -30,4 +30,4 @@ AnimeCache.inCache = function(animeid) {
   return true;
 };
 
-export default AnimeCache;
+module.exports = AnimeCache;
