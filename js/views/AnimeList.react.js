@@ -13,6 +13,9 @@ import HummingbirdAnimeList from '../HummingbirdAnimeList.js';
  * @property {string} tab
  * @property {string} filterText
  * @property {Array.<Anime>} searchList
+ * @property {integer} maxLibraryItems
+ * @property {integer} itemIncrement
+ * @property {function()} onMoreClicked
  */
 var AnimeListComponent = React.createClass({
   inLibrary: {},
@@ -109,11 +112,12 @@ var AnimeListComponent = React.createClass({
           return libraryItem.status === this.props.tab;
         }).sort(HummingbirdAnimeList.compareLibraryItems);
       }
-
-
-      var filteredLibrary = filteredTabLibrary.filter((libraryItem) => {
+      
+      filteredTabLibrary = filteredTabLibrary.filter((libraryItem) => {
         return libraryItem.anime.title.search(new RegExp(this.props.filterText, 'i')) > -1;
-      }).map((libraryItem) => {
+      });
+
+      var filteredLibrary = filteredTabLibrary.slice(0, this.props.maxLibraryItems).map((libraryItem) => {
         return <LibraryItemComponent key={libraryItem.anime.id} 
                                      libraryItem={libraryItem} 
                                      update={this.update}
@@ -127,10 +131,20 @@ var AnimeListComponent = React.createClass({
         }
       });
 
+      var moreButton = null;
+
+      if (filteredTabLibrary.length > this.props.maxLibraryItems) {
+        moreButton = (
+          <input type="button" className="btn btn-default btn-lg btn-block" onClick={this.props.onMoreClicked} value="Load more library items"></input>
+        );
+      }
+
+
       return (
         <div>
           <ul id="anime-list" className="list-group">
             {filteredLibrary}
+            {moreButton}
             {searchLibrary}
           </ul>
         </div>

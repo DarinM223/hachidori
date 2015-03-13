@@ -14,6 +14,8 @@ import LocalStorage from '../LocalStorage.js';
 var access_token = new HummingbirdAccessToken();
 var searchTimeoutID = null;
 
+var PAGINATION_LIMIT = 10;
+
 var App = React.createClass({
   getInitialState: function() {
     var loggedIn = false;
@@ -37,7 +39,9 @@ var App = React.createClass({
       tab: 'currently-watching',
       loggedIn: loggedIn, 
       searchAnime: [],
-      err: null
+      err: null,
+      maxLibraryItems: PAGINATION_LIMIT,
+      itemIncrement: PAGINATION_LIMIT
     };
   },
 
@@ -70,7 +74,7 @@ var App = React.createClass({
   },
 
   onTabChanged: function(newTab) {
-    this.setState({ tab: newTab });
+    this.setState({ tab: newTab, maxLibraryItems: PAGINATION_LIMIT });
   },
 
   onLogin: async function(username, password) {
@@ -89,6 +93,17 @@ var App = React.createClass({
 
   signoutStyle: {
     float: 'right'
+  },
+
+  fixedStyle: {
+    position: 'fixed',
+    width: '100%',
+    backgroundColor: 'white',
+    zIndex: '99999'
+  },
+
+  onMoreClicked: function() {
+    this.setState({ maxLibraryItems: this.state.maxLibraryItems + this.state.itemIncrement });
   },
 
   render: function() {
@@ -110,13 +125,23 @@ var App = React.createClass({
     } else {
       return (
         <div>
-          <a className="btn btn-default" style={this.signoutStyle} onClick={this.onLogout}>Sign out</a>
-          <AnimeTabBarComponent onTabChanged={this.onTabChanged}/>
-          <AnimeSearchComponent onTextChanged={this.onTextChanged}/>
+          <div style={this.fixedStyle}>
+            <a className="btn btn-default" style={this.signoutStyle} onClick={this.onLogout}>Sign out</a>
+            <AnimeTabBarComponent onTabChanged={this.onTabChanged}/>
+            <AnimeSearchComponent onTextChanged={this.onTextChanged}/>
+          </div>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+
           <AnimeListComponent username={access_token.getUsername()} 
             filterText={this.state.filterText} 
             tab={this.state.tab}
-            searchList={this.state.searchAnime}/>
+            searchList={this.state.searchAnime}
+            maxLibraryItems={this.state.maxLibraryItems}
+            itemIncrement={this.state.itemIncrement}
+            onMoreClicked={this.onMoreClicked}/>
         </div>
       );
     }
