@@ -88,7 +88,7 @@ var App = React.createClass({
 
   onLogout: function() {
     access_token.removeAccessToken();
-    this.setState({ loggedIn: false });
+    this.replaceState(this.getInitialState());
   },
 
   signoutStyle: {

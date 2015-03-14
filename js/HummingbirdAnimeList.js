@@ -32,16 +32,14 @@ HummingbirdAnimeList.prototype._loadList = function() {
   return new Promise((resolve, reject) => {
     $.ajax({
       type: 'GET',
-      url: 'http://hummingbird.me/api/v1/users/' + this.username + '/library',
-      success: (data, textStatus, jqXHR) => {
-        this.anime_list = data;
-        LocalStorage.setItem('animelist-cached:' + this.username, JSON.stringify(this.anime_list)); 
-        resolve();
-      },
-      error: (jqXHR, textStatus, err) => {
-        this.anime_list = JSON.parse(LocalStorage.getItem('animelist-cached:' + this.username)); 
-        reject(err);
-      }
+      url: 'http://hummingbird.me/api/v1/users/' + this.username + '/library'
+    }).success((data, textStatus, jqXHR) => {
+      this.anime_list = data;
+      LocalStorage.setItem('animelist-cached:' + this.username, JSON.stringify(this.anime_list)); 
+      resolve();
+    }).error((jqXHR, textStatus, err) => {
+      this.anime_list = JSON.parse(LocalStorage.getItem('animelist-cached:' + this.username)); 
+      reject(err);
     });
   });
 };
@@ -54,16 +52,14 @@ HummingbirdAnimeList.prototype._loadFavoriteAnime = function() {
   return new Promise((resolve, reject) => {
     $.ajax({
       type: 'GET',
-      url: 'http://hummingbird.me/api/v1/users/' + this.username + '/favorite_anime',
-      success: (data, textStatus, jqXHR) => {
-        this.favorite_anime = data;
-        LocalStorage.setItem('anime-cached:' + this.username+':favorite', JSON.stringify(this.favorite_anime));
-        resolve();
-      },
-      error: (jqXHR, textStatus, err) => {
-        this.favorite_anime = JSON.parse(LocalStorage.getItem('anime-cached:' + this.username + ':favorite'));
-        reject(err);
-      }
+      url: 'http://hummingbird.me/api/v1/users/' + this.username + '/favorite_anime'
+    }).success((data, textStatus, jqXHR) => {
+      this.favorite_anime = data;
+      LocalStorage.setItem('anime-cached:' + this.username+':favorite', JSON.stringify(this.favorite_anime));
+      resolve();
+    }).error((jqXHR, textStatus, err) => {
+      this.favorite_anime = JSON.parse(LocalStorage.getItem('anime-cached:' + this.username + ':favorite'));
+      reject(err);
     });
   });
 };
@@ -132,7 +128,7 @@ HummingbirdAnimeList.update = function(animeid, updateparams) {
         type: 'POST',
         url: 'https://hummingbird.me/api/v1/libraries/' + animeid,
         data: params,
-        success: (data, textStatus, jqXHR) => resolve(data),
+        success: data => resolve(data),
         statusCode: {
           401: () => reject(new Error('You are not authorized to perform this action')),
           500: () => reject(new Error('There was an internal server error'))
@@ -151,7 +147,7 @@ HummingbirdAnimeList.search = function(query) {
     $.ajax({
       type: 'GET',
       url: 'http://hummingbird.me/api/v1/search/anime?query=' + query.split(' ').join('+'),
-      success: (data, textStatus, jqXHR) => resolve(data)
+      success: data => resolve(data)
     });
   });
 };

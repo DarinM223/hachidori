@@ -104,6 +104,7 @@ var LibraryItemComponent = React.createClass({
     window.$(this.refs.title.getDOMNode()).popover({
       placement: 'bottom',
       html: true,
+      container: 'body',
       content: html
     });
   },

@@ -117,7 +117,7 @@ var AnimeListComponent = React.createClass({
         return libraryItem.anime.title.search(new RegExp(this.props.filterText, 'i')) > -1;
       });
 
-      var filteredLibrary = filteredTabLibrary.slice(0, this.props.maxLibraryItems).map((libraryItem) => {
+      var filteredLibrary = filteredTabLibrary.slice(0, this.props.maxLibraryItems).map((libraryItem, index) => {
         return <LibraryItemComponent key={libraryItem.anime.id} 
                                      libraryItem={libraryItem} 
                                      update={this.update}
