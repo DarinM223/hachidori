@@ -11,10 +11,20 @@ var AnimeSearchComponent = React.createClass({
     this.props.onTextChanged(event.target.value);
   },
 
+  onClicked: function() {
+    this.refs.search.getDOMNode().value = '';
+    this.props.onTextChanged('');
+  },
+
   render: function() {
     return (
-      <input type="text" className="form-control" placeholder="Search your anime list" 
-             onChange={this.onTextChanged}/>
+      <div className="input-group">
+        <input type="text" className="form-control" placeholder="Search your anime list" ref="search"
+               onChange={this.onTextChanged}/>
+        <span className="input-group-btn">
+          <input type="button" className="btn btn-default" value="Clear" onClick={this.onClicked}/>
+        </span>
+      </div>
     );
   }
 });
