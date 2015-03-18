@@ -56,6 +56,10 @@ var AnimeItemComponent = React.createClass({
     });
   },
 
+  componentWillUnmount: function() {
+    window.$(this.refs.title.getDOMNode()).popover('hide');
+  },
+
   render: function() {
     return (
       <div>

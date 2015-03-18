@@ -109,6 +109,10 @@ var LibraryItemComponent = React.createClass({
     });
   },
 
+  componentWillUnmount: function() {
+    window.$(this.refs.title.getDOMNode()).popover('hide');
+  },
+
   onAirDayChanged: function(newDay) {
     this.props.onAirDayChanged(newDay);
   },
