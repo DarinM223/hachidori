@@ -50,27 +50,33 @@ var App = React.createClass({
    */
   searchAnime: async function() {
     var newAnimeList = [];
-    var data = await HummingbirdAnimeList.search(this.state.filterText);
+    if (this.state.filterText.trim() !== '') {
+      var data = await HummingbirdAnimeList.search(this.state.filterText);
 
-    for (var i = 0; i < data.length; i++) {
-      if (!AnimeCache.inCache(data[i].id)) {
-        newAnimeList.push(data[i]);
+      for (var i = 0; i < data.length; i++) {
+        if (!AnimeCache.inCache(data[i].id)) {
+          newAnimeList.push(data[i]);
+        }
       }
     }
     this.setState({ searchAnime: newAnimeList });
   },
 
   onTextChanged: function(filterText) {
-    this.setState({ filterText: filterText }, function() {
-      if (searchTimeoutID === null) {
-        searchTimeoutID = window.setTimeout(this.searchAnime, 500);
-      } else {
-        if (typeof searchTimeoutID == "number") {
-          window.clearTimeout(searchTimeoutID);
+    if (filterText.trim() !== '') {
+      this.setState({ filterText: filterText.trim() }, function() {
+        if (searchTimeoutID === null) {
           searchTimeoutID = window.setTimeout(this.searchAnime, 500);
+        } else {
+          if (typeof searchTimeoutID == "number") {
+            window.clearTimeout(searchTimeoutID);
+            searchTimeoutID = window.setTimeout(this.searchAnime, 500);
+          }
         }
-      }
-    });
+      });
+    } else {
+      this.setState({ filterText: filterText.trim(), searchAnime: [] }); // clear search list if text is empty
+    }
   },
 
   onTabChanged: function(newTab) {

@@ -112,10 +112,12 @@ var AnimeListComponent = React.createClass({
           return libraryItem.status === this.props.tab;
         }).sort(HummingbirdAnimeList.compareLibraryItems);
       }
-      
-      filteredTabLibrary = filteredTabLibrary.filter((libraryItem) => {
-        return libraryItem.anime.title.search(new RegExp(this.props.filterText, 'i')) > -1;
-      });
+
+      if (this.props.filterText !== '') {
+        filteredTabLibrary = filteredTabLibrary.filter((libraryItem) => {
+          return libraryItem.anime.title.search(new RegExp(this.props.filterText, 'i')) > -1;
+        });
+      }
 
       var filteredLibrary = filteredTabLibrary.slice(0, this.props.maxLibraryItems).map((libraryItem, index) => {
         return <LibraryItemComponent key={libraryItem.anime.id} 
