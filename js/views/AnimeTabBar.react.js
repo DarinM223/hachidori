@@ -5,28 +5,21 @@ import React from 'react';
 
 /**
  * @property {function(string} onTabChanged
+   @property {string} tab
  */
 var AnimeTabBarComponent = React.createClass({
-  getInitialState: function() {
-    return {
-      tab: 'currently-watching'
-    };
-  },
-
   onTabChanged: function(newTab) {
-    this.setState({ tab: newTab }, function() {
-      this.props.onTabChanged(newTab);
-    });
+    this.props.onTabChanged(newTab);
   },
 
   render: function() {
     var tabbarClass = 'tabbar-item';
-    var allStr               = tabbarClass + (this.state.tab === 'all' ? ' active' : '');
-    var currentlyWatchingStr = tabbarClass + (this.state.tab === 'currently-watching' ? ' active' : '');
-    var planToWatchStr       = tabbarClass + (this.state.tab === 'plan-to-watch' ? ' active' : '');
-    var completedStr         = tabbarClass + (this.state.tab === 'completed' ? ' active' : '');
-    var onHoldStr            = tabbarClass + (this.state.tab === 'on-hold' ? ' active' : '');
-    var droppedStr           = tabbarClass + (this.state.tab === 'dropped' ? ' active' : '');
+    var allStr               = tabbarClass + (this.props.tab === 'all' ? ' active' : '');
+    var currentlyWatchingStr = tabbarClass + (this.props.tab === 'currently-watching' ? ' active' : '');
+    var planToWatchStr       = tabbarClass + (this.props.tab === 'plan-to-watch' ? ' active' : '');
+    var completedStr         = tabbarClass + (this.props.tab === 'completed' ? ' active' : '');
+    var onHoldStr            = tabbarClass + (this.props.tab === 'on-hold' ? ' active' : '');
+    var droppedStr           = tabbarClass + (this.props.tab === 'dropped' ? ' active' : '');
 
     return (
       <section id="tool-bar">

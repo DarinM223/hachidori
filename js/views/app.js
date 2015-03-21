@@ -97,6 +97,19 @@ var App = React.createClass({
     this.replaceState(this.getInitialState());
   },
 
+  onReload: function() {
+    if (this.state.loggedIn) {
+      // if logged in save some previous state variables before reloading
+      var lastTab = this.state.tab;
+
+      var state = this.getInitialState();
+      state.tab = lastTab;
+      this.replaceState(state);
+    } else {
+      this.replaceState(this.getInitialState());
+    }
+  },
+
   signoutStyle: {
     float: 'right'
   },
@@ -132,8 +145,11 @@ var App = React.createClass({
       return (
         <div>
           <div style={this.fixedStyle}>
-            <a className="btn btn-default" style={this.signoutStyle} onClick={this.onLogout}>Sign out</a>
-            <AnimeTabBarComponent onTabChanged={this.onTabChanged}/>
+            <span style={this.signoutStyle}>
+              <a className="btn btn-default" onClick={this.onReload}><span className="glyphicon glyphicon-refresh"/></a>
+              <a className="btn btn-default" onClick={this.onLogout}>Sign out</a>
+            </span>
+            <AnimeTabBarComponent onTabChanged={this.onTabChanged} tab={this.state.tab}/>
             <AnimeSearchComponent onTextChanged={this.onTextChanged}/>
           </div>
           <br/>
