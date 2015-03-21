@@ -20,19 +20,12 @@ var App = React.createClass({
   getInitialState: function() {
     var loggedIn = false;
 
-    if (LocalStorage.isChromeExtension == true) {
-      LocalStorage.init().then(() => {
-        if (typeof(access_token.getUsername()) !== 'undefined' && typeof(access_token.getAccessToken()) !== 'undefined' && 
-            access_token.getUsername() !== null && access_token.getAccessToken() !== null) {
-          this.setState({ loggedIn: true });
-        }
-      }).catch((e) => { throw e; });
-    } else {
+    LocalStorage.init().then(() => {
       if (typeof(access_token.getUsername()) !== 'undefined' && typeof(access_token.getAccessToken()) !== 'undefined' && 
           access_token.getUsername() !== null && access_token.getAccessToken() !== null) {
-        loggedIn = true;
+        this.setState({ loggedIn: true });
       }
-    }
+    }).catch((e) => { throw e; });
 
     return {
       filterText: '',
