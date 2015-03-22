@@ -4,7 +4,7 @@ import FakeLocalStorage from './FakeLocalStorage.js';
 /**
  * localstorage wrapper that works for both localstorage and chrome storage
  */
-var LocalStorage = (function(localStorage, Storage, chrome) {
+var LocalStorage = (function() {
   /*
    * Wrapper around localStorage
    */
@@ -30,11 +30,11 @@ var LocalStorage = (function(localStorage, Storage, chrome) {
 
   if (typeof(Storage) !== 'undefined' && typeof(localStorage) !== 'undefined') {
     return RealLocalStorage;
-  } else if (chrome && chrome.storage) {
+  } else if (typeof(chrome) !== 'undefined' && chrome && chrome.storage) {
     return FakeLocalStorage;
   } else {
     throw new Error('localStorage is not defined');
   }
-})(localStorage, Storage, chrome);
+})();
 
 export default LocalStorage;
