@@ -41,18 +41,23 @@ var App = React.createClass({
   /**
    * Search the Hummingbird API for anime with the state's filterText
    */
-  searchAnime: async function() {
-    var newAnimeList = [];
+  searchAnime: function() {
+    var that = this;
     if (this.state.filterText.trim() !== '') {
-      var data = await HummingbirdAnimeList.search(this.state.filterText);
-
-      for (var i = 0; i < data.length; i++) {
-        if (!AnimeCache.inCache(data[i].id)) {
-          newAnimeList.push(data[i]);
+      HummingbirdAnimeList.search(this.state.filterText).then(function(data) {
+        var newAnimeList = [];
+        for (var i = 0; i < data.length; i++) {
+          if (!AnimeCache.inCache(data[i].id+'')) {
+            newAnimeList.push(data[i]);
+          }
         }
-      }
+        that.setState({ searchAnime: newAnimeList });
+      }).catch(function(e) {
+        console.log(e);
+      });
+    } else {
+      this.setState({ searchAnime: [] });
     }
-    this.setState({ searchAnime: newAnimeList });
   },
 
   onTextChanged: function(filterText) {
@@ -60,11 +65,9 @@ var App = React.createClass({
       this.setState({ filterText: filterText.trim() }, function() {
         if (searchTimeoutID === null) {
           searchTimeoutID = window.setTimeout(this.searchAnime, 500);
-        } else {
-          if (typeof searchTimeoutID == "number") {
-            window.clearTimeout(searchTimeoutID);
-            searchTimeoutID = window.setTimeout(this.searchAnime, 500);
-          }
+        } else if (typeof searchTimeoutID === "number") {
+          window.clearTimeout(searchTimeoutID);
+          searchTimeoutID = window.setTimeout(this.searchAnime, 500);
         }
       });
     } else {
@@ -76,13 +79,14 @@ var App = React.createClass({
     this.setState({ tab: newTab, maxLibraryItems: PAGINATION_LIMIT });
   },
 
-  onLogin: async function(username, password) {
-    try {
-      await access_token.authenticate(username, password);
-      this.setState({ loggedIn: true });
-    } catch (e) {
-      this.setState({ err: e });
-    }
+  onLogin: function(username, password) {
+    var that = this;
+
+    return access_token.authenticate(username, password).then(function() {
+      that.setState({ loggedIn: true });
+    }).catch(function(e) {
+      that.setState({ err: e });
+    });
   },
 
   onLogout: function() {

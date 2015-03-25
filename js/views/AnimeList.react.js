@@ -56,40 +56,50 @@ var AnimeListComponent = React.createClass({
    * @param {integer} animeid the id of the anime to update/add
    * @param {Object} updateparams the parameters to pass through the api
    */
-  update: async function(animeid, updateparams) {
-    var libraryItem = await HummingbirdAnimeList.update(animeid, updateparams);
-    var libraryIndex = this.getLibraryIndex(animeid);
+  update: function(animeid, updateparams) {
+    var that = this;
 
-    if (libraryIndex !== -1) {
-      var changeOptions = {};
-      changeOptions[libraryIndex] = {
-        $set: libraryItem
-      };
-      var newlist = React.addons.update(this.state.animelist, changeOptions);
-      this.setState({ animelist: newlist });
-    } else {
-      var newlist = React.addons.update(this.state.animelist, { $push: [libraryItem] });
-      AnimeCache.addAnime(animeid);
-      this.setState({ animelist: newlist });
-    }
+    return HummingbirdAnimeList.update(animeid, updateparams).then(function(libraryItem) {
+      var libraryIndex = that.getLibraryIndex(animeid);
+      if (libraryIndex !== -1) {
+        var changeOptions = {};
+        changeOptions[libraryIndex] = {
+          $set: libraryItem
+        };
+        var newlist = React.addons.update(that.state.animelist, changeOptions);
+        that.setState({ animelist: newlist });
+      } else {
+        var newlist = React.addons.update(that.state.animelist, { $push: [libraryItem] });
+        AnimeCache.addAnime(animeid);
+        that.setState({ animelist: newlist });
+      }
+      return Promise.resolve();
+    }).catch(function(e) {
+      console.log(e);
+    });
   },
 
   /**
    * Removes library items from the animelist
    * @param {integer} animeid the id of the anime to remove
    */
-  remove: async function(animeid) {
-    await HummingbirdAnimeList.removeFromList(animeid);
+  remove: function(animeid) {
+    var that = this;
 
-    var libraryIndex = this.getLibraryIndex(animeid);
+    return HummingbirdAnimeList.removeFromList(animeid).then(function(libraryItem) {
+      var libraryIndex = that.getLibraryIndex(animeid);
 
-    if (libraryIndex !== -1) {
-      var newlist = React.addons.update(this.state.animelist, { $splice: [[libraryIndex, 1]] });
-      AnimeCache.removeAnime(animeid);
-      this.setState({ animelist: newlist });
-    } else {
-      throw new Error('Removed item is not in the library');
-    }
+      if (libraryIndex !== -1) {
+        var newlist = React.addons.update(that.state.animelist, { $splice: [[libraryIndex, 1]] });
+        AnimeCache.removeAnime(animeid);
+        that.setState({ animelist: newlist });
+        return Promise.resolve();
+      } else {
+        return Promise.reject(new Error('Removed item is not in the library'));
+      }
+    }).catch(function(e) {
+      console.log(e);
+    });
   },
 
   onAirDayChanged: function(newDay) {
@@ -128,7 +138,7 @@ var AnimeListComponent = React.createClass({
       });
 
       var searchLibrary = this.props.searchList.map((anime) => {
-        if (!AnimeCache.inCache(anime.id)) {
+        if (!AnimeCache.inCache(anime.id+'')) {
           return <AnimeItemComponent key={anime.id} tab={this.props.tab} anime={anime} update={this.update}/>
         }
       });

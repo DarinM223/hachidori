@@ -19,9 +19,11 @@ function HummingbirdAnimeList(username, success, error) {
   this.loadStuff().then(success, error);
 }
 
-HummingbirdAnimeList.prototype.loadStuff = async function() {
-  await this._loadList();
-  await this._loadFavoriteAnime();
+HummingbirdAnimeList.prototype.loadStuff = function() {
+  var that = this;
+  return this._loadList().then(function() {
+    return that._loadFavoriteAnime();
+  });
 };
 
 /**
