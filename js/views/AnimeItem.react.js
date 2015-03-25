@@ -27,15 +27,18 @@ var AnimeItemComponent = React.createClass({
 
   render: function() {
     return (
-      <div>
-        <li className="list-group-item" >
+      <div onMouseEnter={this.titleHover.bind(this, this.props.anime) }>
+        <li className="list-group-item">
           <AnimeItemAddComponent anime={this.props.anime} onClicked={this.onAdd}/>
           &nbsp;&nbsp;
           <div className="spacer"></div>
           <h1 className="episode">
             _/{this.props.anime.episode_count}
           </h1>
-          <h2 className="anime-title" ref="title" onMouseDown={this.toggleDescription.bind(this, this.props.anime) }>{this.props.anime.title}</h2>
+          <h2 className="anime-title" ref="title" 
+              onMouseDown={this.toggleDescription.bind(this, this.props.anime) }>
+              {this.props.anime.title}
+          </h2>
         </li>
       </div>
     );

@@ -93,7 +93,7 @@ var LibraryItemComponent = React.createClass({
     }
 
     return (
-      <div>
+      <div onMouseEnter={this.titleHover.bind(this, this.props.libraryItem.anime) }>
         <li className="list-group-item" >
           <LibraryItemIncrementComponent libraryItem={this.props.libraryItem} onClicked={this.onIncrement}/>
           &nbsp;&nbsp;
