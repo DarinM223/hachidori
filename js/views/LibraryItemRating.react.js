@@ -3,17 +3,14 @@
 
 import React from 'react';
 import $ from 'jquery';
+import LibraryItemRatingMixin from './mixins/LibraryItemRatingMixin.js';
 
 /**
  * @property {LibraryItem} libraryItem
  * @property {function(double)} onChangeRating
  */
 var LibraryItemRatingComponent = React.createClass({
-  onChangeRating: function(newRating) {
-    if (newRating !== this.props.libraryItem.rating.value) {
-      this.props.onChangeRating(newRating);
-    }
-  },
+  mixins: [LibraryItemRatingMixin],
 
   /**
    * Loads the rateit jquery plugin and calls event whenever the rating is changed

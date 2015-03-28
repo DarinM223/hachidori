@@ -4,7 +4,8 @@
 import React from 'react';
 import AnimeItemAddComponent from './AnimeItemAdd.react.js';
 import LocalStorage from '../LocalStorage.js';
-import AnimeItemMixin from './mixins/AnimeItemMixin.react.js';
+import AnimeMixin from './mixins/AnimeMixin.js';
+import AnimeItemMixin from './mixins/AnimeItemMixin.js';
 
 /**
  * @property {string} tab
@@ -12,18 +13,7 @@ import AnimeItemMixin from './mixins/AnimeItemMixin.react.js';
  * @property {integer,updateparams} update
  */
 var AnimeItemComponent = React.createClass({
-  mixins: [AnimeItemMixin],
-
-  onAdd: function() {
-    var tab = this.props.tab;
-    if (tab === 'all') {
-      tab = 'currently-watching';
-    }
-    this.props.update(this.props.anime.id, {
-      status: tab,
-      privacy: 'public'
-    });
-  },
+  mixins: [AnimeMixin, AnimeItemMixin],
 
   render: function() {
     return (

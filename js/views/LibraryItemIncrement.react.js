@@ -2,19 +2,14 @@
 'use strict';
 
 import React from 'react';
+import LibraryItemIncrementMixin from './mixins/LibraryItemIncrementMixin.js';
 
 /**
  * @property {LibraryItem} libraryItem
  * @property {function()} onClicked
  */
 var LibraryItemIncrementComponent = React.createClass({
-  onClicked: function() {
-    if (this.props.libraryItem.episodes_watched !== null && 
-         (this.props.libraryItem.episodes_watched < this.props.libraryItem.anime.episode_count || 
-          this.props.libraryItem.anime.episode_count === null)) {
-      this.props.onClicked();
-    }
-  },
+  mixins: [LibraryItemIncrementMixin],
 
   render: function() {
     if (this.props.libraryItem.anime.episode_count === null || 

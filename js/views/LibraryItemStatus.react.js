@@ -3,6 +3,7 @@
 
 import React from 'react';
 import ReactBootstrap from 'react-bootstrap';
+import LibraryItemStatusMixin from './mixins/LibraryItemStatusMixin.js';
 
 /**
  * @property {LibraryItem} libraryItem
@@ -10,13 +11,7 @@ import ReactBootstrap from 'react-bootstrap';
  * @property {function()} removeFromLibrary
  */
 var LibraryItemStatusComponent = React.createClass({
-  onChangeStatus: function(newStatus) {
-    this.props.onChangeStatus(newStatus);
-  },
-
-  removeFromLibrary: function() {
-    this.props.removeFromLibrary();
-  },
+  mixins: [LibraryItemStatusMixin],
 
   render: function() {
     var DropdownButton = ReactBootstrap.DropdownButton;

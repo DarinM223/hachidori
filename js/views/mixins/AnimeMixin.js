@@ -1,4 +1,5 @@
 'use strict';
+
 import React from 'react';
 import LocalStorage from '../../LocalStorage.js';
 import AnimeDetailComponent from '../AnimeDetail.react.js';
@@ -7,7 +8,7 @@ import AnimeDetailComponent from '../AnimeDetail.react.js';
  * Mixin for Anime description popup 
  * @property {refs} title the title ref element in the component using the mixin
  */
-var AnimeItemMixin = {
+var AnimeMixin = {
   toggleDescription: function(anime) {
     var html;
 
@@ -46,4 +47,4 @@ var AnimeItemMixin = {
   }
 };
 
-export default AnimeItemMixin;
+export default AnimeMixin;

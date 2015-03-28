@@ -4,16 +4,14 @@
 import React from 'react';
 import ReactBootstrap from 'react-bootstrap';
 import AnimeAirDate from '../AnimeAirDate.js';
+import LibraryItemAirDayMixin from './mixins/LibraryItemAirDayMixin.js';
 
 /**
  * @param {LibraryItem} libraryItem
  * @param {function(integer)} onChangeAirDay
  */
 var LibraryItemAirDayComponent = React.createClass({
-  onChangeAirDay: function(dayOfWeek) {
-    AnimeAirDate.setAirDate(this.props.libraryItem.anime.id, dayOfWeek);
-    this.props.onChangeAirDay(dayOfWeek);
-  },
+  mixins: [LibraryItemAirDayMixin],
 
   render: function() {
     var DropdownButton = ReactBootstrap.DropdownButton;
