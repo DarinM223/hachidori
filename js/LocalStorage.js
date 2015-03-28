@@ -1,5 +1,6 @@
 'use strict';
-import FakeLocalStorage from './FakeLocalStorage.js';
+import FakeLocalStorage from './storage/FakeLocalStorage.js';
+import ChromeStorageWrapper from './storage/ChromeStorageWrapper.js';
 
 /**
  * localstorage wrapper that works for both localstorage and chrome storage
@@ -31,7 +32,9 @@ var LocalStorage = (function() {
   if (typeof(Storage) !== 'undefined' && typeof(localStorage) !== 'undefined') {
     return RealLocalStorage;
   } else if (typeof(chrome) !== 'undefined' && chrome && chrome.storage) {
-    return FakeLocalStorage;
+    var ChromeStorage = FakeLocalStorage(ChromeStorageWrapper);
+    ChromeStorage.isChromeExtension = true;
+    return ChromeStorage;
   } else {
     throw new Error('localStorage is not defined');
   }

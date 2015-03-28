@@ -11,7 +11,7 @@
  * @property {function(key: String)} Storage.remove
  * @param {function(Error)} callback called after finished setting up AsyncStorageWrapper
  */
-async function AsyncStorageWrapper(Storage, callback) {
+function AsyncStorageWrapper(Storage, callback) {
   if (typeof(Storage) === 'undefined' || Storage === null) {
     throw new TypeError('Storage is either not defined or null');
   }
@@ -23,18 +23,21 @@ async function AsyncStorageWrapper(Storage, callback) {
     throw new TypeError('Storage is not property defined (it needs to have get, set, and remove functions)');
   }
 
-  try {
-    var storageKeys = await Storage.get('async-storage-keys');
-    if (typeof(storageKeys) === 'undefined' || storageKeys === null) {
-      await Storage.set('async-storage-keys', {});
-      callback(null, {});
-      return;
-    } 
+  var that = this;
 
-    callback(null, storageKeys);
-  } catch(e) {
+  this.Storage = Storage;
+
+  this.Storage.get('async-storage-keys').then(function(storageKeys) {
+    if (typeof(storageKeys) === 'undefined' || storageKeys === null) {
+      that.Storage.set('async-storage-keys', {}).then(function() {
+        callback(null, {});
+      });
+    } else {
+      callback(null, storageKeys);
+    }
+  }).catch(function(e) {
     callback(e);
-  }
+  });
 }
 
 /**
@@ -43,7 +46,7 @@ async function AsyncStorageWrapper(Storage, callback) {
  * @return {Promise(Object)} value corresponding to the key
  */
 AsyncStorageWrapper.prototype.getItem = async function(key) {
-  var value = await Storage.get(key);
+  var value = await this.Storage.get(key);
   return value;
 };
 
@@ -55,12 +58,12 @@ AsyncStorageWrapper.prototype.getItem = async function(key) {
  */
 AsyncStorageWrapper.prototype.setItem = async function(key, value) {
   try {
-    await Storage.set(key, value);
-    var storageKeys = await Storage.get('async-storage-keys');
+    await this.Storage.set(key, value);
+    var storageKeys = await this.Storage.get('async-storage-keys');
     // if key is not inside storage keys dictionary, then add it to the dictionary
     if (typeof(storageKeys[key]) === 'undefined' || storageKeys[key] !== true) {
       storageKeys[key] = true;
-      await Storage.set('async-storage-keys', storageKeys);
+      await this.Storage.set('async-storage-keys', storageKeys);
     }
   } catch(e) {
     console.log(e);
@@ -74,12 +77,12 @@ AsyncStorageWrapper.prototype.setItem = async function(key, value) {
  */
 AsyncStorageWrapper.prototype.removeItem = async function(key) {
   try {
-    await Storage.remove(key);
-    var storageKeys = await Storage.get('async-storage-keys');
+    await this.Storage.remove(key);
+    var storageKeys = await this.Storage.get('async-storage-keys');
     // if key is inside storage keys dictionary, then set the key to null
     if (typeof(storageKeys[key]) !== 'undefined' && storageKeys[key] !== null) {
       storageKeys[key] = null;
-      await Storage.set('async-storage-keys', storageKeys);
+      await this.Storage.set('async-storage-keys', storageKeys);
     }
   } catch(e) {
     console.log(e);
