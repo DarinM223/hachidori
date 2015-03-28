@@ -11,34 +11,6 @@ var FakeLocalStorage = {
   isReady: false
 };
 
-var ChromeStorageWrapper = {};
-
-ChromeStorageWrapper.get = function(key) {
-  return new Promise((resolve, reject) => {
-    chrome.storage.local.get(key, function(value) {
-      resolve(value[key]);
-    });
-  });
-};
-
-ChromeStorageWrapper.set = function(key, value) {
-  return new Promise((resolve, reject) => {
-    var obj = {};
-    obj[key] = value;
-    chrome.storage.local.set(obj, function() {
-      resolve();
-    });
-  });
-};
-
-ChromeStorageWrapper.remove = function(key) {
-  return new Promise((resolve, reject) => {
-    chrome.storage.local.remove(key, function() {
-      resolve();
-    });
-  });
-};
-
 FakeLocalStorage.init = function() {
   return ChromeStorageWrapper.get('chrome-storage-keys').then(function(result) {
     if (typeof(result) === 'undefined' || result === null) {
