@@ -26,7 +26,7 @@
     ]
   },
   "scripts": {
-    "start": "./node_modules/watchify/bin/cmd.js -t [6to5ify --experimental] ./run.js -o build/bundle.js -v -d"
+    "start": "./node_modules/watchify/bin/cmd.js -t [6to5ify] ./run.js -o build/bundle.js -v -d"
   },
   "repository": {
     "type": "git",

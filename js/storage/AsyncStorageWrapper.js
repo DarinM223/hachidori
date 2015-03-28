@@ -45,9 +45,8 @@ function AsyncStorageWrapper(Storage, callback) {
  * @param {string} key
  * @return {Promise(Object)} value corresponding to the key
  */
-AsyncStorageWrapper.prototype.getItem = async function(key) {
-  var value = await this.Storage.get(key);
-  return value;
+AsyncStorageWrapper.prototype.getItem = function(key) {
+  return this.Storage.get(key);
 };
 
 
@@ -56,38 +55,46 @@ AsyncStorageWrapper.prototype.getItem = async function(key) {
  * @paaram {string} key the key of the item to set
  * @param {Object} value the value of the key
  */
-AsyncStorageWrapper.prototype.setItem = async function(key, value) {
-  try {
-    await this.Storage.set(key, value);
-    var storageKeys = await this.Storage.get('async-storage-keys');
+AsyncStorageWrapper.prototype.setItem = function(key, value) {
+  var that = this;
+
+  return this.Storage.set(key, value).then(function() {
+    return that.Storage.get('async-storage-keys');
+  }).then(function(storageKeys) {
     // if key is not inside storage keys dictionary, then add it to the dictionary
     if (typeof(storageKeys[key]) === 'undefined' || storageKeys[key] !== true) {
       storageKeys[key] = true;
-      await this.Storage.set('async-storage-keys', storageKeys);
+      return that.Storage.set('async-storage-keys', storageKeys);
+    } else {
+      return Promise.resolve();
     }
-  } catch(e) {
+  }).catch(function(e) {
     console.log(e);
     throw e;
-  }
+  });
 };
 
 /**
  * Removes the item in chrome storage and if item is in the list of keys it removes from the list
  * @param {string} key the key of the object to remove
  */
-AsyncStorageWrapper.prototype.removeItem = async function(key) {
-  try {
-    await this.Storage.remove(key);
-    var storageKeys = await this.Storage.get('async-storage-keys');
+AsyncStorageWrapper.prototype.removeItem = function(key) {
+  var that = this;
+
+  return this.Storage.remove(key).then(function() {
+    return that.Storage.get('async-storage-keys');
+  }).then(function(storageKeys) {
     // if key is inside storage keys dictionary, then set the key to null
     if (typeof(storageKeys[key]) !== 'undefined' && storageKeys[key] !== null) {
       storageKeys[key] = null;
-      await this.Storage.set('async-storage-keys', storageKeys);
+      return that.Storage.set('async-storage-keys', storageKeys);
+    } else {
+      return Promise.resolve();
     }
-  } catch(e) {
+  }).catch(function(e) {
     console.log(e);
     throw e;
-  }
+  });
 };
 
 export default AsyncStorageWrapper;

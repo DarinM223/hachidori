@@ -12,7 +12,7 @@ var ChromeStorageWrapper = {};
  * @return {Promise(Object)} the value corresponding to the key
  */
 ChromeStorageWrapper.get = function(key) {
-  return new Promise((resolve, reject) => {
+  return new Promise(function(resolve, reject) {
     chrome.storage.local.get(key, function(value) {
       resolve(value[key]);
     });
@@ -25,7 +25,7 @@ ChromeStorageWrapper.get = function(key) {
  * @param {Object} value
  */
 ChromeStorageWrapper.set = function(key, value) {
-  return new Promise((resolve, reject) => {
+  return new Promise(function(resolve, reject) {
     var obj = {};
     obj[key] = value;
     chrome.storage.local.set(obj, function() {
@@ -39,7 +39,7 @@ ChromeStorageWrapper.set = function(key, value) {
  * @param {string} key
  */
 ChromeStorageWrapper.remove = function(key) {
-  return new Promise((resolve, reject) => {
+  return new Promise(function(resolve, reject) {
     chrome.storage.local.remove(key, function() {
       resolve();
     });

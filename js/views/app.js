@@ -41,18 +41,21 @@ var App = React.createClass({
   /**
    * Search the Hummingbird API for anime with the state's filterText
    */
-  searchAnime: async function() {
-    var newAnimeList = [];
+  searchAnime: function() {
     if (this.state.filterText.trim() !== '') {
-      var data = await HummingbirdAnimeList.search(this.state.filterText);
-
-      for (var i = 0; i < data.length; i++) {
-        if (!AnimeCache.inCache(data[i].id)) {
-          newAnimeList.push(data[i]);
+      return HummingbirdAnimeList.search(this.state.filterText).then((data) => {
+        var newAnimeList = [];
+        for (var i = 0; i < data.length; i++) {
+          if (!AnimeCache.inCache(data[i].id)) {
+            newAnimeList.push(data[i]);
+          }
         }
-      }
+        this.setState({ searchAnime: newAnimeList });
+      });
+    } else {
+      this.setState({ searchAnime: [] });
+      return Promise.resolve();
     }
-    this.setState({ searchAnime: newAnimeList });
   },
 
   onTextChanged: function(filterText) {
@@ -76,13 +79,12 @@ var App = React.createClass({
     this.setState({ tab: newTab, maxLibraryItems: PAGINATION_LIMIT });
   },
 
-  onLogin: async function(username, password) {
-    try {
-      await access_token.authenticate(username, password);
+  onLogin: function(username, password) {
+    access_token.authenticate(username, password).then(() => {
       this.setState({ loggedIn: true });
-    } catch (e) {
+    }).catch((e) => {
       this.setState({ err: e });
-    }
+    });
   },
 
   onLogout: function() {

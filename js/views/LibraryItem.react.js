@@ -26,15 +26,15 @@ var LibraryItemComponent = React.createClass({
     };
   },
 
-  onIncrement: async function(event) {
-    await this.props.update(this.props.libraryItem.anime.id, {
+  onIncrement: function(event) {
+    this.props.update(this.props.libraryItem.anime.id, {
       episodes_watched: this.props.libraryItem.episodes_watched+1 
+    }).then(() => {
+      // set the state's episode watched back to the properties episode watched
+      if (this.isMounted()) {
+        this.setState({ episodesText: this.props.libraryItem.episodes_watched }); 
+      }
     });
-
-    // set the state's episode watched back to the properties episode watched
-    if (this.isMounted()) {
-      this.setState({ episodesText: this.props.libraryItem.episodes_watched }); 
-    }
   },
 
   onChangeStatus: function(statusString) {
@@ -68,14 +68,12 @@ var LibraryItemComponent = React.createClass({
     this.props.remove(this.props.libraryItem.anime.id);
   },
 
-  onRatingChanged: async function(newRating) {
-    try {
-      await this.props.update(this.props.libraryItem.anime.id, {
-        sane_rating_update: parseFloat(newRating)
-      });
-    } catch (e) {
+  onRatingChanged: function(newRating) {
+    this.props.update(this.props.libraryItem.anime.id, {
+      sane_rating_update: parseFloat(newRating)
+    }).catch((e) => {
       console.log(e);
-    }
+    });
   },
 
   onAirDayChanged: function(newDay) {
