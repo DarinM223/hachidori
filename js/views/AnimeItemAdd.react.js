@@ -1,7 +1,7 @@
 /** @jsx React.DOM */
 'use strict';
 
-import React from 'react';
+var React = require('react');
 
 /**
  * @property {Anime} anime
@@ -19,4 +19,4 @@ var AnimeItemAddComponent = React.createClass({
   }
 });
 
-export default AnimeItemAddComponent;
+module.exports = AnimeItemAddComponent;

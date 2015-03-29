@@ -68,4 +68,4 @@ var LibraryItemMixin = {
   }
 };
 
-export default LibraryItemMixin;
+module.exports = LibraryItemMixin;

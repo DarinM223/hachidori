@@ -97,4 +97,4 @@ AsyncStorageWrapper.prototype.removeItem = function(key) {
   });
 };
 
-export default AsyncStorageWrapper;
+module.exports = AsyncStorageWrapper;

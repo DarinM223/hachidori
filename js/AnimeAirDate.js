@@ -1,6 +1,6 @@
 'use strict';
 
-import LocalStorage from './LocalStorage.js';
+var LocalStorage = require('./LocalStorage.js');
 
 var AnimeAirDate = {};
 
@@ -24,4 +24,4 @@ AnimeAirDate.setAirDate = function(animeid, day) {
   LocalStorage.setItem('anime-air-date:' + animeid, day);
 };
 
-export default AnimeAirDate;
+module.exports = AnimeAirDate;

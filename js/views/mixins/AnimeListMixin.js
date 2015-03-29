@@ -1,8 +1,8 @@
 'use strict';
 
-import React from 'react/addons';
-import AnimeCache from '../../AnimeCache.js';
-import HummingbirdAnimeList from '../../HummingbirdAnimeList.js';
+var React = require('react/addons')
+  , AnimeCache = require('../../AnimeCache.js')
+  , HummingbirdAnimeList = require('../../HummingbirdAnimeList.js');
 
 /**
  * @property {string} username
@@ -87,4 +87,4 @@ var AnimeListMixin = {
   }
 };
 
-export default AnimeListMixin;
+module.exports = AnimeListMixin;

@@ -18,4 +18,4 @@ var AnimeItemMixin = {
   }
 };
 
-export default AnimeItemMixin;
+module.exports = AnimeItemMixin;

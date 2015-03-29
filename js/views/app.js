@@ -1,12 +1,12 @@
 /** @jsx React.DOM */
 'use strict';
 
-import React from 'react';
-import LoginPageComponent from './LoginPage.react.js';
-import AnimeTabBarComponent from './AnimeTabBar.react.js';
-import AnimeSearchComponent from './AnimeSearch.react.js';
-import AnimeListComponent from './AnimeList.react.js';
-import AppMixin from './mixins/AppMixin.js';
+var React = require('react')
+  , LoginPageComponent = require('./LoginPage.react.js')
+  , AnimeTabBarComponent = require('./AnimeTabBar.react.js')
+  , AnimeSearchComponent = require('./AnimeSearch.react.js')
+  , AnimeListComponent = require('./AnimeList.react.js')
+  , AppMixin = require('./mixins/AppMixin.js');
 
 var App = React.createClass({
   mixins: [AppMixin],
@@ -67,5 +67,4 @@ var App = React.createClass({
   }
 });
 
-export default App;
-
+module.exports = App;

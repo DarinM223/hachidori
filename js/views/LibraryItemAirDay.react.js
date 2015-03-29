@@ -1,10 +1,10 @@
 /** @jsx React.DOM */
 'use strict';
 
-import React from 'react';
-import ReactBootstrap from 'react-bootstrap';
-import AnimeAirDate from '../AnimeAirDate.js';
-import LibraryItemAirDayMixin from './mixins/LibraryItemAirDayMixin.js';
+var React = require('react')
+  , ReactBootstrap = require('react-bootstrap')
+  , AnimeAirDate = require('../AnimeAirDate.js')
+  , LibraryItemAirDayMixin = require('./mixins/LibraryItemAirDayMixin.js');
 
 /**
  * @param {LibraryItem} libraryItem
@@ -55,4 +55,4 @@ var LibraryItemAirDayComponent = React.createClass({
   }
 });
 
-export default LibraryItemAirDayComponent;
+module.exports = LibraryItemAirDayComponent;

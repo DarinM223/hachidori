@@ -1,11 +1,11 @@
 /** @jsx React.DOM */
 'use strict';
 
-import React from 'react';
-import AnimeItemAddComponent from './AnimeItemAdd.react.js';
-import LocalStorage from '../LocalStorage.js';
-import AnimeMixin from './mixins/AnimeMixin.js';
-import AnimeItemMixin from './mixins/AnimeItemMixin.js';
+var React = require('react')
+  , AnimeItemAddComponent = require('./AnimeItemAdd.react.js')
+  , LocalStorage = require('../LocalStorage.js')
+  , AnimeMixin = require('./mixins/AnimeMixin.js')
+  , AnimeItemMixin = require('./mixins/AnimeItemMixin.js');
 
 /**
  * @property {string} tab
@@ -32,4 +32,4 @@ var AnimeItemComponent = React.createClass({
   }
 });
 
-export default AnimeItemComponent;
+module.exports = AnimeItemComponent;

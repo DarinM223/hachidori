@@ -1,12 +1,12 @@
 /** @jsx React.DOM */
 'use strict';
 
-import React from 'react/addons';
-import AnimeCache from '../AnimeCache.js';
-import LibraryItemComponent from './LibraryItem.react.js';
-import AnimeItemComponent from './AnimeItem.react.js';
-import HummingbirdAnimeList from '../HummingbirdAnimeList.js';
-import AnimeListMixin from './mixins/AnimeListMixin.js';
+var React = require('react/addons')
+  , AnimeCache = require('../AnimeCache.js')
+  , LibraryItemComponent = require('./LibraryItem.react.js')
+  , AnimeItemComponent = require('./AnimeItem.react.js')
+  , HummingbirdAnimeList = require('../HummingbirdAnimeList.js')
+  , AnimeListMixin = require('./mixins/AnimeListMixin.js');
 
 /**
  * @property {string} username
@@ -79,4 +79,4 @@ var AnimeListComponent = React.createClass({
   }
 });
 
-export default AnimeListComponent;
+module.exports = AnimeListComponent;

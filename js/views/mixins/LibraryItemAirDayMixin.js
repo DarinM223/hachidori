@@ -1,6 +1,6 @@
 'use strict';
 
-import AnimeAirDate from '../../AnimeAirDate.js';
+var AnimeAirDate = require('../../AnimeAirDate.js');
 
 /**
  * @param {LibraryItem} libraryItem
@@ -13,4 +13,4 @@ var LibraryItemAirDayMixin = {
   }
 };
 
-export default LibraryItemAirDayMixin;
+module.exports = LibraryItemAirDayMixin;

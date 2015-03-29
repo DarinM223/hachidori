@@ -1,7 +1,7 @@
 /** @jsx React.DOM */
 'use strict';
 
-import React from 'react';
+var React = require('react');
 
 /**
  * @property {string} imageURL
@@ -18,4 +18,4 @@ var AnimeDetailComponent = React.createClass({
   }
 });
 
-export default AnimeDetailComponent;
+module.exports = AnimeDetailComponent;

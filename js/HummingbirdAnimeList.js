@@ -1,10 +1,10 @@
 'use strict';
 
-import HummingbirdAccessToken from './HummingbirdAccessToken.js';
-import AnimeAirDate from './AnimeAirDate.js';
-import $ from 'jquery';
-import _ from 'underscore';
-import LocalStorage from './LocalStorage.js';
+var HummingbirdAccessToken = require('./HummingbirdAccessToken.js')
+  , AnimeAirDate = require('./AnimeAirDate.js')
+  , $ = require('jquery')
+  , _ = require('underscore')
+  , LocalStorage = require('./LocalStorage.js');
 
 /**
  * Hummingbird animelist for a user
@@ -223,4 +223,4 @@ HummingbirdAnimeList.search = function(query) {
   };
 })();
 
-export default HummingbirdAnimeList;
+module.exports = HummingbirdAnimeList;

@@ -1,8 +1,8 @@
 /** @jsx React.DOM */
 'use strict';
 
-import React from 'react';
-import LibraryItemIncrementMixin from './mixins/LibraryItemIncrementMixin.js';
+var React = require('react')
+  , LibraryItemIncrementMixin = require('./mixins/LibraryItemIncrementMixin.js');
 
 /**
  * @property {LibraryItem} libraryItem
@@ -25,4 +25,4 @@ var LibraryItemIncrementComponent = React.createClass({
   }
 });
 
-export default LibraryItemIncrementComponent;
+module.exports = LibraryItemIncrementComponent;

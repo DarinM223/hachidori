@@ -1,9 +1,9 @@
 /** @jsx React.DOM */
 'use strict';
 
-import React from 'react';
-import ReactBootstrap from 'react-bootstrap';
-import LibraryItemStatusMixin from './mixins/LibraryItemStatusMixin.js';
+var React = require('react')
+  , ReactBootstrap = require('react-bootstrap')
+  , LibraryItemStatusMixin = require('./mixins/LibraryItemStatusMixin.js');
 
 /**
  * @property {LibraryItem} libraryItem
@@ -54,4 +54,4 @@ var LibraryItemStatusComponent = React.createClass({
   }
 });
 
-export default LibraryItemStatusComponent;
+module.exports = LibraryItemStatusComponent;

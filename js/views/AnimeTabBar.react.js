@@ -1,7 +1,7 @@
 /** @jsx React.DOM */
 'use strict';
 
-import React from 'react';
+var React = require('react');
 
 /**
  * @property {function(string} onTabChanged
@@ -60,4 +60,4 @@ var AnimeTabBarComponent = React.createClass({
   }
 });
 
-export default AnimeTabBarComponent;
+module.exports = AnimeTabBarComponent;

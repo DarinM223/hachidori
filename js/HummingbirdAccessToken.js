@@ -1,7 +1,7 @@
 'use strict'; 
 
-import $ from 'jquery';
-import LocalStorage from './LocalStorage.js';
+var $ = require('jquery')
+  , LocalStorage = require('./LocalStorage.js');
 
 /**
  * An access token for a Hummingbird account
@@ -74,4 +74,4 @@ HummingbirdAccessToken.prototype.removeAccessToken = function() {
   LocalStorage.removeItem('hummingbird_username');
 };
 
-export default HummingbirdAccessToken;
+module.exports = HummingbirdAccessToken;

@@ -1,9 +1,9 @@
 'use strict';
 
-import AnimeCache from '../../AnimeCache.js';
-import HummingbirdAccessToken from '../../HummingbirdAccessToken.js';
-import HummingbirdAnimeList from '../../HummingbirdAnimeList.js';
-import LocalStorage from '../../LocalStorage.js';
+var AnimeCache = require('../../AnimeCache.js')
+  , HummingbirdAccessToken = require('../../HummingbirdAccessToken.js')
+  , HummingbirdAnimeList = require('../../HummingbirdAnimeList.js')
+  , LocalStorage = require('../../LocalStorage.js');
 
 var AppMixin = {
   access_token: new HummingbirdAccessToken(),
@@ -103,4 +103,4 @@ var AppMixin = {
   }
 };
 
-export default AppMixin;
+module.exports = AppMixin;
