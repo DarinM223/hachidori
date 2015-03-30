@@ -1,6 +1,6 @@
 'use strict'; 
 
-var $ = require('jquery')
+var request = require('superagent')
   , LocalStorage = require('./LocalStorage.js');
 
 /**
@@ -39,29 +39,36 @@ HummingbirdAccessToken.prototype.getUsername = function() {
  * @return {Promise}
  */
 HummingbirdAccessToken.prototype.authenticate = function(username, password) {
-  return new Promise((resolve, reject) => {
-    if (this.getAccessToken() !== null) {
+  var that = this;
+
+  return new Promise(function(resolve, reject) {
+
+    if (that.getAccessToken() !== null) {
       resolve(null);
     } else {
-      $.ajax({
-        type: 'POST',
-        url: 'https://hummingbird.me/api/v1/users/authenticate',
-        data: {
-          username: username,
-          password: password
-        },
-        success: (data, textStatus, jqXHR) => {
+      request.post('https://hummingbird.me/api/v1/users/authenticate')
+        .send({ username: username, password: password }).end(function(e, res) {
+
+        if (e) {
+          switch (e.status) {
+            case 401:
+              reject(new Error('You entered the wrong username or password'));
+              break;
+            case 500: 
+              reject(new Error('Internal server error'));
+              break;
+            default:
+              reject(new Error('There was an error with error code: ' + e.status));
+              break;
+          }
+        } else {
           // set access_token in localstorage and in a member
-          LocalStorage.setItem('hummingbird_access_token', data);
+          LocalStorage.setItem('hummingbird_access_token', res.body);
           LocalStorage.setItem('hummingbird_username', username);
 
-          this.access_token = data;
-          this.username = username;
+          that.access_token = res.body;
+          that.username = username;
           resolve();
-        }, 
-        statusCode: {
-          401: () => reject(new Error('You entered the wrong username or password')), 
-          500: () => reject(new Error('Internal server error'))
         }
       });
     }
