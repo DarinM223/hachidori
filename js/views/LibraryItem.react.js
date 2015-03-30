@@ -1,13 +1,13 @@
 /** @jsx React.DOM */
 'use strict';
 
-import React from 'react';
-import LibraryItemStatusComponent from './LibraryItemStatus.react.js';
-import LibraryItemIncrementComponent from './LibraryItemIncrement.react.js';
-import LibraryItemRatingComponent from './LibraryItemRating.react.js';
-import LibraryItemAirDayComponent from './LibraryItemAirDay.react.js';
-import AnimeMixin from './mixins/AnimeMixin.js';
-import LibraryItemMixin from './mixins/LibraryItemMixin.js';
+var React = require('react')
+  , LibraryItemStatusComponent = require('./LibraryItemStatus.react.js')
+  , LibraryItemIncrementComponent = require('./LibraryItemIncrement.react.js')
+  , LibraryItemRatingComponent = require('./LibraryItemRating.react.js')
+  , LibraryItemAirDayComponent = require('./LibraryItemAirDay.react.js')
+  , AnimeMixin = require('./mixins/AnimeMixin.js')
+  , LibraryItemMixin = require('./mixins/LibraryItemMixin.js');
 
 /**
  * @property {function(integer, updateparams)} update
@@ -56,4 +56,4 @@ var LibraryItemComponent = React.createClass({
   }
 });
 
-export default LibraryItemComponent;
+module.exports = LibraryItemComponent;

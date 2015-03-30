@@ -4,8 +4,8 @@
  * Synchronous localStorage that wraps asynchronous storage apis
  */
 
-import WorkQueue from '../WorkQueue.js';
-import AsyncStorageWrapper from './AsyncStorageWrapper.js';
+var WorkQueue = require('../WorkQueue.js')
+  , AsyncStorageWrapper = require('./AsyncStorageWrapper.js');
 
 var taskQueue = new WorkQueue();
 
@@ -73,4 +73,4 @@ var FakeLocalStorage = function(Storage) {
   return FakeLocalStorage;
 };
 
-export default FakeLocalStorage;
+module.exports = FakeLocalStorage;

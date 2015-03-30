@@ -46,4 +46,4 @@ ChromeStorageWrapper.remove = function(key) {
   });
 };
 
-export default ChromeStorageWrapper;
+module.exports = ChromeStorageWrapper;

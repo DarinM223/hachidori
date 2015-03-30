@@ -14,4 +14,4 @@ var LibraryItemStatusMixin = {
   }
 };
 
-export default LibraryItemStatusMixin;
+module.exports = LibraryItemStatusMixin;

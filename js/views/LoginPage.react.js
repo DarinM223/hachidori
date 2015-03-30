@@ -1,7 +1,7 @@
 /** @jsx React.DOM */
 'use strict';
 
-import React from 'react';
+var React = require('react');
 
 /**
  * @property {function(username, password)} onLogin
@@ -44,4 +44,4 @@ var LoginPageComponent = React.createClass({
   }
 });
 
-export default LoginPageComponent;
+module.exports = LoginPageComponent;

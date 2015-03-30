@@ -14,4 +14,4 @@ var LibraryItemIncrementMixin = {
   }
 };
 
-export default LibraryItemIncrementMixin;
+module.exports = LibraryItemIncrementMixin;

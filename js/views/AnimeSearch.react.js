@@ -1,7 +1,7 @@
 /** @jsx React.DOM */
 'use strict';
 
-import React from 'react';
+var React = require('react');
 
 /**
  * @property {function(this)} onTextChanged
@@ -29,4 +29,4 @@ var AnimeSearchComponent = React.createClass({
   }
 });
 
-export default AnimeSearchComponent;
+module.exports = AnimeSearchComponent;

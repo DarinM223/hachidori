@@ -12,4 +12,4 @@ var LibraryItemRatingMixin = {
   }
 };
 
-export default LibraryItemRatingMixin;
+module.exports = LibraryItemRatingMixin;

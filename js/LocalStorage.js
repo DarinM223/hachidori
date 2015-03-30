@@ -1,6 +1,6 @@
 'use strict';
-import FakeLocalStorage from './storage/FakeLocalStorage.js';
-import ChromeStorageWrapper from './storage/ChromeStorageWrapper.js';
+var FakeLocalStorage = require('./storage/FakeLocalStorage.js')
+  , ChromeStorageWrapper = require('./storage/ChromeStorageWrapper.js');
 
 /**
  * localstorage wrapper that works for both localstorage and chrome storage
@@ -40,4 +40,4 @@ var LocalStorage = (function() {
   }
 })();
 
-export default LocalStorage;
+module.exports = LocalStorage;

@@ -1,8 +1,8 @@
 'use strict';
 
-import React from 'react';
-import LocalStorage from '../../LocalStorage.js';
-import AnimeDetailComponent from '../AnimeDetail.react.js';
+var React = require('react')
+  , LocalStorage = require('../../LocalStorage.js')
+  , AnimeDetailComponent = require('../AnimeDetail.react.js');
 
 /**
  * Mixin for Anime description popup 
@@ -47,4 +47,4 @@ var AnimeMixin = {
   }
 };
 
-export default AnimeMixin;
+module.exports = AnimeMixin;

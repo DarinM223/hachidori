@@ -1,9 +1,9 @@
 /** @jsx React.DOM */
 'use strict';
 
-import React from 'react';
-import $ from 'jquery';
-import LibraryItemRatingMixin from './mixins/LibraryItemRatingMixin.js';
+var React = require('react')
+  , $ = require('jquery')
+  , LibraryItemRatingMixin = require('./mixins/LibraryItemRatingMixin.js');
 
 /**
  * @property {LibraryItem} libraryItem
@@ -50,4 +50,4 @@ var LibraryItemRatingComponent = React.createClass({
   }
 });
 
-export default LibraryItemRatingComponent;
+module.exports = LibraryItemRatingComponent;
