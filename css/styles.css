@@ -55,7 +55,7 @@ html, body {
   max-width: 490;
   max-height: 300;
   float: right;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 .error {

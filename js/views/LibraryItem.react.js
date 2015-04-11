@@ -42,9 +42,11 @@ var LibraryItemComponent = React.createClass({
               />
             /{totalEpisodesText}
           </h1>
+
           <h2 className="anime-title" ref="title" onMouseDown={this.toggleDescription.bind(this, this.props.libraryItem.anime)}>
             {this.props.libraryItem.anime.title}
           </h2>
+
           <LibraryItemStatusComponent libraryItem={this.props.libraryItem} 
             onChangeStatus={this.onChangeStatus}
             removeFromLibrary={this.removeFromLibrary}/>

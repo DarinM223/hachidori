@@ -4,7 +4,8 @@ var React = require('react-native');
 
 var {
   Text,
-  View
+  View,
+  TabBarIOS
 } = React;
 
 var styles = React.StyleSheet.create({
@@ -18,16 +19,17 @@ var styles = React.StyleSheet.create({
   },
 });
 
-var App = React.createClass({
+/**
+ * @property {string} tab
+ */
+var AllView = React.createClass({
   render: function() {
     return (
       <View style={styles.container}>
-        <Text style={styles.helloworld}>
-          Hello world!
-        </Text>
+        <Text style={styles.helloworld}>Tab name: { this.props.tab }</Text>
       </View>
     );
   }
 });
 
-module.exports = App;
+module.exports = AllView;
