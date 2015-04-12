@@ -19,6 +19,7 @@ var AnimeMixin = {
 
       xhr.onload = (e) => {
         html = React.renderToString(<AnimeDetailComponent 
+          title={anime.title}
           imageURL={ window.URL.createObjectURL(xhr.response) }
           detail={anime.synopsis}/>);
         this.displayPopup(html);
@@ -27,6 +28,7 @@ var AnimeMixin = {
       xhr.send();
     } else {
       html = React.renderToString(<AnimeDetailComponent 
+        title={anime.title}
         imageURL={anime.cover_image} 
         detail={anime.synopsis}/>);
       this.displayPopup(html);
