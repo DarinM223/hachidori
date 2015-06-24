@@ -6,6 +6,7 @@
   "dependencies": {
     "async": "^0.9.0",
     "bootstrap": "^3.3.2",
+    "express": "^4.13.0",
     "jquery": "^2.1.3",
     "react": "^0.12.2",
     "react-bootstrap": "^0.13.3",
@@ -27,7 +28,7 @@
     ]
   },
   "scripts": {
-    "start": "./node_modules/watchify/bin/cmd.js -t [babelify] ./run.js -o build/bundle.js -v -d"
+    "start": "./node_modules/watchify/bin/cmd.js -t [babelify] ./run.js -o public/build/bundle.js -v -d"
   },
   "repository": {
     "type": "git",
