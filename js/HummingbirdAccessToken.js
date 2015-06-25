@@ -46,7 +46,7 @@ HummingbirdAccessToken.prototype.authenticate = function(username, password) {
     if (that.getAccessToken() !== null) {
       resolve(null);
     } else {
-      request.post('https://hummingbird.me/api/v1/users/authenticate')
+      request.post(window.location.origin + '/api/v1/users/authenticate')
         .send({ username: username, password: password }).end(function(e, res) {
 
         if (e) {

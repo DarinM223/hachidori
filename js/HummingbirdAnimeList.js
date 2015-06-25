@@ -33,7 +33,7 @@ HummingbirdAnimeList.prototype._loadList = function() {
   var that = this;
 
   return new Promise(function(resolve, reject) {
-    request.get('http://hummingbird.me/api/v1/users/' + that.username + '/library').end(function(e, res) {
+    request.get(window.location.origin + '/api/v1/users/' + that.username + '/library').end(function(e, res) {
       if (e) {
         that.anime_list = JSON.parse(LocalStorage.getItem('animelist-cached:' + that.username)); 
         reject(e);
@@ -54,7 +54,7 @@ HummingbirdAnimeList.prototype._loadFavoriteAnime = function() {
   var that = this;
 
   return new Promise(function(resolve, reject) {
-    request.get('http://hummingbird.me/api/v1/users/' + that.username + '/favorite_anime').end(function(e, res) {
+    request.get(window.location.origin + '/api/v1/users/' + that.username + '/favorite_anime').end(function(e, res) {
       if (e) {
         that.favorite_anime = JSON.parse(LocalStorage.getItem('anime-cached:' + that.username + ':favorite'));
         reject(e);
@@ -89,7 +89,7 @@ HummingbirdAnimeList.removeFromList = function(animeid) {
     if (access_token.getAccessToken() === null) {
       reject(new Error('You are not authorized to perform this action'));
     } else {
-      request.post('https://hummingbird.me/api/v1/libraries/' + animeid + '/remove')
+      request.post(window.location.origin + '/api/v1/libraries/' + animeid + '/remove')
         .send({ auth_token: access_token.getAccessToken() }).end(function(e, res) {
 
         if (e) {
@@ -138,7 +138,7 @@ HummingbirdAnimeList.update = function(animeid, updateparams) {
 
       _.extend(params, { id: animeid, auth_token: access_token.getAccessToken() });
 
-      request.post('https://hummingbird.me/api/v1/libraries/' + animeid).send(params).end(function(e, res) {
+      request.post(window.location.origin + '/api/v1/libraries/' + animeid).send(params).end(function(e, res) {
         if (e) {
           switch (e.status) {
             case 401:
@@ -167,7 +167,7 @@ HummingbirdAnimeList.search = function(query) {
   var that = this;
 
   return new Promise(function(resolve, reject) {
-    request.get('http://hummingbird.me/api/v1/search/anime?query=' + query.split(' ').join('+')).end(function(e, res) {
+    request.get(window.location.origin + '/api/v1/search/anime?query=' + query.split(' ').join('+')).end(function(e, res) {
       if (e) {
         reject(new Error('Error sending search request'));
       } else {
