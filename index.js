@@ -37,9 +37,8 @@ app.all(/^\/api\/(.*)/, function(req, res) {
     .set('Content-Type', 'application/json')
     .send(req.body).end(function(e, hummingbirdRes) {
 
-
     if (e) {
-      res.status(500).send();
+      res.status(500).send(e);
     } else {
       // hummingbirdRes.body holds the data
       res.json(hummingbirdRes.body);
