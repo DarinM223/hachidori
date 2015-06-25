@@ -1,0 +1,17 @@
+{
+  "name": "animelist-checker",
+  "main": "index.js",
+  "version": "0.0.0",
+  "homepage": "https://github.com/DarinM223/web-anime-checker",
+  "authors": [
+    "Darin Minamoto <darinm223@gmail.com>"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "bootstrap": "~3.3.5",
+    "jquery": "~2.1.4",
+    "react": "~0.12.2",
+    "react-bootstrap": "~0.13.0",
+    "underscore": "~1.7.0"
+  }
+}
