@@ -177,23 +177,18 @@ HummingbirdAnimeList.search = function(query) {
   });
 };
 
+/*
+ * Private functions used for compareLibraryItems function
+ */
+
 /**
- * Compares two library items in order of how close they are to today
- * The order of comparison is as follows:
- *
- * 1. How close the day is to today (if today is monday, anime on monday > anime on tuesday > anime on wednesday, etc)
- *
- * 2. How much you are caught up (less episodes watched means higher on the list b/c you want to catch up first)
- * (anime that is 17/24 > anime that is 3/12 because 24 - 17 = 7 and 12 - 3 = 9 and 9 - 7 > 0, 
- * so 3/12 will appear first then 17/24)
- *
- * 3. The ratings of the anime (higher rank is higher on the list)
- *
+ * Compares library items based on the "distance" from the current day of the week 
+ * (library items closer in day of week to today are ranked higher)
  * @param {LibraryItem} a first anime library item
  * @param {LibraryItem} b second anime library item
  * @return {integer} positive if a is "greater than" b, negative if a is "less than" b, 0 if a is "equal to" b
  */
-HummingbirdAnimeList.compareLibraryItems = function(a, b) {
+HummingbirdAnimeList._checkAirDaysOfWeek = function(a, b) {
   var current_date = new Date();
 
   var d_a = AnimeAirDate.getAirDate(a.anime.id);
@@ -220,29 +215,71 @@ HummingbirdAnimeList.compareLibraryItems = function(a, b) {
     difference_b += 7;
   }
 
-  var result = difference_a - difference_b;
+  return (difference_a - difference_b);
+};
 
-  if (result === 0) { // if both anime air on the same day
-    // return the difference of the total # of episodes - # episodes watched
-    if (a.episodes_watched && a.anime.episode_count && b.episodes_watched && b.anime.episode_count) {
-      var newResult = (b.anime.episode_count - b.episodes_watched) - (a.anime.episode_count - a.episodes_watched);
-
-      if (newResult === 0) { // if both anime have the same # of episodes watched relationally
-        // return the difference of their ratings
-        if (b.rating && a.rating && b.rating.value && a.rating.value) {
-          return b.rating.value - a.rating.value;
-        } else {
-          return 0;
-        }
-      } else {
-        return newResult;
-      }
-    } else {
-      return 0;
-    }
+/**
+ * Compares library items based on the # of episodes watched (library items with less episodes are
+ * ranked higher because you have to catch up)
+ * @param {LibraryItem} a first anime library item
+ * @param {LibraryItem} b second anime library item
+ * @return {integer} positive if a is "greater than" b, negative if a is "less than" b, 0 if a is "equal to" b
+ */
+HummingbirdAnimeList._checkEpisodeDifferences = function(a, b) {
+  // return the difference of the total # of episodes - # episodes watched
+  if (a.episodes_watched && a.anime.episode_count && b.episodes_watched && b.anime.episode_count) {
+    return ((b.anime.episode_count - b.episodes_watched) - (a.anime.episode_count - a.episodes_watched));
   } else {
+    return 0;
+  }
+};
+
+/**
+ * Compares library items based on the rating (higher rating library items are ranked higher
+ * because you are more willing to watch it first)
+ * @param {LibraryItem} a first anime library item
+ * @param {LibraryItem} b second anime library item
+ * @return {integer} positive if a is "greater than" b, negative if a is "less than" b, 0 if a is "equal to" b
+ */
+HummingbirdAnimeList._checkRatingDifferences = function(a, b) {
+  if (b.rating && a.rating && b.rating.value && a.rating.value) {
+    return b.rating.value - a.rating.value;
+  } else {
+    return 0;
+  }
+};
+
+/**
+ * Compares two library items in order of how close they are to today
+ * The order of comparison is as follows:
+ *
+ * 1. If the library item anime has already aired 
+ * (already aired anime is ranked first, if both are already aired, it is ordered by how many episodes watched)
+ *
+ * 2. How close the day is to today (if today is monday, anime on monday > anime on tuesday > anime on wednesday, etc)
+ *
+ * 3. How much you are caught up (less episodes watched means higher on the list b/c you want to catch up first)
+ * (anime that is 17/24 > anime that is 3/12 because 24 - 17 = 7 and 12 - 3 = 9 and 9 - 7 > 0, 
+ * so 3/12 will appear first then 17/24)
+ *
+ * 4. The ratings of the anime (higher rank is higher on the list)
+ *
+ * @param {LibraryItem} a first anime library item
+ * @param {LibraryItem} b second anime library item
+ * @return {integer} positive if a is "greater than" b, negative if a is "less than" b, 0 if a is "equal to" b
+ */
+HummingbirdAnimeList.compareLibraryItems = function(a, b) {
+  var result = HummingbirdAnimeList._checkAirDaysOfWeek(a, b);
+  if (result !== 0) {
     return result;
   }
+
+  result = HummingbirdAnimeList._checkEpisodeDifferences(a, b);
+  if (result !== 0) {
+    return result;
+  }
+
+  return HummingbirdAnimeList._checkRatingDifferences(a, b);
 };
 
 module.exports = HummingbirdAnimeList;
