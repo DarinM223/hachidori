@@ -16,12 +16,21 @@ Features
 Installing
 ----------
 
-This app is intended to be used as a standalone chrome or desktop app since it uses cross origin requests
-to the Hummingbird API. However, I haven't published this app to the chrome store yet so to install, clone the repository with git:
+This app can be used as both a standalone chrome or desktop app or a web app. Right now the chrome app doesn't know how to connect to the public node.js server so only the web app is able to be run. First clone the github repository here: 
 
     git clone https://github.com/DarinM223/hummingbird-react-client
 
-Then go into chrome and under settings->extensions check Developer mode and select Load unpacked extension... and select the hummingbird-react-client folder created from cloning. Then go to the URL chrome://apps and the app should be in there.
+Then install all of the dependencies:
+
+    npm install
+
+Then if you want to run the server in development mode (client and server reload when you change something) run:
+
+    npm start
+
+And if you want to build the React code for production, run:
+
+    npm run build
 
 TODO
 ----
