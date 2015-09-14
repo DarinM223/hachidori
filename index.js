@@ -48,6 +48,10 @@ app.all(/^\/api\/(.*)/, function(req, res) {
 
 var PORT = process.env.PORT;
 
+if (typeof PORT === 'undefined' || PORT === null) {
+  PORT = process.env.PORT = 3000;
+}
+
 var server = app.listen(PORT, function() {
-  console.log('Server started');
+  console.log('Server started on port: ' + PORT);
 });

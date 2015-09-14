@@ -1,4 +1,4 @@
-# Hummingbird minimal web client
+# Hachidori
 ###Minimal Hummingbird client that makes it easier to keep track of your anime
 
 ![Main Image](http://i.imgur.com/9cCbHLf.png?1)
