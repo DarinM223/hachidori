@@ -4,15 +4,15 @@
   "description": "A streamlined Hummingbird anime list tracker ",
   "main": "background.js",
   "dependencies": {
-    "async": "^0.9.0",
+    "async": "^1.4.2",
     "body-parser": "^1.13.1",
     "bootstrap": "^3.3.2",
     "bower": "^1.4.1",
     "express": "^4.13.0",
     "http-proxy": "^1.11.2",
     "jquery": "^2.1.3",
-    "react": "^0.12.2",
-    "react-bootstrap": "^0.13.3",
+    "react": "^0.13.3",
+    "react-bootstrap": "^0.25.2",
     "superagent": "^1.1.0",
     "underscore": "^1.7.0"
   },
