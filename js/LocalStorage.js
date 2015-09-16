@@ -1,43 +1,28 @@
 'use strict';
-var FakeLocalStorage = require('./storage/FakeLocalStorage.js')
-  , ChromeStorageWrapper = require('./storage/ChromeStorageWrapper.js');
 
 /**
  * localstorage wrapper that works for both localstorage and chrome storage
  */
-var LocalStorage = (function() {
-  /*
-   * Wrapper around localStorage
-   */
-  var RealLocalStorage = {
-    init: function() {
-      return Promise.resolve(null);
-    },
 
-    getItem: function(key) {
-      return localStorage.getItem(key);
-    },
+var DictionaryStorage = require('./storage/DictionaryStorage.js')
+  , BrowserLocalStorage = require('./storage/BrowserLocalStorage.js')
+  , ChromeStorageWrapper = require('./storage/ChromeStorageWrapper.js');
 
-    setItem: function(key, value) {
-      return localStorage.setItem(key, value);
-    },
+/*
+ * Expose `LocalStorage`
+ */
 
-    removeItem: function(key) {
-      return localStorage.removeItem(key);
-    },
-
-    isChromeExtension: false
-  };
-
+var LocalStorage = module.exports = (function() {
   if (typeof(Storage) !== 'undefined' && typeof(localStorage) !== 'undefined') {
-    return RealLocalStorage;
+    var browserStorage = BrowserLocalStorage(null);
+    browserStorage.isChromeExtension = false;
+    return browserStorage;
   } else if (typeof(chrome) !== 'undefined' && chrome && chrome.storage) {
-    var ChromeStorage = FakeLocalStorage(ChromeStorageWrapper);
-    ChromeStorage.isChromeExtension = true;
-    return ChromeStorage;
+    var chromeStorage = DictionaryStorage(ChromeStorageWrapper);
+    chromeStorage.isChromeExtension = true;
+    return chromeStorage;
   } else {
     throw new Error('localStorage is not defined');
   }
 })();
 
-module.exports = LocalStorage;

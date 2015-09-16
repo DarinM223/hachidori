@@ -1,12 +1,13 @@
 'use strict';
 
 /*
- * Synchronous localStorage that wraps asynchronous storage apis
+ * Synchronous storage using a `dictionary` that wraps asynchronous storage apis
  */
 
 var WorkQueue = require('../WorkQueue.js')
   , AsyncStorageWrapper = require('./AsyncStorageWrapper.js');
 
+// TODO(darin): replace with singleton
 var taskQueue = new WorkQueue();
 
 /**
@@ -15,33 +16,32 @@ var taskQueue = new WorkQueue();
  * @property {function(key: String, value: Object)} Storage.set
  * @property {function(key: String)} Storage.remove
  */
-var FakeLocalStorage = function(Storage) {
-  if (typeof(chrome) === 'undefined' || chrome === null || typeof(chrome.storage) === 'undefined' || chrome.storage === null) {
-    throw new TypeError('Chrome storage is not defined');
-  }
-
+var DictionaryStorage = function(Storage) {
   var storageWrapper = null;
 
-  var FakeLocalStorage = {
+  var DictionaryStorage = {
     data: {},
     isReady: false
   }; 
 
-  FakeLocalStorage._initStorageWrapper = function() {
+  DictionaryStorage._initStorageWrapper = function() {
     return new Promise((resolve, reject) => {
       storageWrapper = new AsyncStorageWrapper(Storage, function(err, storageKeys) {
-        if (err) reject(err);
+        if (err) {
+          reject(err);
+          return;
+        }
         resolve(storageKeys);
       });
     });
   };
 
-  FakeLocalStorage.init = function() {
-    return FakeLocalStorage._initStorageWrapper().then(function(storageKeys) {
+  DictionaryStorage.init = function() {
+    return DictionaryStorage._initStorageWrapper().then(function(storageKeys) {
       // save all storage keys to hashtable
       var keyPromises = Object.keys(storageKeys).map(function(key) {
         return Storage.get(key).then(function(value) {
-          FakeLocalStorage.data[key] = value;
+          DictionaryStorage.data[key] = value;
         });
       });
 
@@ -51,26 +51,26 @@ var FakeLocalStorage = function(Storage) {
     });
   };
   
-  FakeLocalStorage.setItem = function(key, value) {
-    FakeLocalStorage.data[key] = value;
+  DictionaryStorage.setItem = function(key, value) {
+    DictionaryStorage.data[key] = value;
     taskQueue.enqueueWork(storageWrapper.setItem.bind(storageWrapper, key, value)); // add task to queue
   };
 
-  FakeLocalStorage.getItem = function(key) {
-    if (typeof(FakeLocalStorage.data[key]) === 'undefined') {
-      FakeLocalStorage.data[key] = null;
+  DictionaryStorage.getItem = function(key) {
+    if (typeof(DictionaryStorage.data[key]) === 'undefined') {
+      DictionaryStorage.data[key] = null;
       return null;
     } else {
-      return FakeLocalStorage.data[key];
+      return DictionaryStorage.data[key];
     }
   };
 
-  FakeLocalStorage.removeItem = function(key) {
-    FakeLocalStorage.data[key] = null;
+  DictionaryStorage.removeItem = function(key) {
+    DictionaryStorage.data[key] = null;
     taskQueue.enqueueWork(storageWrapper.removeItem.bind(storageWrapper, key)); // add task to queue
   };
 
-  return FakeLocalStorage;
+  return DictionaryStorage;
 };
 
-module.exports = FakeLocalStorage;
+module.exports = DictionaryStorage;
