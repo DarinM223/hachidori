@@ -6,6 +6,12 @@
 
 var request = require('superagent');
 
+/*
+ * Expose the ServerStorageWrapper function
+ */
+
+module.exports = ServerStorageWrapper;
+
 function ServerStorageWrapper(username) {
   return new ServerStorage(username);
 }

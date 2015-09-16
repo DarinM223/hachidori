@@ -1,7 +1,7 @@
 'use strict';
 
 /*
- * Synchronous localstorage that can also sync with asynchronous apis
+ * Synchronous localStorage that can also sync with asynchronous apis
  */
 
 var WorkQueue = require('../WorkQueue.js')
@@ -23,6 +23,11 @@ module.exports = function(Storage) {
 var taskQueue = new WorkQueue();
 
 /**
+ * A wrapper to an asynchronous storage API 
+ * using the browser's localStorage to store values
+ * @property {function(key: String): Object} Storage.get
+ * @property {function(key: String, value: Object)} Storage.set
+ * @property {function(key: String)} Storage.remove
  * @constructor
  */
 
@@ -30,12 +35,6 @@ function BrowserLocalStorage(Storage) {
   this.Storage = Storage;
   this.storageWrapper = null;
 }
-
-/**
- * Initialize the storage wrapper
- * If the Storage property is null, don't do anything (no syncing with external api)
- * otherwise, resolve with a list of the current keys in the asynchronous store
- */
 
 BrowserLocalStorage.prototype._initStorageWrapper = function _initStorageWrapper() {
   if (this.Storage === null) {
@@ -52,11 +51,17 @@ BrowserLocalStorage.prototype._initStorageWrapper = function _initStorageWrapper
   });
 };
 
+/**
+ * Initialize the storage wrapper
+ * If the Storage property is null, don't do anything (no syncing with external api)
+ * otherwise, get the keys already in the asynchronous store and set them in localStorage
+ */
+
 BrowserLocalStorage.prototype.init = function init() {
   if (this.Storage === null) {
     return Promise.resolve(null);
   }
-  return this._initStorageWrapper().then(function(storageKeys) {
+  return this._initStorageWrapper().then((storageKeys) => {
     // save all storage keys to hashtable
     var keyPromises = Object.keys(storageKeys).map((key) => {
       return Storage.get(key).then((value) => {
@@ -68,6 +73,13 @@ BrowserLocalStorage.prototype.init = function init() {
   });
 };
 
+/**
+ * Sets an item in localStorage and enqueues work to set
+ * it in the asynchronous store if it exists
+ * @param {string} key
+ * @param {Object} value
+ */
+
 BrowserLocalStorage.prototype.setItem = function setItem(key, value) {
   localStorage.setItem(key, value);
   if (this.storageWrapper !== null) {
@@ -75,9 +87,21 @@ BrowserLocalStorage.prototype.setItem = function setItem(key, value) {
   }
 };
 
+/**
+ * Retrieves an item in localStorage
+ * @param {string} key
+ * @returns {Object} the value for the key
+ */
+
 BrowserLocalStorage.prototype.getItem = function getItem(key) {
   return localStorage.getItem(key);
 };
+
+/**
+ * Removes an item in localStorage and enqueues work to remove 
+ * it in the asynchronous store if it exists
+ * @param {string} key
+ */
 
 BrowserLocalStorage.prototype.removeItem = function removeItem(key) {
   localStorage.removeItem(key);
