@@ -1,7 +1,6 @@
 'use strict';
 
 var React = require('react')
-  , $ = require('jquery')
   , LibraryItemRatingMixin = require('./mixins/LibraryItemRatingMixin.js');
 
 /**
@@ -25,8 +24,8 @@ var LibraryItemRatingComponent = React.createClass({
     if (this.props.libraryItem.rating.type === 'advanced') {
       return (
         <span>
-          <label htmlFor="rating">Rating: <span>{'\u00a0'}</span></label>
-          <select id={"backing-" + this.props.libraryItem.anime.id} name="Rating">
+          <label htmlFor="rating">Rating: <span>{"\u00a0"}</span></label>
+          <select id={'backing-' + this.props.libraryItem.anime.id} name="Rating">
             <option value="1"></option>
             <option value="1.5"></option>
             <option value="2"></option>
@@ -37,7 +36,7 @@ var LibraryItemRatingComponent = React.createClass({
             <option value="4.5"></option>
             <option value="5"></option>
           </select>
-          <span ref="rating" data-rateit-backingfld={"select#backing-" + this.props.libraryItem.anime.id} 
+          <span ref="rating" data-rateit-backingfld={'select#backing-' + this.props.libraryItem.anime.id} 
                 data-rateit-resetable="false" data-rateit-value={this.props.libraryItem.rating.value}/>
         </span>
       );

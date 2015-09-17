@@ -17,7 +17,7 @@ var AnimeMixin = {
       xhr.open('GET', anime.cover_image, true);
       xhr.responseType = 'blob';
 
-      xhr.onload = (e) => {
+      xhr.onload = () => {
         html = React.renderToString(<AnimeDetailComponent 
           title={anime.title}
           imageURL={ window.URL.createObjectURL(xhr.response) }

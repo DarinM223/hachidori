@@ -57,7 +57,7 @@ var AppMixin = {
         if (this.searchTimeoutID === null) {
           this.searchTimeoutID = window.setTimeout(this.searchAnime, 500);
         } else {
-          if (typeof this.searchTimeoutID == "number") {
+          if (typeof this.searchTimeoutID === 'number') {
             window.clearTimeout(this.searchTimeoutID);
             this.searchTimeoutID = window.setTimeout(this.searchAnime, 500);
           }

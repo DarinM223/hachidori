@@ -2,7 +2,6 @@
 
 var React = require('react')
   , AnimeItemAddComponent = require('./AnimeItemAdd.react.js')
-  , LocalStorage = require('../LocalStorage.js')
   , AnimeMixin = require('./mixins/AnimeMixin.js')
   , AnimeItemMixin = require('./mixins/AnimeItemMixin.js');
 

@@ -16,7 +16,7 @@ var LibraryItemStatusComponent = React.createClass({
     var DropdownButton = ReactBootstrap.DropdownButton;
     var MenuItem = ReactBootstrap.MenuItem;
 
-    var statusText = "";
+    var statusText = '';
     switch (this.props.libraryItem.status) {
       case 'currently-watching':
         statusText = 'Currently Watching';

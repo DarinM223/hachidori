@@ -19,19 +19,19 @@ var LibraryItemAirDayComponent = React.createClass({
     var airDate = AnimeAirDate.getAirDate(this.props.libraryItem.anime.id);
     var dateText = null;
 
-    if (airDate == 0) {
+    if (airDate === 0) {
       dateText = 'Sunday';
-    } else if (airDate == 1) {
+    } else if (airDate === 1) {
       dateText = 'Monday';
-    } else if (airDate == 2) {
+    } else if (airDate === 2) {
       dateText = 'Tuesday';
-    } else if (airDate == 3) {
+    } else if (airDate === 3) {
       dateText = 'Wednesday';
-    } else if (airDate == 4) {
+    } else if (airDate === 4) {
       dateText = 'Thursday';
-    } else if (airDate == 5) {
+    } else if (airDate === 5) {
       dateText = 'Friday';
-    } else if (airDate == 6) {
+    } else if (airDate === 6) {
       dateText = 'Saturday';
     } else {
       dateText = 'No air day';

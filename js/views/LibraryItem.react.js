@@ -18,11 +18,7 @@ var LibraryItemComponent = React.createClass({
   mixins: [AnimeMixin, LibraryItemMixin],
 
   render: function() {
-    var episodesWatchedText = this.props.libraryItem.episodes_watched;
     var totalEpisodesText = this.props.libraryItem.anime.episode_count;
-    if (this.props.libraryItem.episodes_watched === null) {
-      episodesWatchedText = '_';
-    }
     if (this.props.libraryItem.anime.episode_count === null) {
       totalEpisodesText = '_';
     }

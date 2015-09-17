@@ -81,8 +81,6 @@ HummingbirdAnimeList.prototype.getList = function() {
  * @return {Promise}
  */
 HummingbirdAnimeList.removeFromList = function(animeid) {
-  var that = this;
-
   return new Promise(function(resolve, reject) {
     var access_token = new HummingbirdAccessToken();
 
@@ -90,7 +88,7 @@ HummingbirdAnimeList.removeFromList = function(animeid) {
       reject(new Error('You are not authorized to perform this action'));
     } else {
       request.post(window.location.origin + '/api/v1/libraries/' + animeid + '/remove')
-        .send({ auth_token: access_token.getAccessToken() }).end(function(e, res) {
+        .send({ auth_token: access_token.getAccessToken() }).end(function(e) {
 
         if (e) {
           switch (e.status) {
@@ -126,8 +124,6 @@ HummingbirdAnimeList.removeFromList = function(animeid) {
  * @return {Promise(LibraryItem)} the updated library item
  */
 HummingbirdAnimeList.update = function(animeid, updateparams) {
-  var that = this;
-
   return new Promise(function(resolve, reject) {
     var access_token = new HummingbirdAccessToken();
     if (access_token.getAccessToken() === null) {
@@ -164,8 +160,6 @@ HummingbirdAnimeList.update = function(animeid, updateparams) {
  * @return {Promise(Array.<Anime>)} an array of result anime
  */
 HummingbirdAnimeList.search = function(query) {
-  var that = this;
-
   return new Promise(function(resolve, reject) {
     request.get(window.location.origin + '/api/v1/search/anime?query=' + query.split(' ').join('+')).end(function(e, res) {
       if (e) {

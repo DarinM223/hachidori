@@ -9,13 +9,20 @@ var request = require('superagent');
 /*
  * Expose the ServerStorageWrapper function
  */
-
 module.exports = ServerStorageWrapper;
 
+/**
+ * A function that takes in a username and 
+ * returns a new `ServerStorage`
+ */
 function ServerStorageWrapper(username) {
   return new ServerStorage(username);
 }
 
+/**
+ * A storage wrapper for the node.js backend server
+ * @param {string} username Hummingbird username
+ */
 function ServerStorage(username) {
   this.username = username;
   this._locationURL = window.location.origin + '/storage/' + this.username;
@@ -26,7 +33,6 @@ function ServerStorage(username) {
  * @param {string} key
  * @return {Promise(Object)} key's value
  */
-
 ServerStorage.prototype.get = function get(key) {
   return new Promise((resolve, reject) => {
     request
@@ -48,7 +54,6 @@ ServerStorage.prototype.get = function get(key) {
  * @param {string} key
  * @param {Object} value
  */
-
 ServerStorage.prototype.set = function set(key, value) {
   request
     .post(this._locationURL)
@@ -60,10 +65,9 @@ ServerStorage.prototype.set = function set(key, value) {
  * Removes a key-value pair 
  * @param {string} key
  */
-
 ServerStorage.prototype.remove = function remove(key) {
   request
-    .del(this._locationURL)
+    .del(this._locationURL + `/${ key }`)
     .end();
 };
 

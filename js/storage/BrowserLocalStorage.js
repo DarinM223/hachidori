@@ -11,7 +11,6 @@ var WorkQueue = require('../WorkQueue.js')
  * Expose a function that takes a Storage parameter and returns 
  * a new `BrowserLocalStorage`
  */
-
 module.exports = function(Storage) {
   if (typeof localStorage === 'undefined' || localStorage === null) {
     throw new Error('Browser\'s local storage is not defined!'); 
@@ -30,7 +29,6 @@ var taskQueue = new WorkQueue();
  * @property {function(key: String)} Storage.remove
  * @constructor
  */
-
 function BrowserLocalStorage(Storage) {
   this.Storage = Storage;
   this.storageWrapper = null;
@@ -56,7 +54,6 @@ BrowserLocalStorage.prototype._initStorageWrapper = function _initStorageWrapper
  * If the Storage property is null, don't do anything (no syncing with external api)
  * otherwise, get the keys already in the asynchronous store and set them in localStorage
  */
-
 BrowserLocalStorage.prototype.init = function init() {
   if (this.Storage === null) {
     return Promise.resolve(null);
@@ -79,7 +76,6 @@ BrowserLocalStorage.prototype.init = function init() {
  * @param {string} key
  * @param {Object} value
  */
-
 BrowserLocalStorage.prototype.setItem = function setItem(key, value) {
   localStorage.setItem(key, value);
   if (this.storageWrapper !== null) {
@@ -92,7 +88,6 @@ BrowserLocalStorage.prototype.setItem = function setItem(key, value) {
  * @param {string} key
  * @returns {Object} the value for the key
  */
-
 BrowserLocalStorage.prototype.getItem = function getItem(key) {
   return localStorage.getItem(key);
 };
@@ -102,7 +97,6 @@ BrowserLocalStorage.prototype.getItem = function getItem(key) {
  * it in the asynchronous store if it exists
  * @param {string} key
  */
-
 BrowserLocalStorage.prototype.removeItem = function removeItem(key) {
   localStorage.removeItem(key);
   if (this.storageWrapper !== null) {

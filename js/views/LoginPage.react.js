@@ -6,7 +6,7 @@ var React = require('react');
  * @property {function(username, password)} onLogin
  */
 var LoginPageComponent = React.createClass({
-  onLoginClicked: function(event) {
+  onLoginClicked: function() {
     var username = this.refs.username.getDOMNode().value;
     var password = this.refs.password.getDOMNode().value;
 

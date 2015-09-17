@@ -49,15 +49,16 @@ var AnimeListMixin = {
   update: function(animeid, updateparams) {
     return HummingbirdAnimeList.update(animeid, updateparams).then((libraryItem) => {
       var libraryIndex = this.getLibraryIndex(animeid);
+      var newlist;
       if (libraryIndex !== -1) { // set existing anime
         var changeOptions = {};
         changeOptions[libraryIndex] = {
           $set: libraryItem
         };
-        var newlist = React.addons.update(this.state.animelist, changeOptions);
+        newlist = React.addons.update(this.state.animelist, changeOptions);
         this.setState({ animelist: newlist });
       } else { // add new anime
-        var newlist = React.addons.update(this.state.animelist, { $push: [libraryItem] });
+        newlist = React.addons.update(this.state.animelist, { $push: [libraryItem] });
         AnimeCache.addAnime(animeid);
         this.setState({ animelist: newlist });
       }
@@ -82,7 +83,7 @@ var AnimeListMixin = {
     });
   },
 
-  onAirDayChanged: function(newDay) {
+  onAirDayChanged: function() {
     this.forceUpdate();
   }
 };

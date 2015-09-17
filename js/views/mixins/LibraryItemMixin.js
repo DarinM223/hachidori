@@ -13,7 +13,7 @@ var LibraryItemMixin = {
     };
   },
 
-  onIncrement: function(event) {
+  onIncrement: function() {
     this.props.update(this.props.libraryItem.anime.id, {
       episodes_watched: this.props.libraryItem.episodes_watched+1 
     }).then(() => {
@@ -35,7 +35,6 @@ var LibraryItemMixin = {
     var num = parseInt(event.target.value, 10);
     if ((isnum && !isNaN(num) && num <= this.props.libraryItem.anime.episode_count) || event.target.value === '') {
       this.setState({ episodesText: event.target.value });
-    } else {
     }
   },
 

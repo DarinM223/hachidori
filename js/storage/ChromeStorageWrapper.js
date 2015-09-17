@@ -16,7 +16,7 @@ ChromeStorageWrapper.get = function(key) {
     throw new TypeError('Chrome storage is not defined');
   }
 
-  return new Promise(function(resolve, reject) {
+  return new Promise(function(resolve) {
     chrome.storage.local.get(key, function(value) {
       resolve(value[key]);
     });
@@ -33,7 +33,7 @@ ChromeStorageWrapper.set = function(key, value) {
     throw new TypeError('Chrome storage is not defined');
   }
 
-  return new Promise(function(resolve, reject) {
+  return new Promise(function(resolve) {
     var obj = {};
     obj[key] = value;
     chrome.storage.local.set(obj, function() {
@@ -51,7 +51,7 @@ ChromeStorageWrapper.remove = function(key) {
     throw new TypeError('Chrome storage is not defined');
   }
 
-  return new Promise(function(resolve, reject) {
+  return new Promise(function(resolve) {
     chrome.storage.local.remove(key, function() {
       resolve();
     });

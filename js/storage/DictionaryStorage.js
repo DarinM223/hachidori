@@ -11,10 +11,9 @@ var WorkQueue = require('../WorkQueue.js')
  * Expose a function that takes a Storage parameter and returns 
  * a new `DictionaryStorage`
  */
-
 module.exports = function(Storage) {
   return new DictionaryStorage(Storage);
-}
+};
 
 // TODO(darin): replace with singleton
 var taskQueue = new WorkQueue();

@@ -22,8 +22,6 @@ var App = React.createClass({
   },
 
   render: function() {
-    var answer = null;
-
     if (!this.state.loggedIn) {
       if (this.state.err) {
         return (

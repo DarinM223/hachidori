@@ -21,11 +21,8 @@ var AnimeListComponent = React.createClass({
 
   render: function() {
     if (this.state.loading) {
-      return <h1>Loading data....</h1>
+      return <h1>Loading data....</h1>;
     } else {
-      var libraryIndexes = [];
-      var current_date = new Date();
-
       var filteredTabLibrary = null;
 
       if (this.props.tab === 'all') {
@@ -42,17 +39,17 @@ var AnimeListComponent = React.createClass({
         });
       }
 
-      var filteredLibrary = filteredTabLibrary.slice(0, this.props.maxLibraryItems).map((libraryItem, index) => {
+      var filteredLibrary = filteredTabLibrary.slice(0, this.props.maxLibraryItems).map((libraryItem) => {
         return <LibraryItemComponent key={libraryItem.anime.id} 
                                      libraryItem={libraryItem} 
                                      update={this.update}
                                      remove={this.remove}
-                                     onAirDayChanged={this.onAirDayChanged}/>
+                                     onAirDayChanged={this.onAirDayChanged}/>;
       });
 
       var searchLibrary = this.props.searchList.map((anime) => {
         if (!AnimeCache.inCache(anime.id)) {
-          return <AnimeItemComponent key={anime.id} tab={this.props.tab} anime={anime} update={this.update}/>
+          return <AnimeItemComponent key={anime.id} tab={this.props.tab} anime={anime} update={this.update}/>;
         }
       });
 
