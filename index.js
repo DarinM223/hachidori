@@ -3,9 +3,15 @@
 // Node server that hosts the web app and includes a proxy for accessing the Hummingbird API
 
 var express = require('express')
+  , redis = require('redis')
   , app = express()
+  , client = redis.createClient(process.env.REDIS_URL)
   , bodyparser = require('body-parser')
   , request = require('superagent');
+
+client.on('error', function(err) {
+  console.log('Redis Error: ', err);
+});
 
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({

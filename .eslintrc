@@ -15,6 +15,7 @@
     "chrome": true
   },
   "rules": {
+    "indent": [2, 2, {"SwitchCase": 1}],
     "semi": [2, "always"],
     "quotes": [2, "single"],
     "eqeqeq": 2,
