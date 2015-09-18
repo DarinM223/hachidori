@@ -61,5 +61,12 @@ describe('Testing JSONEncoder', function() {
     expect(value).to.eql([{ a: true, b: 3 }, { a: { a: 2 }, b: [1, 2] }]);
     done();
   });
+
+  it('should properly encode and decode null', function(done) {
+    var jsonString = JSONEncoder.encodeJSON({ a: null });
+    var value = JSONEncoder.decodeJSON(jsonString);
+    expect(value).to.eql({ a: null });
+    done();
+  });
 });
 

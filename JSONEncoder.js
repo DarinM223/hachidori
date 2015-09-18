@@ -16,10 +16,10 @@ const JSON_VALUE_KEY_NAME = '$%^&*()!!';
  * @return {string} the JSON string
  */
 exports.encodeJSON = function encodeJSON(value) {
-  if (typeof value === 'undefined' || value === null) {
-    throw new TypeError(`Error in encodeJSON: \' ${ value } \' is either null or undefined`);
+  if (typeof value === 'undefined') {
+    throw new TypeError(`Error in encodeJSON: \' ${ value } \' is undefined`);
   }
-  if (typeof value !== 'object') {
+  if (typeof value !== 'object' || value === null) {
     var newObj = {};
     newObj[JSON_VALUE_KEY_NAME] = value;
     return JSON.stringify(newObj);
@@ -34,11 +34,14 @@ exports.encodeJSON = function encodeJSON(value) {
  * @return {string,integer,float,boolean,Object} the value encoded by the string
  */
 exports.decodeJSON = function decodeJSON(str) {
-  if (typeof str === 'undefined' || str === null) {
-    throw new TypeError(`Error in decodeJSON: \' ${ str } \' is either null or undefined`);
+  if (typeof str === 'undefined') {
+    throw new TypeError(`Error in decodeJSON: \' ${ str } \' is undefined`);
+  }
+  if (str === null) {
+    return str;
   }
   var obj = JSON.parse(str);
-  if (typeof obj[JSON_VALUE_KEY_NAME] !== 'undefined' && obj[JSON_VALUE_KEY_NAME] !== null) {
+  if (typeof obj[JSON_VALUE_KEY_NAME] !== 'undefined') {
     return obj[JSON_VALUE_KEY_NAME];
   } else {
     return obj;

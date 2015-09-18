@@ -28,8 +28,10 @@ KeyValueStore.prototype.get = function get(key) {
 
   return this.client.typeAsync(key).then((type) => {
     switch (type) {
+      case 'none':
+        return Promise.resolve(null);
       case 'string':
-        return this.client.getAsync(key).then(item => Promise.resolve(JSON.parse(item)));
+        return this.client.getAsync(key).then(item => Promise.resolve(JSONEncoder.decodeJSON(item)));
       case 'list':
         return this.client.lrangeAsync(key, 0, -1).then(list => {
           return Promise.resolve(list.map(item => JSONEncoder.decodeJSON(item)));
