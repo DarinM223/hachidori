@@ -8,8 +8,6 @@ var expect = require('chai').expect
   , app = require('../server.js')
   , JSONEncoder = require('../JSONEncoder.js');
 
-Promise.promisifyAll(request);
-
 const TEST_PORT = 5000;
 const TEST_USERNAME = 'hello';
 

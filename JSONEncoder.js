@@ -20,7 +20,7 @@ exports.encodeJSON = function encodeJSON(value) {
     throw new TypeError(`Error in encodeJSON: \' ${ value } \' is undefined`);
   }
   if (typeof value !== 'object' || value === null) {
-    var newObj = {};
+    let newObj = {};
     newObj[JSON_VALUE_KEY_NAME] = value;
     return JSON.stringify(newObj);
   } else {

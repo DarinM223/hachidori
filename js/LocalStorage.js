@@ -6,7 +6,8 @@
 
 var DictionaryStorage = require('./storage/DictionaryStorage.js')
   , BrowserLocalStorage = require('./storage/BrowserLocalStorage.js')
-  , ChromeStorageWrapper = require('./storage/ChromeStorageWrapper.js');
+  , ChromeStorageWrapper = require('./storage/ChromeStorageWrapper.js')
+  , AsyncStorageOneByOneWrapper = require('./storage/AsyncStorageOneByOneWrapper.js');
 
 /*
  * Expose a function that returns the local storage best suited for the current environment
@@ -15,11 +16,13 @@ var DictionaryStorage = require('./storage/DictionaryStorage.js')
  */
 module.exports = (function() {
   if (typeof(Storage) !== 'undefined' && typeof(localStorage) !== 'undefined') {
-    var browserStorage = BrowserLocalStorage(null);
+    // Use browser localStorage 
+    var browserStorage = BrowserLocalStorage(null, null);
     browserStorage.isChromeExtension = false;
     return browserStorage;
   } else if (typeof(chrome) !== 'undefined' && chrome && chrome.storage) {
-    var chromeStorage = DictionaryStorage(ChromeStorageWrapper);
+    // Create a chrome storage wrapper that uses asynchronous one-by-one item fetching
+    var chromeStorage = DictionaryStorage(ChromeStorageWrapper, AsyncStorageOneByOneWrapper);
     chromeStorage.isChromeExtension = true;
     return chromeStorage;
   } else {

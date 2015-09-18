@@ -4,7 +4,8 @@
  * Promise based wrapper for the hachidori node.js backend
  */
 
-var request = require('superagent');
+var request = require('request-promise')
+  , JSONEncoder = require('../../JSONEncoder.js');
 
 /*
  * Expose the ServerStorageWrapper function
@@ -29,45 +30,34 @@ function ServerStorage(username) {
 }
 
 /**
- * Retrieves a value from the key
+ * Retrieves the user's data
  * @param {string} key
  * @return {Promise(Object)} key's value
  */
-ServerStorage.prototype.get = function get(key) {
-  return new Promise((resolve, reject) => {
-    request
-      .get(this._locationURL)
-      .query({ key: key })
-      .end((e, res) => {
-        if (e) {
-          reject(e);
-          return;
-        }
+ServerStorage.prototype.get = function get() {
+  return request(this._locationURL);
+};
 
-        resolve(res.body);
-      });
+/**
+ * Sets a user's data
+ * @param {Object} data the data to set for the username
+ */
+ServerStorage.prototype.set = function set(data) {
+  return request({
+    method: 'POST',
+    uri: this._locationURL,
+    form: { userData: JSONEncoder.encodeJSON(data) }
   });
 };
 
 /**
- * Sets a key-value pair
- * @param {string} key
- * @param {Object} value
- */
-ServerStorage.prototype.set = function set(key, value) {
-  request
-    .post(this._locationURL)
-    .send({ key: key, value: value })
-    .end();
-};
-
-/**
- * Removes a key-value pair 
+ * Removes the data for a user
  * @param {string} key
  */
-ServerStorage.prototype.remove = function remove(key) {
-  request
-    .del(this._locationURL + `/${ key }`)
-    .end();
+ServerStorage.prototype.remove = function remove() {
+  return request({
+    method: 'DELETE',
+    uri: this._locationURL
+  });
 };
 

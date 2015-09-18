@@ -12,34 +12,26 @@ var React = require('react')
 var LibraryItemStatusComponent = React.createClass({
   mixins: [LibraryItemStatusMixin],
 
+  statusMap: {
+    'currently-watching': 'Currently Watching',
+    'plan-to-watch': 'Plan to Watch',
+    'completed': 'Completed',
+    'on-hold': 'On Hold',
+    'dropped': 'Dropped',
+    'remove': 'Remove from Library'
+  },
+
   render: function() {
     var DropdownButton = ReactBootstrap.DropdownButton;
     var MenuItem = ReactBootstrap.MenuItem;
 
-    var statusText = '';
-    switch (this.props.libraryItem.status) {
-      case 'currently-watching':
-        statusText = 'Currently Watching';
-        break;
-      case 'plan-to-watch':
-        statusText = 'Plan to Watch';
-        break;
-      case 'completed':
-        statusText = 'Completed';
-        break;
-      case 'on-hold':
-        statusText = 'On Hold';
-        break;
-      case 'dropped':
-        statusText = 'Dropped';
-        break;
-    }
+    var statusText = this.statusMap[this.props.libraryItem.status];
 
     return (
       <span>
         <br/>
         <label htmlFor="dropdown-status">&nbsp; Status: &nbsp;&nbsp;</label>
-        <DropdownButton id="dropdown-status" title={statusText}>
+        <DropdownButton id="dropdown-status" title={statusText} onSelect={this.onSelected}>
           <MenuItem href="#" onClick={this.onChangeStatus.bind(null, 'currently-watching')}>Currently watching</MenuItem>
           <MenuItem href="#" onClick={this.onChangeStatus.bind(null, 'completed')}>Completed</MenuItem>
           <MenuItem href="#" onClick={this.onChangeStatus.bind(null, 'plan-to-watch')}>Plan to Watch</MenuItem>

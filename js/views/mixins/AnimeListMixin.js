@@ -62,7 +62,7 @@ var AnimeListMixin = {
         AnimeCache.addAnime(animeid);
         this.setState({ animelist: newlist });
       }
-    });
+    }).catch(e => console.log(e));
   },
 
   /**
@@ -80,7 +80,7 @@ var AnimeListMixin = {
       } else {
         throw new Error('Removed item is not in the library');
       }
-    });
+    }).catch(e => console.log(e));
   },
 
   onAirDayChanged: function() {
