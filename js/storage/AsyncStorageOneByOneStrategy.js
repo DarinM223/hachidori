@@ -10,19 +10,19 @@
  */
 
 /*
- * Expose `AsyncStorageOneByOneWrapper`
+ * Expose `AsyncStorageOneByOneStrategy`
  */
-module.exports = AsyncStorageOneByOneWrapper;
+module.exports = AsyncStorageOneByOneStrategy;
 
 /**
  * @param {Object} Storage a wrapper to an asynchronous storage API
  * @property {function(key: String): Object} Storage.get
  * @property {function(key: String, value: Object)} Storage.set
  * @property {function(key: String)} Storage.remove
- * @param {function(Error, Array)} callback called after finished setting up AsyncStorageOneByOneWrapper
+ * @param {function(Error, Array)} callback called after finished setting up AsyncStorageOneByOneStrategy
  * with an array of storage keys
  */
-function AsyncStorageOneByOneWrapper(Storage) {
+function AsyncStorageOneByOneStrategy(Storage) {
   if (typeof(Storage) === 'undefined' || Storage === null) {
     throw new TypeError('Storage is either not defined or null');
   }
@@ -37,7 +37,7 @@ function AsyncStorageOneByOneWrapper(Storage) {
   this.Storage = Storage;
 }
 
-AsyncStorageOneByOneWrapper.prototype._getStorageKeys = function _getStorageKeys() {
+AsyncStorageOneByOneStrategy.prototype._getStorageKeys = function _getStorageKeys() {
   return this.Storage.get('async-storage-keys').then(storageKeys => {
     if (typeof(storageKeys) === 'undefined' || storageKeys === null) {
       return this.Storage.set('async-storage-keys', {}).then(() => Promise.resolve({}));
@@ -52,7 +52,7 @@ AsyncStorageOneByOneWrapper.prototype._getStorageKeys = function _getStorageKeys
  * @param {string} key
  * @return {Promise(Object)} value corresponding to the key
  */
-AsyncStorageOneByOneWrapper.prototype.getItem = function getItem(key) {
+AsyncStorageOneByOneStrategy.prototype.getItem = function getItem(key) {
   return this.Storage.get(key);
 };
 
@@ -62,7 +62,7 @@ AsyncStorageOneByOneWrapper.prototype.getItem = function getItem(key) {
  * @paaram {string} key the key of the item to set
  * @param {Object} value the value of the key
  */
-AsyncStorageOneByOneWrapper.prototype.setItem = function setItem(key, value) {
+AsyncStorageOneByOneStrategy.prototype.setItem = function setItem(key, value) {
   return this.Storage.set(key, value)
     .then(() => this.Storage.get('async-storage-keys'))
     .then(storageKeys => {
@@ -80,7 +80,7 @@ AsyncStorageOneByOneWrapper.prototype.setItem = function setItem(key, value) {
  * Removes the item in chrome storage and if item is in the list of keys it removes from the list
  * @param {string} key the key of the object to remove
  */
-AsyncStorageOneByOneWrapper.prototype.removeItem = function removeItem(key) {
+AsyncStorageOneByOneStrategy.prototype.removeItem = function removeItem(key) {
   return this.Storage.remove(key)
     .then(() => this.Storage.get('async-storage-keys'))
     .then(storageKeys => {
@@ -98,12 +98,12 @@ AsyncStorageOneByOneWrapper.prototype.removeItem = function removeItem(key) {
  * Set all items to local storage
  * @param {function} set called by Storage to set key-value pair locally
  */
-AsyncStorageOneByOneWrapper.prototype.init = function init(set) {
+AsyncStorageOneByOneStrategy.prototype.init = function init(set) {
   return this._getStorageKeys()
     .then(storageKeys => {
       // save all storage keys to hashtable
       var keyPromises = Object.keys(storageKeys).map(key => {
-        return Storage.get(key).then((value) => {
+        return this.Storage.get(key).then((value) => {
           set(key, value);
         });
       });

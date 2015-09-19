@@ -22,7 +22,7 @@ describe('Testing server routes', function() {
 
   it('should get something', function(done) {
     request(`http://127.0.0.1:${ TEST_PORT }/storage/blahblahblah`).then(data => {
-      expect(data).to.eql('{}');
+      expect(data).to.eql(JSON.stringify({}));
       done();
     });
   });
@@ -36,7 +36,7 @@ describe('Testing server routes', function() {
       expect(data).to.eql('');
       return request(`http://localhost:${ TEST_PORT }/storage/hello`);
     }).then(data => {
-      expect(data).to.eql(JSONEncoder.encodeJSON({ key: { hello: 'world' } }));
+      expect(data).to.eql(JSON.stringify({ key: { hello: 'world' } }));
       done();
     });
   });

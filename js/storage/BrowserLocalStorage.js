@@ -10,11 +10,11 @@ var StorageMethods = require('./StorageMethods.js');
  * Expose a function that takes a Storage parameter and returns 
  * a new `BrowserLocalStorage`
  */
-module.exports = function(Storage, StorageWrapper) {
+module.exports = function(Storage, StorageStrategy) {
   if (typeof localStorage === 'undefined' || localStorage === null) {
     throw new Error('Browser\'s local storage is not defined!'); 
   }
-  return new BrowserLocalStorage(Storage, StorageWrapper);
+  return new BrowserLocalStorage(Storage, StorageStrategy);
 };
 
 /**
@@ -25,8 +25,8 @@ module.exports = function(Storage, StorageWrapper) {
  * @property {function(key: String)} Storage.remove
  * @constructor
  */
-function BrowserLocalStorage(Storage, StorageWrapper) {
-  this.storageMethods = new StorageMethods(Storage, StorageWrapper);
+function BrowserLocalStorage(Storage, StorageStrategy) {
+  this.storageMethods = new StorageMethods(Storage, StorageStrategy);
 }
 
 BrowserLocalStorage.prototype.init = function init() {

@@ -10,8 +10,8 @@ var StorageMethods = require('./StorageMethods.js');
  * Expose a function that takes a Storage parameter and returns 
  * a new `DictionaryStorage`
  */
-module.exports = function(Storage, StorageWrapper) {
-  return new DictionaryStorage(Storage, StorageWrapper);
+module.exports = function(Storage, StorageStrategy) {
+  return new DictionaryStorage(Storage, StorageStrategy);
 };
 
 /**
@@ -21,8 +21,8 @@ module.exports = function(Storage, StorageWrapper) {
  * @property {function(key: String, value: Object)} Storage.set
  * @property {function(key: String)} Storage.remove
  */
-function DictionaryStorage(Storage, StorageWrapper) {
-  this.storageMethods = new StorageMethods(Storage, StorageWrapper);
+function DictionaryStorage(Storage, StorageStrategy) {
+  this.storageMethods = new StorageMethods(Storage, StorageStrategy);
 }
 
 DictionaryStorage.prototype.init = function init() {

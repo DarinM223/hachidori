@@ -7,12 +7,12 @@ var WorkQueue = require('../WorkQueue.js');
  */
 module.exports = StorageMethods;
 
-function StorageMethods(Storage, StorageWrapper) {
+function StorageMethods(Storage, StorageStrategy) {
   this.Storage = Storage;
   if (Storage !== null) {
-    this.storageWrapper = new StorageWrapper(Storage);
+    this.storageStrategy = new StorageStrategy(Storage);
   } else {
-    this.storageWrapper = null;
+    this.storageStrategy = null;
   }
   this.taskQueue = new WorkQueue();
 }
@@ -27,7 +27,7 @@ StorageMethods.prototype.init = function init(set) {
   if (this.Storage === null) {
     return Promise.resolve(null);
   }
-  return this.storageWrapper.init(set);
+  return this.storageStrategy.init(set);
 };
 
 /**
@@ -36,8 +36,8 @@ StorageMethods.prototype.init = function init(set) {
  * @param {Object} value
  */
 StorageMethods.prototype.setItem = function setItem(key, value) {
-  if (this.storageWrapper !== null) {
-    this.taskQueue.enqueueWork(this.storageWrapper.setItem.bind(this.storageWrapper, key, value)); // add task to queue
+  if (this.storageStrategy !== null) {
+    this.taskQueue.enqueueWork(this.storageStrategy.setItem.bind(this.storageStrategy, key, value)); // add task to queue
   }
 };
 
@@ -46,8 +46,8 @@ StorageMethods.prototype.setItem = function setItem(key, value) {
  * @param {string} key
  */
 StorageMethods.prototype.removeItem = function removeItem(key) {
-  if (this.storageWrapper !== null) {
-    this.taskQueue.enqueueWork(this.storageWrapper.removeItem.bind(this.storageWrapper, key)); // add task to queue
+  if (this.storageStrategy !== null) {
+    this.taskQueue.enqueueWork(this.storageStrategy.removeItem.bind(this.storageStrategy, key)); // add task to queue
   }
 };
 

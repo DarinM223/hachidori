@@ -3,7 +3,8 @@
 var AnimeCache = require('../../AnimeCache.js')
   , HummingbirdAccessToken = require('../../HummingbirdAccessToken.js')
   , HummingbirdAnimeList = require('../../HummingbirdAnimeList.js')
-  , LocalStorage = require('../../LocalStorage.js');
+  , LocalStorage = require('../../LocalStorage.js')
+  , ServerStorage = require('../../ServerStorage.js');
 
 var AppMixin = {
   access_token: new HummingbirdAccessToken(),
@@ -13,12 +14,14 @@ var AppMixin = {
   getInitialState: function() {
     var loggedIn = false;
 
-    LocalStorage.init().then(() => {
-      if (typeof(this.access_token.getUsername()) !== 'undefined' && typeof(this.access_token.getAccessToken()) !== 'undefined' && 
-          this.access_token.getUsername() !== null && this.access_token.getAccessToken() !== null) {
-        this.setState({ loggedIn: true });
-      }
-    }).catch((e) => { throw e; });
+    LocalStorage.init()
+      .then(() => ServerStorage.init())
+      .then(() => {
+        if (typeof(this.access_token.getUsername()) !== 'undefined' && typeof(this.access_token.getAccessToken()) !== 'undefined' && 
+            this.access_token.getUsername() !== null && this.access_token.getAccessToken() !== null) {
+          this.setState({ loggedIn: true });
+        }
+      }).catch((e) => { throw e; });
 
     return {
       filterText: '',

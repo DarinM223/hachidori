@@ -4,7 +4,7 @@
  * Promise based wrapper for the hachidori node.js backend
  */
 
-var request = require('request-promise')
+var request = require('superagent')
   , JSONEncoder = require('../../JSONEncoder.js');
 
 /*
@@ -36,14 +36,23 @@ function ServerStorage(username) {
  * @return {Promise(Object)} key's value
  */
 ServerStorage.prototype.get = function get(key) {
-  var getDataPromise = null;
-  if (this.cachedData === null) {
-    getDataPromise = request(this._locationURL).then(encodedData => {
-      this.cachedData = JSONEncoder.decodeJSON(encodedData);
-    });
-  } else {
-    getDataPromise = Promise.resolve(this.cachedData);
-  }
+  var getDataPromise = new Promise((resolve, reject) => {
+    if (this.cachedData === null) {
+      request
+        .get(this._locationURL)
+        .end((e, res) => {
+          if (e) {
+            reject(e);
+            return;
+          }
+
+          this.cachedData = JSONEncoder.decodeJSON(res.text);
+          resolve(null);
+        });
+    } else {
+      resolve(null);
+    }
+  });
   return getDataPromise.then(() => {
     return Promise.resolve(this.cachedData[key]);
   });
@@ -54,10 +63,19 @@ ServerStorage.prototype.get = function get(key) {
  * @param {Object} data the data to set for the username
  */
 ServerStorage.prototype.set = function set(key, value) {
-  return request({
-    method: 'POST',
-    uri: this._locationURL + encodeURIComponent(key),
-    form: { key: key, value: value }
+  return new Promise((resolve, reject) => {
+    request
+      .post(this._locationURL + '/' + encodeURIComponent(key))
+      .send({ key: key, value: JSONEncoder.encodeJSON(value) })
+      .end((e, res) => {
+        if (e) {
+          reject(e);
+          return;
+        }
+
+        this.cachedData[key] = value;
+        resolve(res.text);
+      });
   });
 };
 
@@ -66,9 +84,17 @@ ServerStorage.prototype.set = function set(key, value) {
  * @param {string} key
  */
 ServerStorage.prototype.remove = function remove(key) {
-  return request({
-    method: 'DELETE',
-    uri: this._locationURL + encodeURIComponent(key)
+  return new Promise((resolve, reject) => {
+    request
+      .delete(this._locationURL + '/' + encodeURIComponent(key))
+      .end((e, res) => {
+        if (e) {
+          reject(e);
+          return;
+        }
+
+        resolve(res.text);
+      });
   });
 };
 
