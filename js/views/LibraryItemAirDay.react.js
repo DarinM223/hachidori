@@ -16,7 +16,7 @@ var LibraryItemAirDayComponent = React.createClass({
     var DropdownButton = ReactBootstrap.DropdownButton;
     var MenuItem = ReactBootstrap.MenuItem;
 
-    var airDate = AnimeAirDate.getAirDate(this.props.libraryItem.anime.id);
+    var airDate = parseInt(AnimeAirDate.getAirDate(this.props.libraryItem.anime.id), 10);
     var dateText = null;
 
     if (airDate === 0) {
