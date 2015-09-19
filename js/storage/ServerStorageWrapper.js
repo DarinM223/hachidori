@@ -50,25 +50,25 @@ ServerStorage.prototype.get = function get(key) {
 };
 
 /**
- * Sets a user's data
+ * Sets a key in the user's data
  * @param {Object} data the data to set for the username
  */
 ServerStorage.prototype.set = function set(key, value) {
   return request({
     method: 'POST',
-    uri: this._locationURL,
+    uri: this._locationURL + encodeURIComponent(key),
     form: { key: key, value: value }
   });
 };
 
 /**
- * Removes the data for a user
+ * Removes a key in the user's data
  * @param {string} key
  */
 ServerStorage.prototype.remove = function remove(key) {
   return request({
     method: 'DELETE',
-    uri: this._locationURL + `?key=${ encodeURIComponent(key) }`
+    uri: this._locationURL + encodeURIComponent(key)
   });
 };
 

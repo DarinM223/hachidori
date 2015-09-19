@@ -1,5 +1,4 @@
 # Hachidori
-###Minimal Hummingbird client that makes it easier to keep track of your anime
 
 ![Main Image](http://i.imgur.com/9cCbHLf.png?1)
 
@@ -31,6 +30,29 @@ Then if you want to run the server in development mode (client and server reload
 And if you want to build the React code for production, run:
 
     npm run build
+
+Dependencies
+------------
+
+* node.js
+* bower
+* mocha
+* eslint
+* webpack
+* redis
+
+Contributing
+------------
+
+Contributions are always welcome! Make sure that any changes you make are accompanied with unit tests and there are no test or linter errors. 
+Also make sure that you are following the same style as the rest of the code.
+To check for linting errors run:
+
+    eslint .
+
+To check the tests run:
+
+    mocha
 
 TODO
 ----

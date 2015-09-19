@@ -24,64 +24,35 @@ describe('Testing KeyValueStore', function() {
     client.flushallAsync().then(() => done());
   });
 
-  it('should set integer', function(done) {
+  it('should get and set object', function(done) {
     store
-      .set('hello', 2)
-      .then(() => client.getAsync('hello'))
-      .then(value => {
-        expect(JSONEncoder.decodeJSON(value)).to.eql(2);
+      .set('username', 'key', { value: 2 })
+      .then(() => store.get('username'))
+      .then(obj => {
+        expect(obj).to.eql({ key: { value: 2 } });
         done();
-      })
-      .catch(e => console.log(e));
+      });
   });
 
-  it('should set string', function(done) {
+  it('should get and set nested object', function(done) {
     store
-      .set('hello', 'world')
-      .then(() => client.getAsync('hello'))
-      .then(value => {
-        expect(JSONEncoder.decodeJSON(value)).to.eql('world');
+      .set('username', 'key', { value1: ['a', 'b'], value2: { a: true, b: 2.5 } })
+      .then(() => store.get('username'))
+      .then(obj => {
+        expect(obj).to.eql({ key: { value1: ['a', 'b'], value2: { a: true, b: 2.5 } } });
         done();
-      })
-      .catch(e => console.log(e));
+      });
   });
 
-  it('should get integer', function(done) {
+  it('should delete key of object', function(done) {
     store
-      .set('world', 2)
-      .then(() => store.get('world'))
-      .then(value => {
-        expect(value).to.eql(2);
+      .set('anotherusername', 'key', 2)
+      .then(() => store.remove('anotherusername', 'key'))
+      .then(() => client.hexistsAsync('anotherusername', 'key'))
+      .then(exists => {
+        expect(exists).to.eql(0);
         done();
-      })
-      .catch(e => console.log(e));
-  });
-
-  it('should get string', function(done) {
-    store
-      .set('world', 'world')
-      .then(() => store.get('world'))
-      .then(value => {
-        expect(value).to.eql('world');
-        done();
-      })
-      .catch(e => console.log(e));
-  });
-
-  it('should remove key-value pair', function(done) {
-    store
-      .set('foo', { a: 2, b: 3 })
-      .then(() => store.get('foo'))
-      .then(value => {
-        expect(value).to.eql({ a: 2, b: 3 });
-        return store.remove('foo');
-      })
-      .then(() => store.get('foo'))
-      .then(value => {
-        expect(value).to.eql(null);
-        done();
-      })
-      .catch(e => console.log(e));
+      });
   });
 });
 

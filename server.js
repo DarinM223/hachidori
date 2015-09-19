@@ -65,6 +65,7 @@ app.all(/^\/api\/(.*)/, function(req, res) {
 
 app.get('/storage/:username', function(req, res) {
   var username = req.params.username;
+
   if (typeof username === 'undefined' || username === null) {
     res.status(500).send(new Error('Username parameter not defined'));
     return;
@@ -73,35 +74,40 @@ app.get('/storage/:username', function(req, res) {
   keyValueStore.get(username).then(data => res.json(data)).catch(e => res.status(500).send(e + ''));
 });
 
-app.post('/storage/:username', function(req, res) {
+app.post('/storage/:username/:key', function(req, res) {
   var username = req.params.username;
-  var userData = req.body.userData;
+  var key = req.params.key;
+  var value = JSONEncoder.decodeJSON(req.body.value);
+
   if (typeof username === 'undefined' || username === null) {
     res.status(500).send('Username parameter not defined');
     return;
   }
-  if (typeof userData === 'undefined' || userData === null) {
-    res.status(500).send('userData form parameter not defined');
+  if (typeof key === 'undefined' || key === null || typeof key !== 'string') {
+    res.status(500).send('key parameter not defined');
+    return;
+  }
+  if (typeof value === 'undefined' || value === null) {
+    res.status(500).send('value parameter not defined');
     return;
   }
 
-  try {
-    userData = JSONEncoder.decodeJSON(userData);
-  } catch (e) {
-    res.status(500).send(e + '');
-    return;
-  }
-
-  keyValueStore.set(username, userData).then(() => res.status(200).send('')).catch(e => res.status(500).send(e + ''));
+  keyValueStore.set(username, key, value).then(() => res.status(200).send('')).catch(e => res.status(500).send(e + ''));
 });
 
-app.delete('/storage/:username', function(req, res) {
+app.delete('/storage/:username/:key', function(req, res) {
   var username = req.params.username;
+  var key = req.params.key;
+
   if (typeof username === 'undefined' || username === null) {
     res.status(500).send('Username parameter not defined');
     return;
   }
+  if (typeof key === 'undefined' || key === null || typeof key !== 'string') {
+    res.status(500).send('Key parameter not defined');
+    return;
+  }
 
-  keyValueStore.remove(username).then(() => res.status(200).send('')).catch(e => res.status(500).send(e + ''));
+  keyValueStore.remove(username, key).then(() => res.status(200).send('')).catch(e => res.status(500).send(e + ''));
 });
 

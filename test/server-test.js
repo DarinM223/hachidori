@@ -22,21 +22,40 @@ describe('Testing server routes', function() {
 
   it('should get something', function(done) {
     request(`http://127.0.0.1:${ TEST_PORT }/storage/blahblahblah`).then(data => {
-      expect(data).to.eql('null');
+      expect(data).to.eql('{}');
       done();
     });
   });
 
-  it('should properly set integer', function(done) {
+  it('should properly set key', function(done) {
     request({
       method: 'POST',
-      uri: `http://localhost:${ TEST_PORT }/storage/${ TEST_USERNAME }`,
-      form: { userData: JSONEncoder.encodeJSON({ hello: 'world' }) }
+      uri: `http://localhost:${ TEST_PORT }/storage/hello/key`,
+      form: { value: JSONEncoder.encodeJSON({ hello: 'world' }) }
     }).then(data => {
       expect(data).to.eql('');
-      return request(`http://localhost:${ TEST_PORT }/storage/${ TEST_USERNAME }`);
+      return request(`http://localhost:${ TEST_PORT }/storage/hello`);
     }).then(data => {
-      expect(data).to.eql(JSONEncoder.encodeJSON({ hello: 'world' }));
+      expect(data).to.eql(JSONEncoder.encodeJSON({ key: { hello: 'world' } }));
+      done();
+    });
+  });
+
+  it('should properly remove key', function(done) {
+    request({
+      method: 'POST',
+      uri: `http://localhost:${ TEST_PORT }/storage/world/key`,
+      form: { value: 2 }
+    }).then(data => {
+      expect(data).to.eql('');
+      return request({
+        method: 'DELETE',
+        uri: `http://localhost:${ TEST_PORT }/storage/world/key`
+      });
+    }).then(() => {
+      return app.locals.store.client.hexistsAsync('world', 'key')
+    }).then(exists => {
+      expect(exists).to.eql(0);
       done();
     });
   });
