@@ -27,6 +27,7 @@ function ServerStorageWrapper(username) {
 function ServerStorage(username) {
   this.username = username;
   this._locationURL = window.location.origin + '/storage/' + this.username;
+  this.cachedData = null;
 }
 
 /**
@@ -34,19 +35,29 @@ function ServerStorage(username) {
  * @param {string} key
  * @return {Promise(Object)} key's value
  */
-ServerStorage.prototype.get = function get() {
-  return request(this._locationURL);
+ServerStorage.prototype.get = function get(key) {
+  var getDataPromise = null;
+  if (this.cachedData === null) {
+    getDataPromise = request(this._locationURL).then(encodedData => {
+      this.cachedData = JSONEncoder.decodeJSON(encodedData);
+    });
+  } else {
+    getDataPromise = Promise.resolve(this.cachedData);
+  }
+  return getDataPromise.then(() => {
+    return Promise.resolve(this.cachedData[key]);
+  });
 };
 
 /**
  * Sets a user's data
  * @param {Object} data the data to set for the username
  */
-ServerStorage.prototype.set = function set(data) {
+ServerStorage.prototype.set = function set(key, value) {
   return request({
     method: 'POST',
     uri: this._locationURL,
-    form: { userData: JSONEncoder.encodeJSON(data) }
+    form: { key: key, value: value }
   });
 };
 
@@ -54,10 +65,10 @@ ServerStorage.prototype.set = function set(data) {
  * Removes the data for a user
  * @param {string} key
  */
-ServerStorage.prototype.remove = function remove() {
+ServerStorage.prototype.remove = function remove(key) {
   return request({
     method: 'DELETE',
-    uri: this._locationURL
+    uri: this._locationURL + `?key=${ encodeURIComponent(key) }`
   });
 };
 

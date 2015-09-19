@@ -31,7 +31,7 @@ var LibraryItemStatusComponent = React.createClass({
       <span>
         <br/>
         <label htmlFor="dropdown-status">&nbsp; Status: &nbsp;&nbsp;</label>
-        <DropdownButton id="dropdown-status" title={statusText} onSelect={this.onSelected}>
+        <DropdownButton id="dropdown-status" title={statusText}>
           <MenuItem href="#" onClick={this.onChangeStatus.bind(null, 'currently-watching')}>Currently watching</MenuItem>
           <MenuItem href="#" onClick={this.onChangeStatus.bind(null, 'completed')}>Completed</MenuItem>
           <MenuItem href="#" onClick={this.onChangeStatus.bind(null, 'plan-to-watch')}>Plan to Watch</MenuItem>
