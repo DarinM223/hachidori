@@ -33,7 +33,9 @@ var LibraryItemMixin = {
   onChangeEpisodes: function(event) {
     var isnum = /^\d+$/.test(event.target.value);
     var num = parseInt(event.target.value, 10);
-    if ((isnum && !isNaN(num) && num <= this.props.libraryItem.anime.episode_count) || event.target.value === '') {
+    if ((isnum && !isNaN(num) && 
+         (this.props.libraryItem.anime.episode_count === null || num <= this.props.libraryItem.anime.episode_count)) || 
+         event.target.value === '') {
       this.setState({ episodesText: event.target.value });
     }
   },
