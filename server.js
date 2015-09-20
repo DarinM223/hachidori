@@ -5,7 +5,7 @@
 var express = require('express')
   , redis = require('redis')
   , app = express()
-  , client = redis.createClient(process.env.REDIS_URL)
+  , client = redis.createClient(process.env.REDIS_PORT, process.env.REDIS_HOSTNAME, { no_ready_check: true })
   , KeyValueStore = require('./KeyValueStore.js')
   , JSONEncoder = require('./JSONEncoder.js')
   , bodyparser = require('body-parser')
