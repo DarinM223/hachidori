@@ -31,7 +31,8 @@
     "webpack-dev-server": "^1.10.1"
   },
   "scripts": {
-    "start": "webpack --watch & nodemon index.js",
+    "start": "node index.js",
+    "start-dev": "webpack --watch & nodemon index.js",
     "build": "webpack -p --progress --colors",
     "test": "mocha",
     "postinstall": "./node_modules/bower/bin/bower install"
