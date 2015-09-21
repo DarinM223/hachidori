@@ -76,3 +76,4 @@ var AnimeListComponent = React.createClass({
 });
 
 module.exports = AnimeListComponent;
+

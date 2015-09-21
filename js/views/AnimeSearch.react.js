@@ -29,3 +29,4 @@ var AnimeSearchComponent = React.createClass({
 });
 
 module.exports = AnimeSearchComponent;
+

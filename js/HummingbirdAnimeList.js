@@ -277,3 +277,4 @@ HummingbirdAnimeList.compareLibraryItems = function(a, b) {
 };
 
 module.exports = HummingbirdAnimeList;
+

@@ -60,3 +60,4 @@ var AnimeTabBarComponent = React.createClass({
 });
 
 module.exports = AnimeTabBarComponent;
+

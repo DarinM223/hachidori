@@ -6,14 +6,6 @@
 
 var StorageMethods = require('./StorageMethods.js');
 
-/*
- * Expose a function that takes a Storage parameter and returns 
- * a new `DictionaryStorage`
- */
-module.exports = function(Storage, StorageStrategy) {
-  return new DictionaryStorage(Storage, StorageStrategy);
-};
-
 /**
  * @param {Object} Storage a wrapper to an asynchronous storage API
  * @param {Object} StorageWrapper a class that wraps the storage
@@ -46,5 +38,13 @@ DictionaryStorage.prototype.getItem = function getItem(key) {
 DictionaryStorage.prototype.removeItem = function removeItem(key) {
   this.data[key] = null;
   this.storageMethods.removeItem(key);
+};
+
+/*
+ * Expose a function that takes a Storage parameter and returns 
+ * a new `DictionaryStorage`
+ */
+module.exports = function(Storage, StorageStrategy) {
+  return new DictionaryStorage(Storage, StorageStrategy);
 };
 

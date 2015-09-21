@@ -6,17 +6,6 @@
 
 var StorageMethods = require('./StorageMethods.js');
 
-/*
- * Expose a function that takes a Storage parameter and returns 
- * a new `BrowserLocalStorage`
- */
-module.exports = function(Storage, StorageStrategy) {
-  if (typeof localStorage === 'undefined' || localStorage === null) {
-    throw new Error('Browser\'s local storage is not defined!'); 
-  }
-  return new BrowserLocalStorage(Storage, StorageStrategy);
-};
-
 /**
  * A wrapper to an asynchronous storage API 
  * using the browser's localStorage to store values
@@ -45,5 +34,16 @@ BrowserLocalStorage.prototype.getItem = function getItem(key) {
 BrowserLocalStorage.prototype.removeItem = function removeItem(key) {
   localStorage.removeItem(key);
   this.storageMethods.removeItem(key);
+};
+
+/*
+ * Expose a function that takes a Storage parameter and returns 
+ * a new `BrowserLocalStorage`
+ */
+module.exports = function(Storage, StorageStrategy) {
+  if (typeof localStorage === 'undefined' || localStorage === null) {
+    throw new Error('Browser\'s local storage is not defined!'); 
+  }
+  return new BrowserLocalStorage(Storage, StorageStrategy);
 };
 

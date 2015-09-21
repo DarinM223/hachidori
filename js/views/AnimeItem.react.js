@@ -31,3 +31,4 @@ var AnimeItemComponent = React.createClass({
 });
 
 module.exports = AnimeItemComponent;
+

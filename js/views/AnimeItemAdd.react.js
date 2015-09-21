@@ -19,3 +19,4 @@ var AnimeItemAddComponent = React.createClass({
 });
 
 module.exports = AnimeItemAddComponent;
+

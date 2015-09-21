@@ -9,11 +9,6 @@
  * It is ok for chrome storage but with server storage you will make too many requests to retrieve one thing
  */
 
-/*
- * Expose `AsyncStorageOneByOneStrategy`
- */
-module.exports = AsyncStorageOneByOneStrategy;
-
 /**
  * @param {Object} Storage a wrapper to an asynchronous storage API
  * @property {function(key: String): Object} Storage.get
@@ -99,6 +94,9 @@ AsyncStorageOneByOneStrategy.prototype.removeItem = function removeItem(key) {
  * @param {function} set called by Storage to set key-value pair locally
  */
 AsyncStorageOneByOneStrategy.prototype.init = function init(set) {
+  // Clear cache before initing so results can refresh
+  this.Storage.clearCache();
+
   return this._getStorageKeys()
     .then(storageKeys => {
       // save all storage keys to hashtable
@@ -111,4 +109,6 @@ AsyncStorageOneByOneStrategy.prototype.init = function init(set) {
       return Promise.all(keyPromises);
     });
 };
+
+module.exports = AsyncStorageOneByOneStrategy;
 

@@ -82,3 +82,4 @@ HummingbirdAccessToken.prototype.removeAccessToken = function() {
 };
 
 module.exports = HummingbirdAccessToken;
+

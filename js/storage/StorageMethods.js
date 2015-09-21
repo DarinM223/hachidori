@@ -2,11 +2,6 @@
 
 var WorkQueue = require('../WorkQueue.js');
 
-/*
- * Expose `StorageMethods`
- */
-module.exports = StorageMethods;
-
 function StorageMethods(Storage, StorageStrategy) {
   this.Storage = Storage;
   if (Storage !== null) {
@@ -50,4 +45,6 @@ StorageMethods.prototype.removeItem = function removeItem(key) {
     this.taskQueue.enqueueWork(this.storageStrategy.removeItem.bind(this.storageStrategy, key)); // add task to queue
   }
 };
+
+module.exports = StorageMethods;
 

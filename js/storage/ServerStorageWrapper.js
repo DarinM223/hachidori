@@ -7,11 +7,6 @@
 var request = require('superagent')
   , JSONEncoder = require('../../JSONEncoder.js');
 
-/*
- * Expose the ServerStorageWrapper function
- */
-module.exports = ServerStorageWrapper;
-
 /**
  * A function that takes in a username and 
  * returns a new `ServerStorage`
@@ -29,6 +24,13 @@ function ServerStorage(username) {
   this._locationURL = window.location.origin + '/storage/' + this.username;
   this.cachedData = null;
 }
+
+/**
+ * Clears the cache if it exists
+ */
+ServerStorage.prototype.clearCache = function clearCache() {
+  this.cachedData = null;
+};
 
 /**
  * Retrieves the user's data
@@ -97,4 +99,6 @@ ServerStorage.prototype.remove = function remove(key) {
       });
   });
 };
+
+module.exports = ServerStorageWrapper;
 

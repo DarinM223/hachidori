@@ -8,11 +8,6 @@ var Promise = require('bluebird')
   , _ = require('underscore')
   , JSONEncoder = require('./JSONEncoder.js');
 
-/*
- * Expose `KeyValueStore`
- */
-module.exports = KeyValueStore;
-
 /**
  * Creates a new anime key value store using a Redis Client
  */
@@ -51,4 +46,6 @@ KeyValueStore.prototype.remove = function remove(username, key) {
 
   return this.client.hdelAsync(username, key);
 };
+
+module.exports = KeyValueStore;
 

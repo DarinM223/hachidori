@@ -49,3 +49,4 @@ var LibraryItemRatingComponent = React.createClass({
 });
 
 module.exports = LibraryItemRatingComponent;
+

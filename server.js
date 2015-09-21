@@ -11,26 +11,12 @@ var express = require('express')
   , bodyparser = require('body-parser')
   , request = require('superagent');
 
-/*
- * Expose the app server
- */
-module.exports = app;
-
 client.on('error', function(err) {
   console.log('Redis Error: ', err);
 });
 
 var keyValueStore = new KeyValueStore(client);
 
-// TODO(darin): selectively block domains
-var allowCrossDomain = function(req, res, next) {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-  res.header('Access-Control-Allow-Headers', 'Content-Type');
-  next();
-};
-
-app.use(allowCrossDomain);
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({
   extended: true
@@ -119,4 +105,6 @@ app.delete('/storage/:username/:key', function(req, res) {
 
   keyValueStore.remove(username, key).then(() => res.status(200).send('')).catch(e => res.status(500).send(e + ''));
 });
+
+module.exports = app;
 

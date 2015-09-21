@@ -25,3 +25,4 @@ var AnimeDetailComponent = React.createClass({
 });
 
 module.exports = AnimeDetailComponent;
+

@@ -25,3 +25,4 @@ var LibraryItemIncrementComponent = React.createClass({
 });
 
 module.exports = LibraryItemIncrementComponent;
+
