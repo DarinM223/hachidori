@@ -1,6 +1,6 @@
 # Hachidori
 
-![Main Image](http://i.imgur.com/9cCbHLf.png?1)
+![Main Image](http://i.imgur.com/u0JYP0k.png?1)
 
 Features
 --------
