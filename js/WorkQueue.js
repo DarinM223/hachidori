@@ -46,15 +46,25 @@ WorkQueue.prototype.enqueueWork = function(fn) {
  * and executes the next node in the queue if there is one
  */
 WorkQueue.prototype.executeHead = function() {
+  var that = this;
+
   if (this.head !== null) {
-    this.head.fn().then(() => {
-      this.head = this.head.next; 
-      if (this.head !== null) {
-        setTimeout(this.executeHead.bind(this), 0); 
-      } else {
-        this.tail = null; // clean up tail node
-      }
-    });
+    var result = this.head.fn();
+    if (typeof result !== 'undefined' && 
+        result !== null &&
+        typeof result === 'object' &&
+        typeof result.then === 'function') {
+      result.then(function() {
+        that.head = that.head.next;
+        if (that.head !== null) {
+          var args = Array.prototype.slice.call(arguments);
+          that.head.fn = that.head.fn.bind.apply(that.head.fn, [null].concat(args));
+          setTimeout(that.executeHead.bind(that), 0); 
+        } else {
+          that.tail = null; // clean up tail node
+        }
+      });
+    }
   }
 };
 
